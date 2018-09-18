@@ -3,9 +3,7 @@
 Team Name: MIF
 
 Team Members:
-Mengshan Cui		cuim2 /n
-Harry(Haoyuan) Fu	fuh6  /n
-Xingjian Ke		kex1
+Mengshan Cui		cuim2,   Harry(Haoyuan) Fu	fuh6,  Xingjian Ke		kex1
 
 This project is a reimplementation of ChessOOP, https://github.com/ashish1294/ChessOOP
 
