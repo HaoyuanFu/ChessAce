@@ -11,7 +11,7 @@ public abstract class Piece implements Cloneable{
 	private String id=null;
 	private String path;
 	protected ArrayList<Cell> possiblemoves = new ArrayList<Cell>();  //Protected (access from child classes)
-	public abstract ArrayList<Cell> move(Cell pos[][],int x,int y);  //Abstract Function. Must be overridden
+	public abstract ArrayList<Cell> posMove(Cell[][] pos);  //Abstract Function. Must be overridden
 	
 	//Id Setter
 	public void setId(String id)
@@ -44,7 +44,7 @@ public abstract class Piece implements Cloneable{
 	}
 	
 	//Color Getter
-	public int getcolor()
+	public int getColor()
 	{
 		return this.color;
 	}
