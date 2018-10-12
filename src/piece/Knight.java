@@ -33,16 +33,17 @@ public class Knight extends Piece{
 		
     	int X[] = { 2, 1, -1, -2, -2, -1, 1, 2 }; 
 		int Y[] = { 1, 2, 2, 1, -1, -2, -2, -1 }; 
-		int posx, posy;
+		int posx = 0;
+		int posy = 0;
 		
-		for (int i = 0; i < 8; i++) { 
+		for (int i = 0; i < 8; i++) {
 			posx = this.x + X[i]; 
 			posy = this.y + Y[i];
 		}
 		
 		if ((8 > posx && posx >= 0) && (8 > posy && posy >= 0)){
-			if (pos[posx][posy].getpiece() == null || pos[posx][posy].getpiece().getcolor() != this.getColor())
-				possiblemoves.add(position[posx][posy]);
+			if (pos[posx][posy].getPiece() == null || pos[posx][posy].getPiece().getColor() != this.getColor())
+				possiblemoves.add(pos[posx][posy]);
 		}
 		return possiblemoves;
     }
