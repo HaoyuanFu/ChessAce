@@ -25,6 +25,14 @@ public class King extends Piece{
 		this.y = y;
 	}
 	
+	public boolean isMoved() {
+		return !neverMoved;
+	}
+	
+	public boolean isCheckmated() {
+		return !notCheckmated;
+	}
+	
 	public void setMoved() {
 		this.neverMoved = false;
 	}
