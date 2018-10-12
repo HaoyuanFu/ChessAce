@@ -33,9 +33,10 @@ public class Knight extends Piece{
 		
     	int X[] = { 2, 1, -1, -2, -2, -1, 1, 2 }; 
 		int Y[] = { 1, 2, 2, 1, -1, -2, -2, -1 }; 
-		int posx = 0, posy = 0;
+		int posx = 0;
+		int posy = 0;
 		
-		for (int i = 0; i < 8; i++) { 
+		for (int i = 0; i < 8; i++) {
 			posx = this.x + X[i]; 
 			posy = this.y + Y[i];
 		}

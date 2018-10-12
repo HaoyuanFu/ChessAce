@@ -32,7 +32,9 @@ public class Bishop extends Piece{
 
 
 	
-	public ArrayList<Cell> posMove(Cell position[][])
+
+	public ArrayList<Cell> posMove(Cell pos[][])
+
 	{
 
 		possiblemoves.clear();
@@ -42,13 +44,15 @@ public class Bishop extends Piece{
 		int tempy = this.y-1;
 		while(tempx < 8 && tempy >= 0)
 		{
-			if(position[tempx][tempy].getPiece() == null){
-				possiblemoves.add(position[tempx][tempy]);
+			if(pos[tempx][tempy].getPiece() == null){
+				possiblemoves.add(pos[tempx][tempy]);
 			}
-			else if(position[tempx][tempy].getPiece().getColor() == this.getColor())
+
+			else if(pos[tempx][tempy].getPiece().getColor() == this.getColor())
+
 				break;
 			else{
-				possiblemoves.add(position[tempx][tempy]);
+				possiblemoves.add(pos[tempx][tempy]);
 				break;
 			}
 
@@ -61,13 +65,15 @@ public class Bishop extends Piece{
 		tempy = this.y+1;
 		while(tempx >= 0 && tempy < 8)
 		{
-			if(position[tempx][tempy].getPiece()==null)
-				possiblemoves.add(position[tempx][tempy]);
-			else if(position[tempx][tempy].getPiece().getColor()==this.getColor())
+
+			if(pos[tempx][tempy].getPiece()==null)
+				possiblemoves.add(pos[tempx][tempy]);
+			else if(pos[tempx][tempy].getPiece().getColor()==this.getColor())
+
 				break;
 			else
 			{
-				possiblemoves.add(position[tempx][tempy]);
+				possiblemoves.add(pos[tempx][tempy]);
 				break;
 			}
 			tempx--;
@@ -79,13 +85,15 @@ public class Bishop extends Piece{
 		tempy = this.y-1;
 		while(tempx >= 0 && tempy>=0)
 		{
-			if(position[tempx][tempy].getPiece()==null)
-				possiblemoves.add(position[tempx][tempy]);
-			else if(position[tempx][tempy].getPiece().getColor()==this.getColor())
+
+			if(pos[tempx][tempy].getPiece()==null)
+				possiblemoves.add(pos[tempx][tempy]);
+			else if(pos[tempx][tempy].getPiece().getColor()==this.getColor())
+
 				break;
 			else
 			{
-				possiblemoves.add(position[tempx][tempy]);
+				possiblemoves.add(pos[tempx][tempy]);
 				break;
 			}
 			tempx--;
@@ -97,13 +105,15 @@ public class Bishop extends Piece{
 		tempy = this.y+1;
 		while(tempx<8&&tempy<8)
 		{
-			if(position[tempx][tempy].getPiece()==null)
-				possiblemoves.add(position[tempx][tempy]);
-			else if(position[tempx][tempy].getPiece().getColor()==this.getColor())
+
+			if(pos[tempx][tempy].getPiece()==null)
+				possiblemoves.add(pos[tempx][tempy]);
+			else if(pos[tempx][tempy].getPiece().getColor()==this.getColor())
+
 				break;
 			else
 			{
-				possiblemoves.add(position[tempx][tempy]);
+				possiblemoves.add(pos[tempx][tempy]);
 				break;
 			}
 			tempx++;
