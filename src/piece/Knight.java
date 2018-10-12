@@ -28,7 +28,7 @@ public class Knight extends Piece{
 	}
 
 
-    public ArrayList<Cell> posmove(Cell position[][]) {       
+    public ArrayList<Cell> posMove(Cell pos[][]) {       
 		possiblemoves.clear();
 		
     	int X[] = { 2, 1, -1, -2, -2, -1, 1, 2 }; 
@@ -41,7 +41,7 @@ public class Knight extends Piece{
 		}
 		
 		if ((8 > posx && posx >= 0) && (8 > posy && posy >= 0)){
-			if (position[posx][posy].getpiece() == null || position[posx][posy].getpiece().getcolor() != this.getColor())
+			if (pos[posx][posy].getpiece() == null || pos[posx][posy].getpiece().getcolor() != this.getColor())
 				possiblemoves.add(position[posx][posy]);
 		}
 		return possiblemoves;
