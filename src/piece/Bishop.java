@@ -45,7 +45,7 @@ public class Bishop extends Piece{
 			if(pos[tempx][tempy].getPiece() == null){
 				possiblemoves.add(pos[tempx][tempy]);
 			}
-			else if(pos[tempx][tempy].getPiece().getcolor() == this.getColor())
+			else if(pos[tempx][tempy].getPiece().getColor() == this.getColor())
 				break;
 			else{
 				possiblemoves.add(pos[tempx][tempy]);
@@ -63,7 +63,7 @@ public class Bishop extends Piece{
 		{
 			if(pos[tempx][tempy].getPiece()==null)
 				possiblemoves.add(pos[tempx][tempy]);
-			else if(pos[tempx][tempy].getPiece().getcolor()==this.getColor())
+			else if(pos[tempx][tempy].getPiece().getColor()==this.getColor())
 				break;
 			else
 			{
@@ -81,7 +81,7 @@ public class Bishop extends Piece{
 		{
 			if(pos[tempx][tempy].getPiece()==null)
 				possiblemoves.add(pos[tempx][tempy]);
-			else if(pos[tempx][tempy].getPiece().getcolor()==this.getColor())
+			else if(pos[tempx][tempy].getPiece().getColor()==this.getColor())
 				break;
 			else
 			{
@@ -99,7 +99,7 @@ public class Bishop extends Piece{
 		{
 			if(pos[tempx][tempy].getPiece()==null)
 				possiblemoves.add(pos[tempx][tempy]);
-			else if(pos[tempx][tempy].getPiece().getcolor()==this.getColor())
+			else if(pos[tempx][tempy].getPiece().getColor()==this.getColor())
 				break;
 			else
 			{
