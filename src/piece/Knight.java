@@ -40,12 +40,10 @@ public class Knight extends Piece{
 			posy = this.y + Y[i];
 		}
 		
-		if ((8 > posx && posx >= 0) && (8 > posy && posy >= 0))
+		if ((8 > posx && posx >= 0) && (8 > posy && posy >= 0)){
 			if (position[posx][posy].getpiece() == null || position[posx][posy].getpiece().getcolor() != this.getColor())
-            	if (position[posx][posy].getpiece().ispossibledestination()) {
-					possiblemoves.add(position[posx][posy]);
-				}
-		
+				possiblemoves.add(position[posx][posy]);
+		}
 		return possiblemoves;
     }
 }
