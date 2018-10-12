@@ -32,7 +32,7 @@ public class Bishop extends Piece{
 
 
 	
-	public ArrayList<Cell> posmove(Cell position[][])
+	public ArrayList<Cell> posMove(Cell position[][])
 	{
 
 		possiblemoves.clear();
@@ -45,7 +45,7 @@ public class Bishop extends Piece{
 			if(position[tempx][tempy].getPiece() == null){
 				possiblemoves.add(position[tempx][tempy]);
 			}
-			else if(position[tempx][tempy].getPiece().getcolor() == this.getColor())
+			else if(position[tempx][tempy].getPiece().getColor() == this.getColor())
 				break;
 			else{
 				possiblemoves.add(position[tempx][tempy]);
@@ -63,7 +63,7 @@ public class Bishop extends Piece{
 		{
 			if(position[tempx][tempy].getPiece()==null)
 				possiblemoves.add(position[tempx][tempy]);
-			else if(position[tempx][tempy].getPiece().getcolor()==this.getColor())
+			else if(position[tempx][tempy].getPiece().getColor()==this.getColor())
 				break;
 			else
 			{
@@ -81,7 +81,7 @@ public class Bishop extends Piece{
 		{
 			if(position[tempx][tempy].getPiece()==null)
 				possiblemoves.add(position[tempx][tempy]);
-			else if(position[tempx][tempy].getPiece().getcolor()==this.getColor())
+			else if(position[tempx][tempy].getPiece().getColor()==this.getColor())
 				break;
 			else
 			{
@@ -99,7 +99,7 @@ public class Bishop extends Piece{
 		{
 			if(position[tempx][tempy].getPiece()==null)
 				possiblemoves.add(position[tempx][tempy]);
-			else if(position[tempx][tempy].getPiece().getcolor()==this.getColor())
+			else if(position[tempx][tempy].getPiece().getColor()==this.getColor())
 				break;
 			else
 			{
