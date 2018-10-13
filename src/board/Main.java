@@ -8,6 +8,7 @@ import piece.Bishop;
 import piece.King;
 import piece.Knight;
 import piece.Pawn;
+import piece.Piece;
 import piece.Queen;
 import piece.Rook;
 
@@ -19,6 +20,7 @@ public class Main implements MouseListener {
 	private static Pawn[] wpn1, bpn1;
 	private static Knight wknt1, wknt2, bknt1, bknt2;
 	private static Bishop wbsp1, wbsp2, bbsp1, bbsp2;
+	private int isCheckmate = -1;
 	
 	public Main(String[] args) {
 		//variable initialization
@@ -98,15 +100,69 @@ public class Main implements MouseListener {
 	public void move(int x0, int y0, int x1, int y1) {
 		Cell previous = pos[x0][y0];
 		Cell current = pos[x1][y1];
+		//if FROM cell has piece.
 		if(previous.getPiece() != null) {
+			
 			ArrayList<Cell> destinations = previous.getPiece().posMove(pos);
-			if(current.getPiece() == null ) {
+			
+			//check if TO cell is a valid move
+			//if TO cell is empty and no checkmate is happening
+			if(current.getPiece() == null && previous.getPiece().posMove(pos).contains(current)) {
+				if(isCheckmate == -1) {
+					//if FROM cell associates with a king, no suicide movement is allowed.(handled by posMove())
+					//if FROM cell associates with a king, castling should be considered
+					if(previous.getPiece() instanceof King){
+					
+					}
+					current.setPiece(previous.getPiece());
+					previous.removePiece();
+					current.getPiece().setX(x1);
+					current.getPiece().setY(y1);				
+					//needs to check if the movement will cause checkmate
+					
+					
+					
+					//TO DO
+					
+					
+					
+					
+				}
+				//if checkmate is happening, check if such movement will end the event
+				else {
+					
+				}
+			}
+			//if TO cell is not empty, posMove will check if it is an enemy piece or friendly. 
+			else if(current.getPiece() != null && previous.getPiece().posMove(pos).contains(current)) {
+				if(isCheckmate == -1) {
 				current.setPiece(previous.getPiece());
 				previous.removePiece();
+				current.getPiece().setX(x1);
+				current.getPiece().setY(y1);
+				}
+				//check if checkmate will happen
+				
+				//TO DO
+				
+				
+				//check if checkmate will end
+				else {
+					
+				}
+				
 			}
 
-		}
+		
+		
 	}
+	}
+	
+	public int isKingInDanger(Cell previous, Cell current) {
+		return isCheckmate;
+	}
+	
+	
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {

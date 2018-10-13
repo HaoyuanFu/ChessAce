@@ -9,8 +9,6 @@ import board.Cell;
  *
  */
 public class Pawn extends Piece{
-	private int x;
-	private int y;
 	private boolean promoPossible;
 
 	//Constructors
@@ -20,14 +18,6 @@ public class Pawn extends Piece{
 		setX(x);
 		setY(y);
 		this.promoPossible = false;
-	}
-
-	public void setX(int x){
-		this.x = x;
-	}
-
-	public void setY(int y){
-		this.y = y;
 	}
 
 	public void setPromo(){

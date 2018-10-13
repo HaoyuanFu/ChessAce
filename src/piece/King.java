@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import board.Cell;
 
 public class King extends Piece{
-	private int x;
-	private int y;
 	private boolean neverMoved;
 	private boolean notCheckmated;
 	
@@ -25,14 +23,6 @@ public class King extends Piece{
 		setColor(c);
 		this.neverMoved = true;
 		this.notCheckmated = true;
-	}
-	
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
 	}
 	
 	public boolean isMoved() {

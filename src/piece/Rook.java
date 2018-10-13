@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import board.Cell;
 
 public class Rook extends Piece {
-	private int x;
-	private int y;
 	private boolean neverMoved;
 	
 	public Rook(String p, int x, int y, int c) {
@@ -15,15 +13,7 @@ public class Rook extends Piece {
 		setY(y);
 		setColor(c);
 	}
-	
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-	}
-	
+
 	public void setMove() {
 		this.neverMoved = false;
 	}

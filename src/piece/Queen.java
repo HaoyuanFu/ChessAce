@@ -9,8 +9,6 @@ import board.Cell;
  *
  */
 public class Queen extends Piece{
-	private int x;
-	private int y;
 	//Constructors
 	
 	public Queen(String path, int color, int x, int y){
@@ -20,13 +18,7 @@ public class Queen extends Piece{
 		setColor(color);
 	}
 	
-	public void setX(int x){
-		this.x = x;
-	}
-
-	public void setY(int y){
-		this.y = y;
-	}
+	
 	
 	//Move function Overridden
 	@Override

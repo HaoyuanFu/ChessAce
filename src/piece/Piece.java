@@ -11,6 +11,16 @@ public abstract class Piece implements Cloneable{
 	private String path;
 	protected ArrayList<Cell> possiblemoves = new ArrayList<Cell>();  //Protected (access from child classes)
 	public abstract ArrayList<Cell> posMove(Cell[][] pos);  //Abstract Function. Must be overridden
+	protected int x;
+	protected int y;
+	
+	public void setX(int x){
+		this.x = x;
+	}
+
+	public void setY(int y){
+		this.y = y;
+	}
 	
 	//Path Setter
 	public void setPath(String path)
