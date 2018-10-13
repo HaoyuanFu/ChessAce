@@ -6,9 +6,8 @@ public class Bishop extends Piece{
 	private int x;
 	private int y;
 	
-	public Bishop(String i,String p,int c, int x, int y)
+	public Bishop(String p,int c, int x, int y)
 	{
-		setId(i);
 		setPath(p);
 		setColor(c);
 		setX(x);
@@ -17,9 +16,10 @@ public class Bishop extends Piece{
 
 		
 	
-	public Bishop(int x, int y) {
+	public Bishop(int x, int y, int c) {
 		setX(x);
 		setY(y);
+		setColor(c);
 	}
 	
 	public void setX(int x) {
@@ -109,7 +109,6 @@ public class Bishop extends Piece{
 			if(pos[tempx][tempy].getPiece()==null)
 				possiblemoves.add(pos[tempx][tempy]);
 			else if(pos[tempx][tempy].getPiece().getColor()==this.getColor())
-
 				break;
 			else
 			{

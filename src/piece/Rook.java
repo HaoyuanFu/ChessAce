@@ -9,9 +9,11 @@ public class Rook extends Piece {
 	private int y;
 	private boolean neverMoved;
 	
-	public Rook(int x, int y) {
+	public Rook(String p, int x, int y, int c) {
+		setPath(p);
 		setX(x);
 		setY(y);
+		setColor(c);
 	}
 	
 	public void setX(int x) {
@@ -50,7 +52,7 @@ public class Rook extends Piece {
 		}
 		
 		temp = this.x + 1;
-		while(temp <= 8) {
+		while(temp < 8) {
 			if(pos[temp][this.y]==null) {
 				possiblemoves.add(pos[temp][this.y]);
 			}else if(pos[temp][this.y].getPiece().getColor() != this.getColor()){
@@ -74,7 +76,7 @@ public class Rook extends Piece {
 		}
 		
 		temp = this.y - 1;
-		while(temp <= 8) {
+		while(temp < 8) {
 			if(pos[this.x][temp]==null || pos[this.x][temp].getPiece().getColor() != this.getColor()) {
 				possiblemoves.add(pos[this.x][temp]);
 			}

@@ -6,17 +6,17 @@ import board.Cell;
 public class Knight extends Piece{
 	private int x;
 	private int y;
-	public Knight(String i,String p,int c, int x, int y) {
-		setId(i);
+	public Knight(String p, int c, int x, int y) {
 		setPath(p);
 		setColor(c);
 		setX(x);
 		setY(y);
 	}
 	
-	public Knight(int x, int y) {
+	public Knight(int x, int y, int c) {
 		setX(x);
 		setY(y);
+		setColor(c);
 	}
 	
 	public void setX(int x) {

@@ -4,13 +4,17 @@ import piece.King;
 import piece.Piece;
 
 public class Cell {
-	int x,y;  
+	int x,y;
 	private Piece piece;
 	
 	public Cell(int x,int y, Piece p)
 	{		
 		this.x=x;
 		this.y=y;
+		if(p != null)
+			setPiece(p);
+		else
+			setPiece(null);
 	}
 	
 	public void setPiece(Piece p)    //Function to inflate a cell with a piece

@@ -10,9 +10,19 @@ public class King extends Piece{
 	private boolean neverMoved;
 	private boolean notCheckmated;
 	
-	public King(int x, int y) {
+	public King(String p, int x, int y, int c) {
+		setPath(p);
 		setX(x);
 		setY(y);
+		setColor(c);
+		this.neverMoved = true;
+		this.notCheckmated = true;
+	}
+	
+	public King(int x, int y, int c) {
+		setX(x);
+		setY(y);
+		setColor(c);
 		this.neverMoved = true;
 		this.notCheckmated = true;
 	}
@@ -51,9 +61,9 @@ public class King extends Piece{
 		possiblemoves.clear();
 		for(int i = -1; i <= 1; i++) 
 			for(int j = -1; j <= 1; j++) 
-				if((this.x + i) >= 0 && (this.x + i) <= 8) 
-					if((this.y + j) >= 0 && (this.y + j) <= 8) 
-						if(pos[x+i][y+j] == null || pos[x+i][y+j].getPiece().getColor() != this.getColor())
+				if((this.x + i) >= 0 && (this.x + i) < 8)  // x is in bound
+					if((this.y + j) >= 0 && (this.y + j) < 8) // y is in bound
+						if(pos[x+i][y+j] == null || pos[x+i][y+j].getPiece().getColor() != this.getColor()) // cell has either no piece or enemy piece
 							possiblemoves.add(pos[x+i][y+i]);
 		
 		//Castling: 
