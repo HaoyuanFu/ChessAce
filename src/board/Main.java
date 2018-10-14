@@ -20,10 +20,13 @@ public class Main implements MouseListener {
 	private static Pawn[] wpn1, bpn1;
 	private static Knight wknt1, wknt2, bknt1, bknt2;
 	private static Bishop wbsp1, wbsp2, bbsp1, bbsp2;
-	private int isCheckmate = -1;
+	private boolean isCheckmate;
+	private Cell checkCell;
+	
 	
 	public Main(String[] args) {
 		//variable initialization
+		isCheckmate = false;
 		Cell cell;
 		wrk1 = new Rook("White_Rook.png", 0, 0, 0);
 		wrk2 = new Rook("White_Rook.png", 0, 7, 0);
@@ -97,12 +100,18 @@ public class Main implements MouseListener {
 			
 	}
 	
-	public void move(int x0, int y0, int x1, int y1) {
+	public void operation(int x0, int y0, int x1, int y1) {
 		Cell previous = pos[x0][y0];
 		Cell current = pos[x1][y1];
-		//if FROM cell has piece.
-		if(previous.getPiece() != null) {
+		
+		if(isCheckmate) {
 			
+		}else{
+			
+		}
+			
+		//if FROM cell has piece.
+		/*if(previous.getPiece() != null) {
 			ArrayList<Cell> destinations = previous.getPiece().posMove(pos);
 			
 			//check if TO cell is a valid move
@@ -112,7 +121,7 @@ public class Main implements MouseListener {
 					//if FROM cell associates with a king, no suicide movement is allowed.(handled by posMove())
 					//if FROM cell associates with a king, castling should be considered
 					if(previous.getPiece() instanceof King){
-					
+						
 					}
 					current.setPiece(previous.getPiece());
 					previous.removePiece();
@@ -155,10 +164,10 @@ public class Main implements MouseListener {
 
 		
 		
-	}
+		}*/
 	}
 	
-	public int isKingInDanger(Cell previous, Cell current) {
+	public boolean isKingInDanger(Cell previous, Cell current) {
 		return isCheckmate;
 	}
 	
