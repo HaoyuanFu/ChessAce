@@ -45,6 +45,10 @@ public class King extends Piece{
 		this.notCheckmated = true;
 	}
 	
+	public static boolean isKingInDanger(King c, Cell[][] pos) {
+		return true;
+	}
+	
 	//Basic Movement, king can be move or attack cells one unit beside him in any directions.
 	@Override
 	public ArrayList<Cell> posMove(Cell[][] pos) {

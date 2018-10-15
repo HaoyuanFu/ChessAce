@@ -32,4 +32,12 @@ public class Cell {
 	{
 		return this.piece;
 	}
+	
+	public int getX() {
+		return this.x;
+	}
+	
+	public int getY() {
+		return this.y;
+	}
 }

@@ -21,36 +21,40 @@ public class Main implements MouseListener {
 	private static Knight wknt1, wknt2, bknt1, bknt2;
 	private static Bishop wbsp1, wbsp2, bbsp1, bbsp2;
 	private boolean isCheckmate;
-	private Cell checkCell;
-	
+	private Cell fromCell;
+	private Cell toCell; 
+	private Cell previous;
+	private Cell current;
+	private int player; //1 = white, -1 = black
 	
 	public Main(String[] args) {
 		//variable initialization
 		isCheckmate = false;
+		player = 1;
 		Cell cell;
-		wrk1 = new Rook("White_Rook.png", 0, 0, 0);
-		wrk2 = new Rook("White_Rook.png", 0, 7, 0);
-		brk1 = new Rook("Black_Rook.png", 7, 0, 1);
-		brk2 = new Rook("Black_Rook.png", 7, 7, 1);
-		wknt1=new Knight("White_Knight.png", 0, 1, 0);
-		wknt2=new Knight("White_Knight.png", 0, 6, 0);
-		bknt1=new Knight("Black_Knight.png", 7, 1, 1);
-		bknt2=new Knight("Black_Knight.png", 7, 6, 1);
-		wbsp1=new Bishop("White_Bishop.png", 0, 2, 0);
-		wbsp2=new Bishop("White_Bishop.png", 0, 5, 0);
-		bbsp1=new Bishop("Black_Bishop.png", 7, 2, 1);
-		bbsp2=new Bishop("Black_Bishop.png", 7, 5, 1);
-		wqn1=new Queen("White_Queen.png", 0, 3, 0);
-		bqn1=new Queen("Black_Queen.png", 7, 3, 1);
-		wkg1=new King("White_King.png", 0, 4, 0);
-		bkg1=new King("Black_King.png", 7, 4, 1);
+		wrk1 = new Rook("White_Rook.png", 0, 0, 1);
+		wrk2 = new Rook("White_Rook.png", 0, 7, 1);
+		brk1 = new Rook("Black_Rook.png", 7, 0, -1);
+		brk2 = new Rook("Black_Rook.png", 7, 7, -1);
+		wknt1=new Knight("White_Knight.png", 0, 1, 1);
+		wknt2=new Knight("White_Knight.png", 0, 6, 1);
+		bknt1=new Knight("Black_Knight.png", 7, 1, -1);
+		bknt2=new Knight("Black_Knight.png", 7, 6, -1);
+		wbsp1=new Bishop("White_Bishop.png", 0, 2, 1);
+		wbsp2=new Bishop("White_Bishop.png", 0, 5, 1);
+		bbsp1=new Bishop("Black_Bishop.png", 7, 2, -1);
+		bbsp2=new Bishop("Black_Bishop.png", 7, 5, -1);
+		wqn1=new Queen("White_Queen.png", 0, 3, 1);
+		bqn1=new Queen("Black_Queen.png", 7, 3, -1);
+		wkg1=new King("White_King.png", 0, 4, 1);
+		bkg1=new King("Black_King.png", 7, 4, -1);
 		wpn1=new Pawn[8];
 		bpn1=new Pawn[8];
 		
 		Cell[][] pos = new Cell[8][8];
 		for(int i = 0; i < 8; i++) {
-			wpn1[i] = new Pawn("White_Pawn.png", 1, i, 0); 
-			bpn1[i] = new Pawn("Black_Pawn.png", 6, i, 1);
+			wpn1[i] = new Pawn("White_Pawn.png", 1, i, 1); 
+			bpn1[i] = new Pawn("Black_Pawn.png", 6, i, -1);
 		}
 		
 		for(int i=0;i<8;i++)
@@ -100,14 +104,87 @@ public class Main implements MouseListener {
 			
 	}
 	
-	public void operation(int x0, int y0, int x1, int y1) {
-		Cell previous = pos[x0][y0];
-		Cell current = pos[x1][y1];
+	
+	public ArrayList<Cell> filterDestination(Piece p, ArrayList<Cell> a){
+		ArrayList<Cell> newList = null;
+		if(p instanceof King) {
+			//return the list of posMove that will not cause a checkmate, using isKingInDanger
+		}else {
+			//return the list of posMove that will not cause the friendly king checkmated, using isKing InDanger and retrieveKing for king location.
+		}
+		return newList;		
+	}
+	
+	public void move(Cell a, Cell b) {
 		
-		if(isCheckmate) {
-			
+	}
+	
+	public void castling(Cell a, Cell c) {
+		
+	}
+	
+	public King retrieveKing(int color) {
+		return null;
+	}
+	
+	public void transform(Cell c) {
+		
+	}
+	
+	public boolean checkmate(int color/*, Cell att*/) {
+		return true;
+	}
+	
+	public void gameOver() {
+		
+	}
+	
+	public void operation(int x, int y) {
+		current = pos[x][y];
+		ArrayList<Cell> filteredList = new ArrayList<Cell>();
+		
+		if(previous.getPiece() == null) {
+			if(current.getPiece().getColor() == player) {
+				previous = pos[x][y];
+				current = null;
+				return;
+			}
+			else {
+				return;
+			}
 		}else{
-			
+			if(previous.getX() == current.getX() && previous.getY() == current.getY()) {
+				return;
+				// To do Deselect;
+			}else if(current.getPiece() == null || (current.getPiece() != null && previous.getPiece().getColor() != current.getPiece().getColor())) {
+				filteredList = filterDestination(previous.getPiece(), previous.getPiece().posMove(pos));
+				((King) previous.getPiece()).removeCheckmate();
+				if(filteredList.contains(current)) {
+					if(previous.getPiece() instanceof King) {
+						if(true /*condition to determine castling*/)
+								castling(previous, current);
+						else
+							move(previous, current);
+					}else {
+						move(previous, current);
+					}
+					if((previous.getPiece() instanceof Pawn)) {
+						transform(previous);
+					}
+					if(isCheckmate) {
+						isCheckmate = false;
+					}
+					if(King.isKingInDanger(retrieveKing(player*-1), pos)) {
+						isCheckmate= true;
+						if(checkmate(player * -1))
+							gameOver();
+					}
+				}
+				player = player * -1;
+			}else if(current.getPiece() != null && previous.getPiece().getColor() == current.getPiece().getColor()) {
+				//Some operation that deselect the previous cell and select current cell instead.
+				//Also, display the feasible moveTo Cells.
+			}
 		}
 			
 		//if FROM cell has piece.
