@@ -4,21 +4,13 @@ import board.Cell;
 
 
 public class Knight extends Piece{
-	private int x;
-	private int y;
-	public Knight(String p, int c, int x, int y) {
+	public Knight(String Id, String p, int x, int y,  int c) {
+		setId(Id);
 		setPath(p);
 		setColor(c);
 		setX(x);
 		setY(y);
 	}
-	
-	public Knight(int x, int y, int c) {
-		setX(x);
-		setY(y);
-		setColor(c);
-	}
-
 
     public ArrayList<Cell> posMove(Cell pos[][]) {       
 		possiblemoves.clear();
@@ -29,13 +21,14 @@ public class Knight extends Piece{
 		int posy = 0;
 		
 		for (int i = 0; i < 8; i++) {
+
 			posx = this.x + X[i]; 
 			posy = this.y + Y[i];
-		}
-		
-		if ((8 > posx && posx >= 0) && (8 > posy && posy >= 0)){
-			if (pos[posx][posy].getPiece() == null || pos[posx][posy].getPiece().getColor() != this.getColor())
-				possiblemoves.add(pos[posx][posy]);
+			if ((8 > posx && posx >= 0) && (8 > posy && posy >= 0)){
+				
+				if (pos[posx][posy].getPiece() == null || pos[posx][posy].getPiece().getColor() != this.getColor())
+					possiblemoves.add(pos[posx][posy]);
+			}
 		}
 		return possiblemoves;
     }

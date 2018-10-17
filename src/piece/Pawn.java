@@ -12,7 +12,8 @@ public class Pawn extends Piece{
 	private boolean promoPossible;
 
 	//Constructors
-	public Pawn( String path, int x, int y, int color) {
+	public Pawn(String Id, String path, int x, int y, int color) {
+		setId(Id);
 		setPath(path);
 		setColor(color);
 		setX(x);
@@ -37,8 +38,9 @@ public class Pawn extends Piece{
 		//Pawn can not move backward or forward to attact a piece
 
 		possiblemoves.clear();
-		if(getColor()==0){
+		if(this.getColor()==1){
 			if(x==0){
+				setPromo();
 				return possiblemoves;
 			}
 			if(pos[x-1][y].getPiece()==null){
@@ -47,13 +49,15 @@ public class Pawn extends Piece{
 					if(pos[4][y].getPiece()==null) possiblemoves.add(pos[4][y]);
 				}
 			}
-		if((y>0)&&(pos[x-1][y-1].getPiece()!=null)&&(pos[x-1][y-1].getPiece().getColor()!=this.getColor())) 
-			possiblemoves.add(pos[x-1][y-1]);
-		if((y<7)&&(pos[x-1][y+1].getPiece()!=null)&&(pos[x-1][y+1].getPiece().getColor()!=this.getColor()))
-			possiblemoves.add(pos[x-1][y+1]);
+			if((y>0)&&(pos[x-1][y-1].getPiece()!=null)&&(pos[x-1][y-1].getPiece().getColor()!=this.getColor()))
+				possiblemoves.add(pos[x-1][y-1]);
+			if((y<7)&&(pos[x-1][y+1].getPiece()!=null)&&(pos[x-1][y+1].getPiece().getColor()!=this.getColor())) 
+				possiblemoves.add(pos[x-1][y+1]);
+			
 		}
 		else{
 			if(x==7){
+				setPromo();
 				return possiblemoves;
 			}
 			if(pos[x+1][y].getPiece()==null){
@@ -64,7 +68,7 @@ public class Pawn extends Piece{
 			}
 			if((y>0)&&(pos[x+1][y-1].getPiece()!=null)&&(pos[x+1][y-1].getPiece().getColor()!=this.getColor()))
 				possiblemoves.add(pos[x+1][y-1]);
-			if((y>0)&&(pos[x+1][y+1].getPiece()!=null)&&(pos[x+1][y+1].getPiece().getColor()!=this.getColor()))
+			if((y<7)&&(pos[x+1][y+1].getPiece()!=null)&&(pos[x+1][y+1].getPiece().getColor()!=this.getColor()))
 				possiblemoves.add(pos[x+1][y+1]);
 		}
 		return possiblemoves;

@@ -11,7 +11,8 @@ import board.Cell;
 public class Queen extends Piece{
 	//Constructors
 	
-	public Queen(String path, int color, int x, int y){
+	public Queen(String id, String path, int x, int y, int color){
+		setId(id);
 		setX(x);
 		setY(y);
 		setPath(path);
@@ -51,33 +52,36 @@ public class Queen extends Piece{
 		}
 
 		//Check for diagonal posmove
+		int posy=y;
 		for(int posx=x+1; posx<8; posx++){
-			for(int posy=y-1; posy>=0; posy--){
-				if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][y]);
-				else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
-				else{possiblemoves.add(pos[posx][posy]); break;}
-			}
+			if(posy<7) posy++;
+			if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][posy]);
+			else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
+			else{possiblemoves.add(pos[posx][posy]); break;}
 		}
+		
+		posy=y;
 		for(int posx=x-1; posx>=0; posx--){
-			for(int posy=y+1; posy<8; posy++){
-				if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][y]);
-				else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
-				else{possiblemoves.add(pos[posx][posy]); break;}
-			}
+			if(posy<7) posy++;
+			if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][posy]);
+			else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
+			else{possiblemoves.add(pos[posx][posy]); break;}
 		}
-		for(int posx=x+1; posx<8; posx++){
-			for(int posy=y+1; posy<8; posy++){
-				if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][y]);
-				else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
-				else{possiblemoves.add(pos[posx][posy]); break;}
-			}
+		
+		posy=y;
+		for(int posx=x+1; posx<8; posx++){ 
+			if(posy>0) posy--;				
+			if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][posy]);
+			else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
+			else{possiblemoves.add(pos[posx][posy]); break;}
 		}
+		
+		posy=y;
 		for(int posx=x-1; posx>=0; posx--){
-			for(int posy=y-1; posy>=0; posy--){
-				if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][y]);
-				else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
-				else{possiblemoves.add(pos[posx][posy]); break;}
-			}
+			if(posy>0) posy--;
+			if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][posy]);
+			else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
+			else{possiblemoves.add(pos[posx][posy]); break;}
 		}
 		return possiblemoves;
 
