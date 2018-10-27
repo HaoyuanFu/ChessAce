@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="ChessAce_Team18" company="mcmaster" webLink="http://" view-date="2018-09-09" view-index="0" gantt-divider-location="244" resource-divider-location="300" version="2.8.9" locale="en_CA">
+    <description/>
+    <view zooming-state="default:6" id="gantt-chart">
+        <field id="tpd3" name="Name" width="132" order="0"/>
+        <field id="tpd4" name="Begin date" width="53" order="1"/>
+        <field id="tpd5" name="End date" width="53" order="2"/>
+        <option id="color.recent"><![CDATA[#00ff00 #3333ff #ff0033 #33ff33 #0024fd]]></option>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Name" width="209" order="0"/>
+        <field id="1" name="Default role" width="85" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="true"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="73" name="ProbStateProbState" color="#0024fd" meeting="false" start="2018-09-17" duration="5" complete="0" thirdDate="2018-10-01" thirdDate-constraint="0" expand="true">
+            <depend id="83" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="83" name="Develop_Plan" color="#3333ff" meeting="false" start="2018-09-22" duration="5" complete="0" thirdDate="2018-09-17" thirdDate-constraint="0" expand="true">
+            <depend id="0" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="0" name="SRS" color="#3333ff" meeting="false" start="2018-09-27" duration="8" complete="0" thirdDate="2018-09-11" thirdDate-constraint="0" expand="true">
+            <depend id="33" type="2" difference="0" hardness="Strong"/>
+            <depend id="122" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="33" name="POC" color="#3333ff" meeting="false" start="2018-10-07" duration="10" complete="0" thirdDate="2018-09-24" thirdDate-constraint="0" expand="true">
+            <depend id="2" type="2" difference="0" hardness="Strong"/>
+            <task id="100" name="Prototype" color="#3333ff" meeting="false" start="2018-10-07" duration="10" complete="0" thirdDate="2018-09-21" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="2" name="Testing plan" color="#3333ff" meeting="false" start="2018-10-17" duration="10" complete="0" thirdDate="2018-09-11" thirdDate-constraint="0" expand="true"/>
+        <task id="169" name="Test" color="#ff0033" meeting="false" start="2018-10-29" duration="20" complete="0" thirdDate="2018-10-17" thirdDate-constraint="0" expand="true">
+            <task id="174" name="unit test" color="#ff0033" meeting="false" start="2018-10-29" duration="10" complete="0" thirdDate="2018-09-25" thirdDate-constraint="0" expand="true">
+                <depend id="172" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="172" name="integration test" color="#3333ff" meeting="false" start="2018-11-08" duration="10" complete="0" thirdDate="2018-09-24" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="63" name="Design&amp;Document" color="#00ff00" meeting="false" start="2018-10-29" duration="14" complete="0" thirdDate="2018-09-24" thirdDate-constraint="0" expand="true">
+            <task id="80" name="Test_report" color="#00ff00" meeting="false" start="2018-10-29" duration="14" complete="0" thirdDate="2018-09-20" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="67" name="SoftwareDev(TBD)" color="#00ff00" meeting="false" start="2018-10-05" duration="50" complete="0" thirdDate="2018-09-20" thirdDate-constraint="0" expand="true">
+            <task id="122" name="rev.0" color="#ff0033" meeting="false" start="2018-10-05" duration="35" complete="0" thirdDate="2018-09-26" thirdDate-constraint="0" expand="true">
+                <depend id="125" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="125" name="final" color="#00ff00" meeting="false" start="2018-11-09" duration="15" complete="0" thirdDate="2018-09-26" thirdDate-constraint="0" expand="true"/>
+        </task>
+    </tasks>
+    <resources>
+        <resource id="0" name="Harry" function="SoftwareDevelopment:2" contacts="" phone=""/>
+        <resource id="1" name="Jerry" function="SoftwareDevelopment:2" contacts="" phone=""/>
+        <resource id="2" name="Mengshan" function="SoftwareDevelopment:2" contacts="" phone=""/>
+    </resources>
+    <allocations>
+        <allocation task-id="73" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="83" resource-id="0" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="0" resource-id="0" function="SoftwareDevelopment:3" responsible="true" load="100.0"/>
+        <allocation task-id="100" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="40.0"/>
+        <allocation task-id="33" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="35.0"/>
+        <allocation task-id="2" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="35.0"/>
+        <allocation task-id="174" resource-id="0" function="SoftwareDevelopment:2" responsible="true" load="33.3"/>
+        <allocation task-id="73" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="83" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="0" resource-id="1" function="SoftwareDevelopment:3" responsible="true" load="100.0"/>
+        <allocation task-id="100" resource-id="1" function="Default:0" responsible="false" load="40.0"/>
+        <allocation task-id="33" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="35.0"/>
+        <allocation task-id="2" resource-id="1" function="SoftwareDevelopment:2" responsible="false" load="35.0"/>
+        <allocation task-id="174" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="33.3"/>
+        <allocation task-id="80" resource-id="1" function="SoftwareDevelopment:2" responsible="true" load="33.0"/>
+        <allocation task-id="73" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="83" resource-id="2" function="Default:0" responsible="true" load="100.0"/>
+        <allocation task-id="0" resource-id="2" function="SoftwareDevelopment:3" responsible="true" load="100.0"/>
+        <allocation task-id="100" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="33" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="30.0"/>
+        <allocation task-id="2" resource-id="2" function="SoftwareDevelopment:2" responsible="false" load="30.0"/>
+        <allocation task-id="174" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="33.3"/>
+        <allocation task-id="80" resource-id="2" function="SoftwareDevelopment:2" responsible="true" load="33.0"/>
+    </allocations>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>
