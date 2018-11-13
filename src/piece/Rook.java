@@ -1,11 +1,27 @@
+/**
+ *  \file Rook.java
+ *  \brief Rook ADT
+ */
 package piece;
 
 import java.util.ArrayList;
 
 import board.Cell;
 
+/**
+ *  \brief Rook Class, Piece that can only move in a straight line.
+ */
 public class Rook extends Piece {
 	
+	/**
+	 *  \brief Construct a new Rook instance using id, xy coordinates and color indicator
+	 *  \details extended from piece class
+	 *  \param Id string variable representing Id
+	 *  \param p picture path
+	 *  \param x x-coordinate
+	 *  \param y y-coordinate
+	 *  \param c color indicator
+	 */
 	public Rook(String Id, String p, int x, int y, int c) {
 		setId(Id);
 		setPath(p);
@@ -14,8 +30,13 @@ public class Rook extends Piece {
 		setColor(c);
 		this.neverMoved = true;
 	}
-	
-	//Basic Movement, king can be move or attack cells one unit beside him in any directions.
+
+	/**
+	 *  \brief Basic Movement Check, Rook can be move or attack cells in a vertical or horizontal line.
+	 *  \details if the path is blocked by a friendly piece, break and exclude the blocked cell. If the path is blocked by a hostile piece, break and
+	 *  include the blocked cell. Else, keep iterating and include :P. Check castling possibility as well.
+	 *  \param pos chessboard constructed by a 2D Cell Array.
+	 */
 	@Override
 	public ArrayList<Cell> posMove(Cell[][] pos) {
 		int temp;
@@ -79,9 +100,9 @@ public class Rook extends Piece {
 		//Rule 3: Nothing shall be in between the Corresponding King and Rook
 		if(neverMoved) {
 			if(this.x == 0)
-				possiblemoves.add(pos[2][this.y]);
+				possiblemoves.add(pos[this.x][3]);
 			if(this.x == 8)
-				possiblemoves.add(pos[6][this.y]);
+				possiblemoves.add(pos[this.x][5]);
 		}
 		
 		return possiblemoves;

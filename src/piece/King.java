@@ -42,7 +42,6 @@ public class King extends Piece{
 
   		if(x+1>=0&&x+1<8&&y+1>=0&&y+1<8&&pos[x+1][y+1].getPiece() instanceof Pawn&&pos[x+1][y+1].getPiece().getColor()!= this.getColor())
     		return true;
-
    		if(x+1>=0&&x+1<8&&y-1>=0&&y-1<8&&pos[x+1][y-1].getPiece() instanceof Pawn&&pos[x+1][y-1].getPiece().getColor()!= this.getColor())
     		return true;
    		if(x-1>=0&&x-1<8&&y-1>=0&&y-1<8&&pos[x-1][y-1].getPiece() instanceof Pawn&&pos[x-1][y-1].getPiece().getColor()!= this.getColor())
@@ -95,7 +94,6 @@ public class King extends Piece{
     			break;
     		else{
     			if((pos[x][i].getPiece() instanceof Rook)||(pos[x][i].getPiece() instanceof Queen)) {
-    	    		System.out.println(pos[x][i].getPiece().getColor());
     				return true;
     			}
     			else
@@ -107,6 +105,9 @@ public class King extends Piece{
 		for(int posx=x+1; posx<8; posx++){
 			if(posy<7) { 
 				posy++;
+			}
+			else {
+				break;
 			}
     		if(pos[posx][posy].getPiece()==null) 
     			continue;
@@ -122,6 +123,8 @@ public class King extends Piece{
     	for(int posx=x-1; posx>=0; posx--){
     		if(posy<7) 
     			posy++;
+    		else
+    			break;
     		if(pos[posx][posy].getPiece()==null)
     			continue;
     		else if(pos[posx][posy].getPiece().getColor()==this.getColor())
@@ -138,6 +141,8 @@ public class King extends Piece{
     	for(int posx=x+1; posx<8; posx++){
     		if(posy>0) 
     			posy--;
+    		else
+    			break;
 			if(pos[posx][posy].getPiece()==null)
     			continue;
     		else if(pos[posx][posy].getPiece().getColor()==this.getColor())
@@ -154,6 +159,8 @@ public class King extends Piece{
     	for(int posx=x-1; posx>=0; posx--){
     		if(posy>0) 
 				posy--;
+    		else
+    			break;
     		if(pos[posx][posy].getPiece()==null)
     			continue;
     		else if(pos[posx][posy].getPiece().getColor()==this.getColor())
@@ -207,13 +214,24 @@ public class King extends Piece{
 	@Override
 	public ArrayList<Cell> posMove(Cell[][] pos) {
 		possiblemoves.clear();
-		for(int i = -1; i <= 1 && (this.x + i) >= 0 && (this.x + i) < 8; i++) {
-			for(int j = -1; j <= 1 && (this.y + j) >= 0 && (this.y + j) < 8; j++) {
-				if(pos[x+i][y+j].getPiece() == null || pos[x+i][y+j].getPiece().getColor() != this.getColor()) { // cell has either no piece or enemy piece
-					possiblemoves.add(pos[x+i][y+j]);
-				}
-			}
-		}
+		if(x < 7 && y < 7 && (pos[x+1][y+1].getPiece() == null || pos[x+1][y+1].getPiece().getColor() != this.getColor())) 
+			possiblemoves.add(pos[x+1][y+1]);
+		if(y < 7 && (pos[x][y+1].getPiece() == null || pos[x][y+1].getPiece().getColor() != this.getColor())) 
+			possiblemoves.add(pos[x][y+1]);
+		if(x > 0 && y < 7 && (pos[x-1][y+1].getPiece() == null || pos[x-1][y+1].getPiece().getColor() != this.getColor())) 
+			possiblemoves.add(pos[x-1][y+1]);
+		if(x < 7 && (pos[x+1][y].getPiece() == null || pos[x+1][y].getPiece().getColor() != this.getColor())) 
+			possiblemoves.add(pos[x+1][y]);
+		if(x > 0 && (pos[x-1][y].getPiece() == null || pos[x-1][y].getPiece().getColor() != this.getColor()))  
+			possiblemoves.add(pos[x-1][y]);
+		if(x < 7 && y > 0 && (pos[x+1][y-1].getPiece() == null || pos[x+1][y-1].getPiece().getColor() != this.getColor()))  
+			possiblemoves.add(pos[x+1][y-1]);
+		if(y > 0 && (pos[x][y-1].getPiece() == null || pos[x][y-1].getPiece().getColor() != this.getColor()))
+			possiblemoves.add(pos[x][y-1]);
+		if(x > 0 && y > 0 && (pos[x-1][y-1].getPiece() == null || pos[x-1][y-1].getPiece().getColor() != this.getColor())) 
+			possiblemoves.add(pos[x-1][y-1]);
+		
+		
 		//Castling:
 		//Rule 1: Kind & Associating Rook shall not move before
 		//Rule 2: Castle out of check is not allowed
@@ -232,7 +250,7 @@ public class King extends Piece{
 			if(temp0)
 				possiblemoves.add(pos[this.x][this.y + 2]);
 			if(temp1)
-				possiblemoves.add(pos[this.x][this.y - 2]);
+				possiblemoves.add(pos[this.x ][this.y - 2]);
 		}
 
 		return possiblemoves;

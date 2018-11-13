@@ -28,11 +28,16 @@ public class Queen extends Piece{
 		possiblemoves.clear();
 
 		//Check for horizontal posmoves
-		for(int posy=y-1; posy>=0; posy--){
-			if(pos[x][posy].getPiece()==null) possiblemoves.add(pos[x][posy]);
-			else if(pos[x][posy].getPiece().getColor()==this.getColor()) break;
-			else{possiblemoves.add(pos[x][posy]); break;}
+		for(int posy= y - 1; posy >= 0; posy--){
+			System.out.println(posy);
+			if(pos[x][posy].getPiece()==null) 
+				possiblemoves.add(pos[x][posy]);
+			else if(pos[x][posy].getPiece().getColor()==this.getColor()) 
+				break;
+			else{possiblemoves.add(pos[x][posy]); 
+			break;}
 		}
+		
 		for(int posy=y+1; posy<8; posy++){
 			if(pos[x][posy].getPiece()==null) possiblemoves.add(pos[x][posy]);
 			else if(pos[x][posy].getPiece().getColor()==this.getColor()) break;
@@ -54,7 +59,10 @@ public class Queen extends Piece{
 		//Check for diagonal posmove
 		int posy=y;
 		for(int posx=x+1; posx<8; posx++){
-			if(posy<7) posy++;
+			if(posy<7) 
+				posy++;
+			else
+				break;
 			if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][posy]);
 			else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
 			else{possiblemoves.add(pos[posx][posy]); break;}
@@ -62,7 +70,10 @@ public class Queen extends Piece{
 		
 		posy=y;
 		for(int posx=x-1; posx>=0; posx--){
-			if(posy<7) posy++;
+			if(posy<7) 
+				posy++;
+			else
+				break;
 			if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][posy]);
 			else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
 			else{possiblemoves.add(pos[posx][posy]); break;}
@@ -70,7 +81,10 @@ public class Queen extends Piece{
 		
 		posy=y;
 		for(int posx=x+1; posx<8; posx++){ 
-			if(posy>0) posy--;				
+			if(posy>0) 
+				posy--;
+			else
+				break;
 			if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][posy]);
 			else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
 			else{possiblemoves.add(pos[posx][posy]); break;}
@@ -78,7 +92,10 @@ public class Queen extends Piece{
 		
 		posy=y;
 		for(int posx=x-1; posx>=0; posx--){
-			if(posy>0) posy--;
+			if(posy>0) 
+				posy--;
+			else
+				break;
 			if(pos[posx][posy].getPiece()==null) possiblemoves.add(pos[posx][posy]);
 			else if(pos[posx][posy].getPiece().getColor()==this.getColor()) break;
 			else{possiblemoves.add(pos[posx][posy]); break;}

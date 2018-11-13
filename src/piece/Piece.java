@@ -26,11 +26,13 @@ public abstract class Piece implements Cloneable{
 	
 	
 	public void setX(int x){
-		this.x = x;
+		if(0 <= x && x <= 7)
+			this.x = x;
 	}
 
 	public void setY(int y){
-		this.y = y;
+		if(0 <= y && y <= 7)
+			this.y = y;
 	}
 	
 	public int getX() {

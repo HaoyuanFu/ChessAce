@@ -43,7 +43,7 @@ public class Pawn extends Piece{
 				setPromo();
 				return possiblemoves;
 			}
-			if(pos[x-1][y].getPiece()==null){
+			if(pos[x-1][y].getPiece()==null ){
 				possiblemoves.add(pos[x-1][y]);
 				if(x==6){
 					if(pos[4][y].getPiece()==null) possiblemoves.add(pos[4][y]);
