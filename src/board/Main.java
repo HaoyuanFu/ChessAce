@@ -1,6 +1,7 @@
 package board;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -56,9 +57,15 @@ public class Main extends JFrame implements MouseListener {
 	private final JPanel gui = new JPanel(new BorderLayout(3, 3));
 	private JPanel[][] chessBoardSquares = new JPanel[8][8];
 	private JPanel chessBoard;
-	private final JLabel message = new JLabel("ChessAce is ready to play!");
+	private final JLabel message = new JLabel("ChessAce is ready to play! White turn!");
 	private ArrayList<Cell> filteredList = new ArrayList<Cell>();
 	private final String COLS = "ABCDEFGH";
+	private ArrayList<Cell> attacker;
+	private Cell temp;
+	private ArrayList<Piece> whiteP;
+	private ArrayList<Piece> blackP;
+	
+	private final JPanel welcomePage = new JPanel(new BorderLayout(3, 3));
 
 	public Main() {
 
@@ -73,7 +80,6 @@ public class Main extends JFrame implements MouseListener {
 		tools.add(new JButton("Resign")); // TODO - add functionality!
 		tools.addSeparator();
 		tools.add(message);
-
 		chessBoard = new JPanel(new GridLayout(8,8));
 		chessBoard.setMinimumSize(new Dimension(800, 700));
 		// variable initialization
@@ -105,6 +111,8 @@ public class Main extends JFrame implements MouseListener {
 		bpn1 = new Pawn[8];
 
 		pos = new Cell[8][8];
+		
+		attacker = new ArrayList<Cell>();
 
 		for (int i = 0; i < 8; i++) {
 			wpn1[i] = new Pawn("WPN" + i, "White_Pawn.png", 6, i, 1);
@@ -157,12 +165,30 @@ public class Main extends JFrame implements MouseListener {
 			}
 		
 		gui.add(chessBoard);
-		
 		this.setTitle("ChessACE");
-        this.getContentPane().add(this.getGui());
+		this.setLayout(new CardLayout());
+		this.getContentPane().add(this.getWelcome());
+        this.add(gui, BorderLayout.CENTER);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLocationByPlatform(true);
+        this.add(welcomePage, BorderLayout.CENTER);
+        
+        
+		gui.setVisible(false);
+		
+        welcomePage.setMinimumSize(new Dimension(800, 700));
+		welcomePage.setVisible(true);
+		
+		JButton start = new JButton("Start Game!");
+		start.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				welcomePage.setVisible(false);
+				gui.setVisible(true);
+			}
+		});
+		welcomePage.add(start, BorderLayout.SOUTH);
 
+        
         // ensures the frame is the minimum size it needs to be
         // in order display the components within it
         this.pack();
@@ -172,6 +198,17 @@ public class Main extends JFrame implements MouseListener {
 
 	}
 
+	public JPanel getGui() {
+		return gui;
+	}
+	
+	public JPanel getWelcome() {
+		return welcomePage;
+	}
+
+	public void Initial() {
+		
+	}
 	public void move(Cell a, Cell b) {
 		b.removePiece();
 		b.setPiece(a.getPiece());
@@ -226,12 +263,57 @@ public class Main extends JFrame implements MouseListener {
 
 	}
 
-	public boolean checkmate(int color/* , Cell att */) {
-		return true;
+	public boolean checkmate(int color, ArrayList<Cell> attack) {
+		int result = 0;
+		int stats = 0;
+		Cell checkCell;
+		Piece p;
+		
+		ArrayList<Cell> checkList = filterDestination(retrieveKing(color), retrieveKing(color).posMove(pos));
+		if (checkList.isEmpty())
+			result++;
+		Iterator<Cell> a = attack.iterator();
+		while (a.hasNext()) {
+			checkCell = a.next();
+			if(checkCell.getPiece() != null) {
+				p = checkCell.getPiece();
+				checkCell.removePiece();
+				if (color == 1)
+					checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
+				else
+					checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
+				if (checkCell.getPiece().isKingInDanger(pos)) {
+					checkCell.removePiece();
+					stats++;
+					break;
+				}
+				checkCell.removePiece();
+				checkCell.setPiece(p);
+				p = null;
+			}
+			else{
+				if (color == 1)
+					checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
+				else
+					checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
+				if (checkCell.getPiece().isKingInDanger(pos)) {
+					checkCell.removePiece();
+					stats++;
+					break;
+				}
+				checkCell.removePiece();
+			}
+		}
+		if(stats == 0)
+			result++;
+		if (result == 2)
+			return true;
+		else
+			return false;
 	}
 
 	public void gameOver() {
-
+		System.out.println("GG");
 	}
 
 	public ArrayList<Cell> filterDestination(Piece p, ArrayList<Cell> a) {
@@ -246,7 +328,6 @@ public class Main extends JFrame implements MouseListener {
 			Iterator<Cell> moveIterator = a.iterator();
 			while (moveIterator.hasNext()) {
 				moveCell = moveIterator.next();
-				System.out.println(moveCell.gX() + ":::" + moveCell.gY());
 				p.setX(moveCell.gX());
 				p.setY(moveCell.gY());
 				if (moveCell.getPiece() != null) {
@@ -254,7 +335,6 @@ public class Main extends JFrame implements MouseListener {
 					moveCell.removePiece();
 					moveCell.setPiece(p);
 					if (!(((King) p).isKingInDanger(pos))) {
-						System.out.println("::");
 						newList.add(moveCell);
 					}
 					moveCell.removePiece();
@@ -262,7 +342,6 @@ public class Main extends JFrame implements MouseListener {
 				} else {
 					moveCell.setPiece(p);
 					if (!(((King) p).isKingInDanger(pos))) {
-						System.out.println("::");
 						newList.add(moveCell);
 					}
 					moveCell.removePiece();
@@ -289,7 +368,6 @@ public class Main extends JFrame implements MouseListener {
 					moveCell.setPiece(p);
 					if (!(retrieveKing(p.getColor()).isKingInDanger(pos))) {
 						newList.add(moveCell);
-						System.out.println("::");
 						newList.add(moveCell);
 					}
 					moveCell.removePiece();
@@ -298,7 +376,6 @@ public class Main extends JFrame implements MouseListener {
 					moveCell.setPiece(p);
 					if (!(retrieveKing(p.getColor()).isKingInDanger(pos))) {
 						newList.add(moveCell);
-						System.out.println("::");
 						newList.add(moveCell);
 					}
 					moveCell.removePiece();
@@ -311,107 +388,18 @@ public class Main extends JFrame implements MouseListener {
 		return newList;
 	}
 
-	/*public void operation(int x, int y) {
-		current = pos[x][y];
-		ArrayList<Cell> filteredList = new ArrayList<Cell>();
-		// haven't select any filled cell yet, check if it is the player's turn and
-		// record the selection of the cell.
-		if (previous.getPiece() == null) {
-			if (current.getPiece() != null) {
-				if (current.getPiece().getColor() != player)
-					return;
-			}
-			previous = pos[x][y];
-			current = null;
-			// selected some filled cell before
-		} else {
-			// deselect the cell if clicked again
-			if (previous.gX() == current.gX() && previous.gY() == current.gY()) {
-				return;
-				// To do Deselect;
-				// check if the select cell contains no or hostile piece respect to the previous
-				// piece
-			} else if (current.getPiece() == null || (current.getPiece() != null
-					&& previous.getPiece().getColor() != current.getPiece().getColor())) {
-				// check if the next cell is feasible for movement.
-				filteredList = filterDestination(previous.getPiece(), previous.getPiece().posMove(pos));
-				if (filteredList.contains(current)) {
-					// if the selected piece is king
-					if (previous.getPiece() instanceof King) {
-						// System.out.println("aha");
-						/*
-						 * check castling status
-						 
-						if (isCastling(previous, current) == 0) {
-							previous.getPiece().setMove();
-							castling(previous, current, pos[previous.gX()][previous.gY() - 4],
-									pos[previous.gX()][previous.gY() - 1]);
-						} else if (isCastling(previous, current) == 1) {
-							previous.getPiece().setMove();
-							castling(previous, current, pos[previous.gX()][previous.gY() + 3],
-									pos[previous.gX()][previous.gY() + 1]);
-						}
-						// normal movement
-						else {
-							previous.getPiece().setMove();
-							move(previous, current);
-						}
-						// if the piece is a rook, set it to moved for future castling check.
-					} else if ((previous.getPiece() instanceof Rook)) {
-						previous.getPiece().setMove();
-						move(previous, current);
-					}
-					// if the piece is pawn, auto transform if it is reaching the end. Otherwise,
-					// normal movement.
-					else if ((previous.getPiece() instanceof Pawn)) {
-						x = current.gX();
-						y = current.gY();
-						if ((current.gX() == 7 && previous.getPiece().getColor() == -1)
-								|| (current.gX() == 0 && previous.getPiece().getColor() == 1)) {
-							move(previous, current);
-							transform(pos[x][y]);
-						} else {
-							move(previous, current);
-						}
-						// All the other piece shall perform normal movement.
-					} else {
-						move(previous, current);
-					}
-					// check checkmate status after movement. If true, set it to false.
-					if (isCheckmate) {
-						isCheckmate = false;
-					}
-					// check checkmate status on the enemy king, if true, set isCheckMate to true.
-					// Check if it is checkmated, if true, call gameover();
-					if (retrieveKing(player * -1).isKingInDanger(pos)) {
-						isCheckmate = true;
-						// if(checkmate(player * -1))
-						// gameOver();
-					}
-					// switch side
-					player = player * -1;
-				}
-				// deselect the previous cell.
-			} else if (current.getPiece() != null && previous.getPiece().getColor() == current.getPiece().getColor()) {
-				// Some operation that deselect the previous cell and select current cell
-				// instead.
-				// Also, display the feasible moveTo Cells.
-			}
-		}
-	}*/
-	
 	public void highlight(ArrayList<Cell> list) {
 		Iterator<Cell> moveIterator = list.iterator();
 		Cell temp;
-		while(moveIterator.hasNext()) {
+		while (moveIterator.hasNext()) {
 			moveIterator.next().setPos();
 		}
 	}
-	
+
 	public void unhighlight(ArrayList<Cell> list) {
 		Iterator<Cell> moveIterator = list.iterator();
 		Cell temp;
-		while(moveIterator.hasNext()) {
+		while (moveIterator.hasNext()) {
 			moveIterator.next().removePos();
 		}
 		this.revalidate();
@@ -430,13 +418,10 @@ public class Main extends JFrame implements MouseListener {
 		}
 	}
 
-	public JPanel getGui() {
-		return gui;
-	}
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		current = (Cell)arg0.getSource();
+		current = (Cell) arg0.getSource();
 		// haven't select any filled cell yet, check if it is the player's turn and
 		// record the selection of the cell.
 		if (previous.getPiece() == null) {
@@ -464,7 +449,8 @@ public class Main extends JFrame implements MouseListener {
 			} else if (current.getPiece() == null || (current.getPiece() != null
 					&& previous.getPiece().getColor() != current.getPiece().getColor())) {
 				// check if the next cell is feasible for movement.
-				//filteredList = filterDestination(previous.getPiece(), previous.getPiece().posMove(pos));
+				// filteredList = filterDestination(previous.getPiece(),
+				// previous.getPiece().posMove(pos));
 				if (filteredList.contains(current)) {
 					// if the selected piece is king
 					if (previous.getPiece() instanceof King) {
@@ -531,14 +517,14 @@ public class Main extends JFrame implements MouseListener {
 					}
 					// check checkmate status on the enemy king, if true, set isCheckMate to true.
 					// Check if it is checkmated, if true, call gameover();
-					if (retrieveKing(player * -1).isKingInDanger(pos)) {
+					if (retrieveKing(player * -1).isKingInDanger(pos, attacker)) {
 						pos[retrieveKing(player * -1).getX()][retrieveKing(player * -1).getY()].check();
 						isCheckmate = true;
 						// if(checkmate(player * -1))
 						// gameOver();
 					}
 					// switch side
-					player = player * -1;
+					player = switchSide(player);
 				}
 				// deselect the previous cell.
 			} else if (current.getPiece() != null && previous.getPiece().getColor() == current.getPiece().getColor()) {
@@ -547,6 +533,18 @@ public class Main extends JFrame implements MouseListener {
 				// Also, display the feasible moveTo Cells.
 			}
 		}
+	}
+
+	public int switchSide(int p) {
+		if (p * -1 == 1) {
+			message.setText("White turn");
+		} else
+			message.setText("Black turn");
+		if (isCheckmate == true) {
+			if (checkmate(p * -1, attacker))
+				gameOver();
+		}
+		return p * -1;
 	}
 
 	@Override
@@ -575,150 +573,44 @@ public class Main extends JFrame implements MouseListener {
 
 	public static void main(String args[]) {
 		Main m = new Main();
-		/*m.operation(6,4);
-		m.operation(4,4);
-		m.operation(1,2);
-		m.operation(3,2);
-		m.operation(7,6);
-		m.operation(5,5);
-		m.operation(0,1);
-		m.operation(2,2);
-		m.operation(6,3);
-		m.operation(4,3);
-		m.operation(3,2);
-		m.operation(4,3);
-		m.operation(5,5);
-		m.operation(4,3);
-		m.operation(1,4);
-		m.operation(3,4);
-		m.operation(4,3);
-		m.operation(3,1);
-		m.operation(1,0);
-		m.operation(2,0);
-		m.operation(3,1);
-		m.operation(2,3);
-		m.operation(0,5);
-		m.operation(2,3);
-		m.operation(7,3);
-		m.operation(2,3);
-		m.operation(0,3);
-		m.operation(2,5);
-		m.operation(2,3);
-		m.operation(7,3);
-		m.operation(2,5);
-		m.operation(2,6);
-		m.operation(7,1);
-		m.operation(5,2);
-		m.operation(0,6);
-		m.operation(1,4);
-		m.operation(7,2);
-		m.operation(5,4);
-		m.operation(1,3);
-		m.operation(3,3);
-		m.operation(5,2);
-		m.operation(3,3);
-		m.operation(1,4);
-		m.operation(3,3);
-		m.operation(7,3);
-		m.operation(3,3);
-		m.operation(0,2);
-		m.operation(2,4);
-		m.operation(3,3);
-		m.operation(6,3);
-		m.operation(2,6);
-		m.operation(4,4);
-		m.operation(6,5);
-		m.operation(5,5);
-		m.operation(4,4);
-		m.operation(4,7);
-		m.operation(6,6);
-		m.operation(5,6);
-		m.operation(4,7);
-		m.operation(1,4);
-		m.operation(6,3);
-		m.operation(6,5);
-		m.operation(2,2);
-		m.operation(4,3);
-		m.operation(7,5);
-		m.operation(5,3);
-		m.operation(0,0);
-		m.operation(0,3);
-		m.operation(7,4);
-		m.operation(7,6);
-		m.operation(0,4);
-		m.operation(0,6);
-		m.operation(7,5);
-		m.operation(7,4);
-		m.operation(1,4);
-		m.operation(2,5);
-		m.operation(5,3);
-		m.operation(4,4);
-		m.operation(2,4);
-		m.operation(3,5);
-		m.operation(5,4);
-		m.operation(4,3);
-		m.operation(0,3);
-		m.operation(4,3);
-		m.operation(4,4);
-		m.operation(1,1);
-		m.operation(0,5);
-		m.operation(0,3);
-		m.operation(6,5);
-		m.operation(5,4);
-		m.operation(1,7);
-		m.operation(2,7);
-		m.operation(5,4);
-		/*operation(3,4);
-		operation(2,5);
-		operation(2,1);
-		operation(7,6);
-		operation(7,7);
-		operation(3,5);
-		operation(5,7);
-		operation(3,4);
-		operation(3,7);
-		operation(5,7);
-		operation(4,6);
-		operation(5,5);
-		operation(4,6);
-		operation(2,1);
-		operation(1,1);
-		operation(7,7);
-		operation(7,6);
-		operation(4,3);
-		operation(6,3);
-		operation(3,7);
-		operation(5,7);
-		operation(1,1);
-		operation(2,1);
-		operation(7,6);
-		operation(7,7);
-		operation(2,1);
-		operation(2,2);
-		operation(7,7);
-		operation(7,6);
-		operation(2,2);
-		operation(3,2);
-		operation(7,6);
-		operation(7,7);
-		operation(3,2);
-		operation(3,3);
-		operation(7,7);
-		operation(7,6);
-		operation(6,3);
-		operation(6,2);
-		operation(4,6);
-		operation(3,6);
-		operation(3,3);
-		operation(3,2);
-		operation(7,6);
-		operation(7,7);
-		operation(3,2);
-		operation(2,2);
-		operation(7,7);
-		operation(7,6);
-		operation(0,3);
-		operation(6,3);*/
+		/*
+		 * m.operation(6,4); m.operation(4,4); m.operation(1,2); m.operation(3,2);
+		 * m.operation(7,6); m.operation(5,5); m.operation(0,1); m.operation(2,2);
+		 * m.operation(6,3); m.operation(4,3); m.operation(3,2); m.operation(4,3);
+		 * m.operation(5,5); m.operation(4,3); m.operation(1,4); m.operation(3,4);
+		 * m.operation(4,3); m.operation(3,1); m.operation(1,0); m.operation(2,0);
+		 * m.operation(3,1); m.operation(2,3); m.operation(0,5); m.operation(2,3);
+		 * m.operation(7,3); m.operation(2,3); m.operation(0,3); m.operation(2,5);
+		 * m.operation(2,3); m.operation(7,3); m.operation(2,5); m.operation(2,6);
+		 * m.operation(7,1); m.operation(5,2); m.operation(0,6); m.operation(1,4);
+		 * m.operation(7,2); m.operation(5,4); m.operation(1,3); m.operation(3,3);
+		 * m.operation(5,2); m.operation(3,3); m.operation(1,4); m.operation(3,3);
+		 * m.operation(7,3); m.operation(3,3); m.operation(0,2); m.operation(2,4);
+		 * m.operation(3,3); m.operation(6,3); m.operation(2,6); m.operation(4,4);
+		 * m.operation(6,5); m.operation(5,5); m.operation(4,4); m.operation(4,7);
+		 * m.operation(6,6); m.operation(5,6); m.operation(4,7); m.operation(1,4);
+		 * m.operation(6,3); m.operation(6,5); m.operation(2,2); m.operation(4,3);
+		 * m.operation(7,5); m.operation(5,3); m.operation(0,0); m.operation(0,3);
+		 * m.operation(7,4); m.operation(7,6); m.operation(0,4); m.operation(0,6);
+		 * m.operation(7,5); m.operation(7,4); m.operation(1,4); m.operation(2,5);
+		 * m.operation(5,3); m.operation(4,4); m.operation(2,4); m.operation(3,5);
+		 * m.operation(5,4); m.operation(4,3); m.operation(0,3); m.operation(4,3);
+		 * m.operation(4,4); m.operation(1,1); m.operation(0,5); m.operation(0,3);
+		 * m.operation(6,5); m.operation(5,4); m.operation(1,7); m.operation(2,7);
+		 * m.operation(5,4); /*operation(3,4); operation(2,5); operation(2,1);
+		 * operation(7,6); operation(7,7); operation(3,5); operation(5,7);
+		 * operation(3,4); operation(3,7); operation(5,7); operation(4,6);
+		 * operation(5,5); operation(4,6); operation(2,1); operation(1,1);
+		 * operation(7,7); operation(7,6); operation(4,3); operation(6,3);
+		 * operation(3,7); operation(5,7); operation(1,1); operation(2,1);
+		 * operation(7,6); operation(7,7); operation(2,1); operation(2,2);
+		 * operation(7,7); operation(7,6); operation(2,2); operation(3,2);
+		 * operation(7,6); operation(7,7); operation(3,2); operation(3,3);
+		 * operation(7,7); operation(7,6); operation(6,3); operation(6,2);
+		 * operation(4,6); operation(3,6); operation(3,3); operation(3,2);
+		 * operation(7,6); operation(7,7); operation(3,2); operation(2,2);
+		 * operation(7,7); operation(7,6); operation(0,3); operation(6,3);
+		 */
 		m.display();
 	}
 }
