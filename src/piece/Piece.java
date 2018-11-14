@@ -263,7 +263,7 @@ public abstract class Piece implements Cloneable{
 		if (x - 1 >= 0 && x - 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x - 1][y + 1].getPiece() instanceof King
 				&& pos[x - 1][y + 1].getPiece().getColor() != this.getColor())
 			return true;
-		if (y + 1 >= 0 && y + 1 < 8 && pos[x][y + 1].getPiece() instanceof King
+		if (y + 1 >= 0 && y + 1 < 8 &&pos[x][y + 1].getPiece() instanceof King
 				&& pos[x][y + 1].getPiece().getColor() != this.getColor())
 			return true;
 		if (x + 1 >= 0 && x + 1 < 8 && pos[x + 1][y].getPiece() instanceof King
@@ -273,7 +273,7 @@ public abstract class Piece implements Cloneable{
 				&& pos[x - 1][y].getPiece().getColor() != this.getColor())
 			return true;
 		if (y - 1 >= 0 && y - 1 < 8 && pos[x][y - 1].getPiece() instanceof King
-				&& pos[x - 2][y + 1].getPiece().getColor() != this.getColor())
+				&& pos[x][y - 1].getPiece().getColor() != this.getColor())
 			return true;
 		return false;
 	}

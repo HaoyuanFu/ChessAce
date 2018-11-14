@@ -71,11 +71,11 @@ public class King extends Piece {
 			boolean temp0 = true;
 			boolean temp1 = true;
 			for (int i = 1; i <= 2; i++) {
-				if (pos[this.x][this.y + i].getPiece() != null)
+				if (pos[this.x][this.y + i].getPiece() != null || !(pos[this.x][this.y + 3].getPiece() instanceof Rook))
 					temp0 = false;
 			}
 			for (int j = 1; j <= 3; j++) {
-				if (pos[this.x][this.y - j].getPiece() != null)
+				if (pos[this.x][this.y - j].getPiece() != null || !(pos[this.x][this.y - 4].getPiece() instanceof Rook))
 					temp1 = false;
 			}
 			if (temp0)

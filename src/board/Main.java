@@ -8,16 +8,21 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
 import java.io.Console;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
@@ -64,23 +69,41 @@ public class Main extends JFrame implements MouseListener {
 	private Cell temp;
 	private ArrayList<Piece> whiteP;
 	private ArrayList<Piece> blackP;
-	
+
 	private final JPanel welcomePage = new JPanel(new BorderLayout(3, 3));
 
-	public Main() {
+	public Main() throws IOException {
 
 		gui.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JToolBar tools = new JToolBar();
 		tools.setFloatable(false);
 		gui.add(tools, BorderLayout.PAGE_START);
-		tools.add(new JButton("New")); // TODO - add functionality!
-		tools.add(new JButton("Save")); // TODO - add functionality!
-		tools.add(new JButton("Restore")); // TODO - add functionality!
+
+		JButton New = new JButton("New");
+		New.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Initial();
+			}
+		});
+		
+		tools.add(New);
+
 		tools.addSeparator();
-		tools.add(new JButton("Resign")); // TODO - add functionality!
+
+		tools.add(new JButton("Pause")); // TODO - add functionality!
+		tools.addSeparator();
+
+		JButton surrender = new JButton("Resign");
+		surrender.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				player = player * -1;
+				gameOver();
+			}
+		});
+		tools.add(surrender); // TODO - add functionality!
 		tools.addSeparator();
 		tools.add(message);
-		chessBoard = new JPanel(new GridLayout(8,8));
+		chessBoard = new JPanel(new GridLayout(8, 8));
 		chessBoard.setMinimumSize(new Dimension(800, 700));
 		// variable initialization
 		previous = new Cell(9, 9, null);
@@ -111,7 +134,7 @@ public class Main extends JFrame implements MouseListener {
 		bpn1 = new Pawn[8];
 
 		pos = new Cell[8][8];
-		
+
 		attacker = new ArrayList<Cell>();
 
 		for (int i = 0; i < 8; i++) {
@@ -163,24 +186,23 @@ public class Main extends JFrame implements MouseListener {
 				chessBoard.add(cell);
 				pos[i][j] = cell;
 			}
-		
+
 		gui.add(chessBoard);
-		this.setTitle("ChessACE");
-		this.setLayout(new CardLayout());
-		this.getContentPane().add(this.getWelcome());
-        this.add(gui, BorderLayout.CENTER);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setLocationByPlatform(true);
-        this.add(welcomePage, BorderLayout.CENTER);
-        
-        
+
+		this.add(gui, BorderLayout.CENTER);
+		this.add(welcomePage, BorderLayout.CENTER);
 		gui.setVisible(false);
-		
-        welcomePage.setMinimumSize(new Dimension(800, 700));
+
+		welcomePage.setMinimumSize(new Dimension(800, 700));
 		welcomePage.setVisible(true);
 		
+		BufferedImage welcome = ImageIO.read(new File("src/board/welcomePage.jpg"));
+		JLabel welcomeImage = new JLabel(new ImageIcon(welcome));
+		welcomeImage.setMaximumSize(welcomePage.getSize());
+		welcomePage.add(welcomeImage, BorderLayout.CENTER);
+		
 		JButton start = new JButton("Start Game!");
-		start.addActionListener(new ActionListener(){
+		start.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				welcomePage.setVisible(false);
 				gui.setVisible(true);
@@ -188,27 +210,114 @@ public class Main extends JFrame implements MouseListener {
 		});
 		welcomePage.add(start, BorderLayout.SOUTH);
 
-        
-        // ensures the frame is the minimum size it needs to be
-        // in order display the components within it
-        this.pack();
-        // ensures the minimum size is enforced.
-        this.setMinimumSize(this.getSize());
-        this.setVisible(true);
+		this.setTitle("ChessACE");
+		this.setLayout(new CardLayout());
+		this.getContentPane().add(this.getWelcome());
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setLocationByPlatform(true);
+		// ensures the frame is the minimum size it needs to be
+		// in order display the components within it
+		this.pack();
+		// ensures the minimum size is enforced.
+		this.setMinimumSize(this.getSize());
+		this.setVisible(true);
 
 	}
 
 	public JPanel getGui() {
 		return gui;
 	}
-	
+
 	public JPanel getWelcome() {
 		return welcomePage;
 	}
 
 	public void Initial() {
-		
+		chessBoard.removeAll();
+		previous = new Cell(9, 9, null);
+		current = new Cell(9, 9, null);
+		empty = new Cell(10, 10, null);
+		isCheckmate = false;
+		player = 1;
+		Cell cell;
+		wqn = 1;
+		bqn = 1;
+		wrk1 = new Rook("WRK1", "White_Rook.png", 7, 0, 1);
+		wrk2 = new Rook("WRK2", "White_Rook.png", 7, 7, 1);
+		brk1 = new Rook("BRK1", "Black_Rook.png", 0, 0, -1);
+		brk2 = new Rook("BRK2", "Black_Rook.png", 0, 7, -1);
+		wknt1 = new Knight("WKNT1", "White_Knight.png", 7, 1, 1);
+		wknt2 = new Knight("WKNT2", "White_Knight.png", 7, 6, 1);
+		bknt1 = new Knight("BKNT1", "Black_Knight.png", 0, 1, -1);
+		bknt2 = new Knight("BKNT2", "Black_Knight.png", 0, 6, -1);
+		wbsp1 = new Bishop("WBSP1", "White_Bishop.png", 7, 2, 1);
+		wbsp2 = new Bishop("WBSP2", "White_Bishop.png", 7, 5, 1);
+		bbsp1 = new Bishop("BBSP1", "Black_Bishop.png", 0, 2, -1);
+		bbsp2 = new Bishop("BBSP2", "Black_Bishop.png", 0, 5, -1);
+		wqn1 = new Queen("WQN1", "White_Queen.png", 7, 3, 1);
+		bqn1 = new Queen("BQN1", "Black_Queen.png", 0, 3, -1);
+		wkg1 = new King("WKG1", "White_King.png", 7, 4, 1);
+		bkg1 = new King("BKG1", "Black_King.png", 0, 4, -1);
+		wpn1 = new Pawn[8];
+		bpn1 = new Pawn[8];
+
+		pos = new Cell[8][8];
+
+		attacker = new ArrayList<Cell>();
+
+		for (int i = 0; i < 8; i++) {
+			wpn1[i] = new Pawn("WPN" + i, "White_Pawn.png", 6, i, 1);
+			bpn1[i] = new Pawn("BPN" + i, "Black_Pawn.png", 1, i, -1);
+		}
+
+		for (int i = 0; i < 8; i++)
+			for (int j = 0; j < 8; j++) {
+				if (i == 0 && j == 0)
+					cell = new Cell(i, j, brk1);
+				else if (i == 0 && j == 7)
+					cell = new Cell(i, j, brk2);
+				else if (i == 7 && j == 0)
+					cell = new Cell(i, j, wrk1);
+				else if (i == 7 && j == 7)
+					cell = new Cell(i, j, wrk2);
+				else if (i == 0 && j == 1)
+					cell = new Cell(i, j, bknt1);
+				else if (i == 0 && j == 6)
+					cell = new Cell(i, j, bknt2);
+				else if (i == 7 && j == 1)
+					cell = new Cell(i, j, wknt1);
+				else if (i == 7 && j == 6)
+					cell = new Cell(i, j, wknt2);
+				else if (i == 0 && j == 2)
+					cell = new Cell(i, j, bbsp1);
+				else if (i == 0 && j == 5)
+					cell = new Cell(i, j, bbsp2);
+				else if (i == 7 && j == 2)
+					cell = new Cell(i, j, wbsp1);
+				else if (i == 7 && j == 5)
+					cell = new Cell(i, j, wbsp2);
+				else if (i == 0 && j == 3)
+					cell = new Cell(i, j, bqn1);
+				else if (i == 0 && j == 4)
+					cell = new Cell(i, j, bkg1);
+				else if (i == 7 && j == 3)
+					cell = new Cell(i, j, wqn1);
+				else if (i == 7 && j == 4)
+					cell = new Cell(i, j, wkg1);
+				else if (i == 1)
+					cell = new Cell(i, j, bpn1[j]);
+				else if (i == 6)
+					cell = new Cell(i, j, wpn1[j]);
+				else
+					cell = new Cell(i, j, null);
+				cell.addMouseListener(this);
+				chessBoard.add(cell);
+				pos[i][j] = cell;
+			}
+		chessBoard.revalidate();
+		chessBoard.repaint();
 	}
+
 	public void move(Cell a, Cell b) {
 		b.removePiece();
 		b.setPiece(a.getPiece());
@@ -268,43 +377,47 @@ public class Main extends JFrame implements MouseListener {
 		int stats = 0;
 		Cell checkCell;
 		Piece p;
-		
+
 		ArrayList<Cell> checkList = filterDestination(retrieveKing(color), retrieveKing(color).posMove(pos));
 		if (checkList.isEmpty())
 			result++;
-		Iterator<Cell> a = attack.iterator();
-		while (a.hasNext()) {
-			checkCell = a.next();
-			if(checkCell.getPiece() != null) {
-				p = checkCell.getPiece();
-				checkCell.removePiece();
-				if (color == 1)
-					checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
-				else
-					checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
-				if (checkCell.getPiece().isKingInDanger(pos)) {
+		if (attack.size() == 1) {
+			if (attack.get(0).getPiece().isKingInDanger(pos))
+				stats++;
+		} else {
+			for (Cell a : attack) {
+				checkCell = a;
+				if (checkCell.getPiece() != null) {
+					p = checkCell.getPiece();
 					checkCell.removePiece();
-					stats++;
-					break;
-				}
-				checkCell.removePiece();
-				checkCell.setPiece(p);
-				p = null;
-			}
-			else{
-				if (color == 1)
-					checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
-				else
-					checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
-				if (checkCell.getPiece().isKingInDanger(pos)) {
+					if (color == 1)
+						checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
+					else
+						checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
+					if (checkCell.getPiece().isKingInDanger(pos)) {
+						checkCell.removePiece();
+						stats++;
+						break;
+					}
 					checkCell.removePiece();
-					stats++;
-					break;
+					checkCell.setPiece(p);
+					p = null;
+				} else {
+					if (color == 1)
+						checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
+					else
+						checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
+					if (checkCell.getPiece().isKingInDanger(pos)) {
+						checkCell.removePiece();
+						stats++;
+						break;
+					} else {
+						checkCell.removePiece();
+					}
 				}
-				checkCell.removePiece();
 			}
 		}
-		if(stats == 0)
+		if (stats == 0)
 			result++;
 		if (result == 2)
 			return true;
@@ -313,7 +426,15 @@ public class Main extends JFrame implements MouseListener {
 	}
 
 	public void gameOver() {
-		System.out.println("GG");
+		filteredList.clear();
+		if (player == 1) {
+			JOptionPane.showMessageDialog(this, "Checkmate!!!\n" + "White " + " wins");
+		} else {
+			JOptionPane.showMessageDialog(this, "Checkmate!!!\n" + "Black " + " wins");
+		}
+		this.setVisible(true);
+		this.setResizable(false);
+		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 
 	public ArrayList<Cell> filterDestination(Piece p, ArrayList<Cell> a) {
@@ -368,14 +489,12 @@ public class Main extends JFrame implements MouseListener {
 					moveCell.setPiece(p);
 					if (!(retrieveKing(p.getColor()).isKingInDanger(pos))) {
 						newList.add(moveCell);
-						newList.add(moveCell);
 					}
 					moveCell.removePiece();
 					moveCell.setPiece(temp);
 				} else {
 					moveCell.setPiece(p);
 					if (!(retrieveKing(p.getColor()).isKingInDanger(pos))) {
-						newList.add(moveCell);
 						newList.add(moveCell);
 					}
 					moveCell.removePiece();
@@ -417,7 +536,6 @@ public class Main extends JFrame implements MouseListener {
 			System.out.println();
 		}
 	}
-
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
@@ -512,12 +630,14 @@ public class Main extends JFrame implements MouseListener {
 					}
 					// check checkmate status after movement. If true, set it to false.
 					if (isCheckmate) {
+						retrieveKing(player).removeCheckmate();
 						pos[retrieveKing(player).getX()][retrieveKing(player).getY()].removeCheck();
 						isCheckmate = false;
 					}
 					// check checkmate status on the enemy king, if true, set isCheckMate to true.
 					// Check if it is checkmated, if true, call gameover();
 					if (retrieveKing(player * -1).isKingInDanger(pos, attacker)) {
+						retrieveKing(player * -1).setCheckmate();
 						pos[retrieveKing(player * -1).getX()][retrieveKing(player * -1).getY()].check();
 						isCheckmate = true;
 						// if(checkmate(player * -1))
@@ -572,45 +692,12 @@ public class Main extends JFrame implements MouseListener {
 	}
 
 	public static void main(String args[]) {
-		Main m = new Main();
-		/*
-		 * m.operation(6,4); m.operation(4,4); m.operation(1,2); m.operation(3,2);
-		 * m.operation(7,6); m.operation(5,5); m.operation(0,1); m.operation(2,2);
-		 * m.operation(6,3); m.operation(4,3); m.operation(3,2); m.operation(4,3);
-		 * m.operation(5,5); m.operation(4,3); m.operation(1,4); m.operation(3,4);
-		 * m.operation(4,3); m.operation(3,1); m.operation(1,0); m.operation(2,0);
-		 * m.operation(3,1); m.operation(2,3); m.operation(0,5); m.operation(2,3);
-		 * m.operation(7,3); m.operation(2,3); m.operation(0,3); m.operation(2,5);
-		 * m.operation(2,3); m.operation(7,3); m.operation(2,5); m.operation(2,6);
-		 * m.operation(7,1); m.operation(5,2); m.operation(0,6); m.operation(1,4);
-		 * m.operation(7,2); m.operation(5,4); m.operation(1,3); m.operation(3,3);
-		 * m.operation(5,2); m.operation(3,3); m.operation(1,4); m.operation(3,3);
-		 * m.operation(7,3); m.operation(3,3); m.operation(0,2); m.operation(2,4);
-		 * m.operation(3,3); m.operation(6,3); m.operation(2,6); m.operation(4,4);
-		 * m.operation(6,5); m.operation(5,5); m.operation(4,4); m.operation(4,7);
-		 * m.operation(6,6); m.operation(5,6); m.operation(4,7); m.operation(1,4);
-		 * m.operation(6,3); m.operation(6,5); m.operation(2,2); m.operation(4,3);
-		 * m.operation(7,5); m.operation(5,3); m.operation(0,0); m.operation(0,3);
-		 * m.operation(7,4); m.operation(7,6); m.operation(0,4); m.operation(0,6);
-		 * m.operation(7,5); m.operation(7,4); m.operation(1,4); m.operation(2,5);
-		 * m.operation(5,3); m.operation(4,4); m.operation(2,4); m.operation(3,5);
-		 * m.operation(5,4); m.operation(4,3); m.operation(0,3); m.operation(4,3);
-		 * m.operation(4,4); m.operation(1,1); m.operation(0,5); m.operation(0,3);
-		 * m.operation(6,5); m.operation(5,4); m.operation(1,7); m.operation(2,7);
-		 * m.operation(5,4); /*operation(3,4); operation(2,5); operation(2,1);
-		 * operation(7,6); operation(7,7); operation(3,5); operation(5,7);
-		 * operation(3,4); operation(3,7); operation(5,7); operation(4,6);
-		 * operation(5,5); operation(4,6); operation(2,1); operation(1,1);
-		 * operation(7,7); operation(7,6); operation(4,3); operation(6,3);
-		 * operation(3,7); operation(5,7); operation(1,1); operation(2,1);
-		 * operation(7,6); operation(7,7); operation(2,1); operation(2,2);
-		 * operation(7,7); operation(7,6); operation(2,2); operation(3,2);
-		 * operation(7,6); operation(7,7); operation(3,2); operation(3,3);
-		 * operation(7,7); operation(7,6); operation(6,3); operation(6,2);
-		 * operation(4,6); operation(3,6); operation(3,3); operation(3,2);
-		 * operation(7,6); operation(7,7); operation(3,2); operation(2,2);
-		 * operation(7,7); operation(7,6); operation(0,3); operation(6,3);
-		 */
-		m.display();
+		Main m;
+		try {
+			m = new Main();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
