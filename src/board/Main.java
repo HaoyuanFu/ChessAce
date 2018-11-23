@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.MouseEvent;
@@ -15,6 +16,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -22,12 +25,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.Timer;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import piece.Bishop;
 import piece.King;
@@ -36,9 +42,9 @@ import piece.Pawn;
 import piece.Piece;
 import piece.Queen;
 import piece.Rook;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
+import javax.swing.JSlider;
+
 
 public class Main extends JFrame implements MouseListener {
 	private Cell[][] pos;
@@ -62,22 +68,32 @@ public class Main extends JFrame implements MouseListener {
 	private final JPanel gui = new JPanel(new BorderLayout(3, 3));
 	private JPanel[][] chessBoardSquares = new JPanel[8][8];
 	private JPanel chessBoard;
-	private final JLabel message = new JLabel("ChessAce is ready to play! White turn!");
+	private final JLabel message = new JLabel("ChessAce is ready to play!");
 	private ArrayList<Cell> filteredList = new ArrayList<Cell>();
 	private final String COLS = "ABCDEFGH";
 	private ArrayList<Cell> attacker;
 	private Cell temp;
 	private ArrayList<Piece> whiteP;
 	private ArrayList<Piece> blackP;
+	
+	private JLabel label;
+	private JPanel displayTime;
+	private JSlider timeSlider;
+	private countDownTimer timer;
+	public static int timeremaining=60;
 
 	private final JPanel welcomePage = new JPanel(new BorderLayout(3, 3));
 
 	public Main() throws IOException {
-
 		gui.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JToolBar tools = new JToolBar();
+		JPanel timerpan = new JPanel();
+		
+		
+		
 		tools.setFloatable(false);
 		gui.add(tools, BorderLayout.PAGE_START);
+		gui.add(timerpan, BorderLayout.LINE_END);
 
 		JButton New = new JButton("New");
 		New.addActionListener(new ActionListener() {
@@ -102,9 +118,37 @@ public class Main extends JFrame implements MouseListener {
 		});
 		tools.add(surrender); // TODO - add functionality!
 		tools.addSeparator();
-		tools.add(message);
+		
+		
+		timeSlider = new JSlider();
+		//implementation of time slider
+		timeSlider.setMinimum(1);
+		timeSlider.setMaximum(15);
+		timeSlider.setValue(1);
+		timeSlider.setMajorTickSpacing(2);
+		timeSlider.setPaintLabels(true);
+		timeSlider.setPaintTicks(true);
+		timeSlider.addChangeListener(new TimeChange());
+		JLabel setTime=new JLabel("Set Timer(in mins):"); 
+		JPanel slider = new JPanel(new GridLayout(3,3));
+	    slider.add(setTime, BorderLayout.PAGE_START);
+	    slider.add(timeSlider,BorderLayout.PAGE_END);
+	    welcomePage.add(slider, BorderLayout.LINE_END);
+	    
+	    //implementation for display timer
+	    label= new JLabel("Time Starts now", JLabel.CENTER);
+	    displayTime = new JPanel(new FlowLayout());
+	    displayTime.add(label);
+		timer = new countDownTimer(label);
+		timer.start();
+		
+		timerpan.add(displayTime,BorderLayout.PAGE_END);
+		timerpan.add(message,BorderLayout.PAGE_START);
+		timerpan.setPreferredSize(new Dimension(200,400));
+		
 		chessBoard = new JPanel(new GridLayout(8, 8));
 		chessBoard.setMinimumSize(new Dimension(800, 700));
+		
 		// variable initialization
 		previous = new Cell(9, 9, null);
 		current = new Cell(9, 9, null);
@@ -233,6 +277,8 @@ public class Main extends JFrame implements MouseListener {
 	}
 
 	public void Initial() {
+		timer.reset();
+		timer.start();
 		chessBoard.removeAll();
 		previous = new Cell(9, 9, null);
 		current = new Cell(9, 9, null);
@@ -658,14 +704,20 @@ public class Main extends JFrame implements MouseListener {
 	public int switchSide(int p) {
 		if (p * -1 == 1) {
 			message.setText("White turn");
+			timer.reset();
+			timer.start();
 		} else
 			message.setText("Black turn");
+			timer.reset();
+			timer.start();
 		if (isCheckmate == true) {
 			if (checkmate(p * -1, attacker))
 				gameOver();
 		}
 		return p * -1;
 	}
+	
+	
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
@@ -699,5 +751,13 @@ public class Main extends JFrame implements MouseListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	class TimeChange implements ChangeListener{
+
+		@Override
+		public void stateChanged(ChangeEvent arg0) {
+			timeremaining = timeSlider.getValue()*60;
+		}
+		
 	}
 }
