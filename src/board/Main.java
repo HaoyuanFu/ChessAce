@@ -391,9 +391,9 @@ public class Main extends JFrame implements MouseListener {
 					p = checkCell.getPiece();
 					checkCell.removePiece();
 					if (color == 1)
-						checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
+						checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
 					else
-						checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
+						checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
 					if (checkCell.getPiece().isKingInDanger(pos)) {
 						checkCell.removePiece();
 						stats++;
@@ -404,9 +404,9 @@ public class Main extends JFrame implements MouseListener {
 					p = null;
 				} else {
 					if (color == 1)
-						checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
+						checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
 					else
-						checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
+						checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
 					if (checkCell.getPiece().isKingInDanger(pos)) {
 						checkCell.removePiece();
 						stats++;

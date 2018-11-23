@@ -98,12 +98,12 @@ public class Rook extends Piece {
 		//Rule 1: Kind & Associating Rook shall not move before
 		//Rule 2: Castle out of check is not allowed
 		//Rule 3: Nothing shall be in between the Corresponding King and Rook
-		if(neverMoved) {
-			if(this.x == 0)
+		/*if(neverMoved) {
+			if(this.y == 0 )
 				possiblemoves.add(pos[this.x][3]);
-			if(this.x == 8)
+			if(this.y == 8)
 				possiblemoves.add(pos[this.x][5]);
-		}
+		}*/
 		
 		return possiblemoves;
 	}
