@@ -139,7 +139,7 @@ public class Main extends JFrame implements MouseListener {
 	    label= new JLabel("Time Starts now", JLabel.CENTER);
 	    displayTime = new JPanel(new FlowLayout());
 	    displayTime.add(label);
-		timer = new countDownTimer(label);
+		timer = new countDownTimer(label, this);
 		timer.start();
 		
 		timerpan.add(displayTime,BorderLayout.PAGE_END);
@@ -473,6 +473,7 @@ public class Main extends JFrame implements MouseListener {
 
 	public void gameOver() {
 		filteredList.clear();
+		timer.stop();
 		if (player == 1) {
 			JOptionPane.showMessageDialog(this, "Checkmate!!!\n" + "White " + " wins");
 		} else {

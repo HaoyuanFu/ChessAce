@@ -13,9 +13,11 @@ public class countDownTimer {
 	private JLabel label;
 	Timer countdownTimer;
 	int Timeremain;
-	public countDownTimer(JLabel passedLabel) {
+	Main m;
+	public countDownTimer(JLabel passedLabel, Main m) {
 		countdownTimer = new Timer(1000, new CountdownTimerListener());
 		this.label = passedLabel;
+		this.m = m;
 		Timeremain = Main.timeremaining;
 	}
 	
@@ -23,8 +25,16 @@ public class countDownTimer {
 		countdownTimer.start();
 	}
 	
+	public void stop() {
+		countdownTimer.stop();
+	}
+	
 	public void reset() {
 		Timeremain = Main.timeremaining;
+	}
+	
+	public Main getM() {
+		return m;
 	}
 
 	class CountdownTimerListener implements ActionListener{
@@ -40,6 +50,7 @@ public class countDownTimer {
 			}
 			else {
 				label.setText("Time up! Game Over!");
+				m.gameOver();
 			}
 		
 		}

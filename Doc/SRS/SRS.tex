@@ -12,6 +12,7 @@
 \usepackage{tabularx}
 \usepackage{hyperref}
 \usepackage{float}
+\usepackage{soul}
 
 
 \hypersetup{
@@ -48,8 +49,8 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-Date 1 & 1.0 & Notes\\
-Date 2 & 1.1 & Notes\\
+2018.10.05 & 0.1 & Draft\\
+\color{red}{2018.11.23} & \color{red}{1.0} & \color{red}{Functional Requirement Revised}\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -106,20 +107,21 @@ ChessAce must be completed with functional software and appropriate documentatio
 \item \textcolor{red}{Non-functional Requirements: Requirements that describe qualities that the product will have.}
 \item ChessOOP: name of an open-source chess game program
 \item \textcolor{red}{GUI: Graphical User Interface}
+\item \textcolor{red}{shall: have to achieve}
+\item \textcolor{red}{should: recommend to}
 
 \end{itemize}
 
 \subsection{Relevant Facts and Assumptions}
 
 \subsubsection{Relevant Facts}
-The application is intended for use by two users on their local machine. The length of the overall codes is approximately 1500 lines. The open-source project that the application is based upon has a very short revision history and part of documentation, and lacking a specific user manual.
+The application is intended for use by two users on their local machine. The length of the overall codes is approximately \textcolor{red}{2000} lines. The open-source project that the application is based upon has a very short revision history and part of documentation, and lacking a specific user manual.
 
 \subsubsection{Business Rules}
-The only rules we've established is that everyone should contribute approximately the same into the development, and members should try to take jobs if they feel they are stronger in certain areas.
+The only rules \textcolor{red}{the team has} established is that everyone\textcolor{red}{shall} contribute approximately the same into the development, and members should take jobs if they feel they are stronger in certain areas.
 
 \subsubsection{Assumption}
 It will assume that the users will have general knowledge of computers. If the any advanced knowledge is needed, it  will be explained in a user manual. The developer has assumed that all the developing tool, such as IDE and image processing, etc, will be free. Also, the team has assumed that all the users are able to gain internet access in order to download the project.
-
 
 
 X The open-source project that the application is based upon has a very short revision history and part of documentation, even lacking a specific user manual. This needs to be addressed in reimplementation. It will assume that the users only have basic general knowledge of computers. In order to use the application, any elements or features of the application whose operation requires more advanced knowledge will be explained in a user manual.
@@ -204,7 +206,7 @@ Rationale: If this cannot be achieved, then the program is not performing its re
 \item \textbf{Requirement number}: FR10\newline
 Users shall be able to start a game once two users are available. \newline
 Rationale: To meet the goal of this project which is a PVP game.
- 
+
 \item \textbf{Requirement number}: FR11\newline
 Users shall be given the choice of who plays black and white. \newline
 Rationale: To improve the project’s performance.
