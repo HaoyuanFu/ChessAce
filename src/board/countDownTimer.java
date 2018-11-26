@@ -1,11 +1,14 @@
 package board;
 
 import board.Main;
+
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 import javax.swing.Timer;
+
 /**
  *  \brief timer class, Implementation for timer's GUI function.
  */
@@ -13,16 +16,29 @@ public class countDownTimer {
 	private JLabel label;
 	Timer countdownTimer;
 	int Timeremain;
+	long lastUpdate;
 	Main m;
 	public countDownTimer(JLabel passedLabel, Main m) {
 		countdownTimer = new Timer(1000, new CountdownTimerListener());
 		this.label = passedLabel;
 		this.m = m;
-		Timeremain = Main.timeremaining;
+		Timeremain = m.timeremaining;
 	}
 	
 	public void start() {
 		countdownTimer.start();
+	}
+	
+	void resume() {
+	    // Restore the time we're counting down from and restart the timer.
+	    lastUpdate = System.currentTimeMillis();
+	    countdownTimer.start(); // Start the timer
+	  }
+	
+	public void pause() {
+		long now = System.currentTimeMillis();
+	    Timeremain -= (now - lastUpdate);
+	    countdownTimer.stop(); // Stop the timer
 	}
 	
 	public void stop() {
@@ -30,7 +46,7 @@ public class countDownTimer {
 	}
 	
 	public void reset() {
-		Timeremain = Main.timeremaining;
+		Timeremain = m.timeremaining;
 	}
 	
 	public Main getM() {
@@ -50,6 +66,7 @@ public class countDownTimer {
 			}
 			else {
 				label.setText("Time up! Game Over!");
+				m.playerChange();
 				m.gameOver();
 			}
 		

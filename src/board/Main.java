@@ -42,15 +42,11 @@ import piece.Pawn;
 import piece.Piece;
 import piece.Queen;
 import piece.Rook;
-import javax.swing.JSeparator;
 import javax.swing.JSlider;
 
 
 public class Main extends JFrame implements MouseListener {
 	private Cell[][] pos;
-
-	private final int Height = 700;
-	private final int Width = 1110;
 
 	private Rook wrk1, wrk2, brk1, brk2;
 	private King wkg1, bkg1;
@@ -66,35 +62,25 @@ public class Main extends JFrame implements MouseListener {
 	private int bqn;
 	private int player; // 1 = white, -1 = black
 	private final JPanel gui = new JPanel(new BorderLayout(3, 3));
-	private JPanel[][] chessBoardSquares = new JPanel[8][8];
+	private final JPanel welcomePage = new JPanel(new BorderLayout(3, 3));
 	private JPanel chessBoard;
-	private final JLabel message = new JLabel("ChessAce is ready to play!");
+	private final JLabel message = new JLabel("White turn");
 	private ArrayList<Cell> filteredList = new ArrayList<Cell>();
-	private final String COLS = "ABCDEFGH";
 	private ArrayList<Cell> attacker;
-	private Cell temp;
-	private ArrayList<Piece> whiteP;
-	private ArrayList<Piece> blackP;
 	
 	private JLabel label;
 	private JPanel displayTime;
 	private JSlider timeSlider;
 	private countDownTimer timer;
-	public static int timeremaining=60;
-
-	private final JPanel welcomePage = new JPanel(new BorderLayout(3, 3));
-
+	public int timeremaining;
+	
+	private boolean states = false;
+	
 	public Main() throws IOException {
-		gui.setBorder(new EmptyBorder(5, 5, 5, 5));
 		JToolBar tools = new JToolBar();
-		JPanel timerpan = new JPanel();
-		
-		
+		Main m0 = this;
 		
 		tools.setFloatable(false);
-		gui.add(tools, BorderLayout.PAGE_START);
-		gui.add(timerpan, BorderLayout.LINE_END);
-
 		JButton New = new JButton("New");
 		New.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -106,7 +92,13 @@ public class Main extends JFrame implements MouseListener {
 
 		tools.addSeparator();
 
-		tools.add(new JButton("Pause")); // TODO - add functionality!
+		JButton Pause = new JButton("Pause");
+		New.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pauseGame();
+			}
+		});
+		tools.add(Pause); 
 		tools.addSeparator();
 
 		JButton surrender = new JButton("Resign");
@@ -116,11 +108,14 @@ public class Main extends JFrame implements MouseListener {
 				gameOver();
 			}
 		});
-		tools.add(surrender); // TODO - add functionality!
+		tools.add(surrender);
 		tools.addSeparator();
+		
+		gui.add(tools, BorderLayout.PAGE_START);
 		
 		
 		timeSlider = new JSlider();
+		
 		//implementation of time slider
 		timeSlider.setMinimum(1);
 		timeSlider.setMaximum(15);
@@ -136,18 +131,15 @@ public class Main extends JFrame implements MouseListener {
 	    welcomePage.add(slider, BorderLayout.LINE_END);
 	    
 	    //implementation for display timer
-	    label= new JLabel("Time Starts now", JLabel.CENTER);
+	    this.timeremaining = 60;
+	    label= new JLabel("", JLabel.CENTER);
 	    displayTime = new JPanel(new FlowLayout());
 	    displayTime.add(label);
-		timer = new countDownTimer(label, this);
-		timer.start();
 		
-		timerpan.add(displayTime,BorderLayout.PAGE_END);
-		timerpan.add(message,BorderLayout.PAGE_START);
-		timerpan.setPreferredSize(new Dimension(200,400));
+		tools.add(displayTime);
+		tools.add(message);
 		
 		chessBoard = new JPanel(new GridLayout(8, 8));
-		chessBoard.setMinimumSize(new Dimension(800, 700));
 		
 		// variable initialization
 		previous = new Cell(9, 9, null);
@@ -231,13 +223,13 @@ public class Main extends JFrame implements MouseListener {
 				pos[i][j] = cell;
 			}
 
-		gui.add(chessBoard);
+		gui.add(chessBoard, BorderLayout.CENTER);
 
 		this.add(gui, BorderLayout.CENTER);
 		this.add(welcomePage, BorderLayout.CENTER);
 		gui.setVisible(false);
 
-		welcomePage.setMinimumSize(new Dimension(800, 700));
+		welcomePage.setMinimumSize(new Dimension(700,800));
 		welcomePage.setVisible(true);
 		
 		BufferedImage welcome = ImageIO.read(new File("src/board/welcomePage.jpg"));
@@ -250,6 +242,9 @@ public class Main extends JFrame implements MouseListener {
 			public void actionPerformed(ActionEvent e) {
 				welcomePage.setVisible(false);
 				gui.setVisible(true);
+				timeremaining = timeSlider.getValue()*60;
+				timer = new countDownTimer(label, m0);
+				timer.start();
 			}
 		});
 		welcomePage.add(start, BorderLayout.SOUTH);
@@ -265,9 +260,10 @@ public class Main extends JFrame implements MouseListener {
 		// ensures the minimum size is enforced.
 		this.setMinimumSize(this.getSize());
 		this.setVisible(true);
+		this.setResizable(false);
 
 	}
-
+	
 	public JPanel getGui() {
 		return gui;
 	}
@@ -275,6 +271,17 @@ public class Main extends JFrame implements MouseListener {
 	public JPanel getWelcome() {
 		return welcomePage;
 	}
+	
+	public void pauseGame() {
+		
+		if (states == false){
+			timer.pause();
+			states = true;
+		}else {
+			timer.resume();
+		}
+	}
+	
 
 	public void Initial() {
 		timer.reset();
@@ -481,7 +488,7 @@ public class Main extends JFrame implements MouseListener {
 		}
 		this.setVisible(true);
 		this.setResizable(false);
-		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		Initial();
 	}
 
 	public ArrayList<Cell> filterDestination(Piece p, ArrayList<Cell> a) {
@@ -716,6 +723,9 @@ public class Main extends JFrame implements MouseListener {
 				gameOver();
 		}
 		return p * -1;
+	}
+	public void playerChange() {
+		this.player = this.player*-1;
 	}
 	
 	

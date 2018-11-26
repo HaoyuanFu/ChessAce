@@ -2,6 +2,7 @@ package board;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
@@ -30,6 +31,7 @@ public class Cell extends JPanel {
 		this.isCheck = false;
 		this.isSelected = false;
 		this.isPOS = false;
+		this.setPreferredSize(new Dimension(98,98));
 		if ((x + y) % 2 == 0)
 			this.setBackground(new Color(160, 82, 45));
 		else
@@ -112,4 +114,5 @@ public class Cell extends JPanel {
 	public int gY() {
 		return this.y;
 	}
+	
 }
