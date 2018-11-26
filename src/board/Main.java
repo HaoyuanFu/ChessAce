@@ -93,7 +93,7 @@ public class Main extends JFrame implements MouseListener {
 		tools.addSeparator();
 
 		JButton Pause = new JButton("Pause");
-		New.addActionListener(new ActionListener() {
+		Pause.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pauseGame();
 			}
@@ -273,12 +273,12 @@ public class Main extends JFrame implements MouseListener {
 	}
 	
 	public void pauseGame() {
-		
 		if (states == false){
 			timer.pause();
 			states = true;
 		}else {
 			timer.resume();
+			states = false;
 		}
 	}
 	

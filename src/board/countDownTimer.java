@@ -29,15 +29,11 @@ public class countDownTimer {
 		countdownTimer.start();
 	}
 	
-	void resume() {
-	    // Restore the time we're counting down from and restart the timer.
-	    lastUpdate = System.currentTimeMillis();
+	public void resume() {
 	    countdownTimer.start(); // Start the timer
 	  }
 	
 	public void pause() {
-		long now = System.currentTimeMillis();
-	    Timeremain -= (now - lastUpdate);
 	    countdownTimer.stop(); // Stop the timer
 	}
 	
