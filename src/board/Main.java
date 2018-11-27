@@ -68,6 +68,9 @@ public class Main extends JFrame implements MouseListener {
 	private ArrayList<Cell> filteredList = new ArrayList<Cell>();
 	private ArrayList<Cell> attacker;
 	
+	private ArrayList<Piece> white;
+	private ArrayList<Piece> black;
+	
 	private JLabel label;
 	private JPanel displayTime;
 	private JSlider timeSlider;
@@ -141,6 +144,8 @@ public class Main extends JFrame implements MouseListener {
 		
 		chessBoard = new JPanel(new GridLayout(8, 8));
 		
+		white = new ArrayList<Piece>();
+		black = new ArrayList<Piece>();
 		// variable initialization
 		previous = new Cell(9, 9, null);
 		current = new Cell(9, 9, null);
@@ -150,22 +155,22 @@ public class Main extends JFrame implements MouseListener {
 		Cell cell;
 		wqn = 1;
 		bqn = 1;
-		wrk1 = new Rook("WRK1", "White_Rook.png", 7, 0, 1);
-		wrk2 = new Rook("WRK2", "White_Rook.png", 7, 7, 1);
-		brk1 = new Rook("BRK1", "Black_Rook.png", 0, 0, -1);
-		brk2 = new Rook("BRK2", "Black_Rook.png", 0, 7, -1);
-		wknt1 = new Knight("WKNT1", "White_Knight.png", 7, 1, 1);
-		wknt2 = new Knight("WKNT2", "White_Knight.png", 7, 6, 1);
-		bknt1 = new Knight("BKNT1", "Black_Knight.png", 0, 1, -1);
-		bknt2 = new Knight("BKNT2", "Black_Knight.png", 0, 6, -1);
-		wbsp1 = new Bishop("WBSP1", "White_Bishop.png", 7, 2, 1);
-		wbsp2 = new Bishop("WBSP2", "White_Bishop.png", 7, 5, 1);
-		bbsp1 = new Bishop("BBSP1", "Black_Bishop.png", 0, 2, -1);
-		bbsp2 = new Bishop("BBSP2", "Black_Bishop.png", 0, 5, -1);
-		wqn1 = new Queen("WQN1", "White_Queen.png", 7, 3, 1);
-		bqn1 = new Queen("BQN1", "Black_Queen.png", 0, 3, -1);
-		wkg1 = new King("WKG1", "White_King.png", 7, 4, 1);
-		bkg1 = new King("BKG1", "Black_King.png", 0, 4, -1);
+		wrk1 = new Rook("WRK1", "White_Rook.png", 7, 0, 1); white.add(wrk1);
+		wrk2 = new Rook("WRK2", "White_Rook.png", 7, 7, 1); white.add(wrk2);
+		brk1 = new Rook("BRK1", "Black_Rook.png", 0, 0, -1); black.add(brk1);
+		brk2 = new Rook("BRK2", "Black_Rook.png", 0, 7, -1); black.add(brk2);
+		wknt1 = new Knight("WKNT1", "White_Knight.png", 7, 1, 1); white.add(wknt1);
+		wknt2 = new Knight("WKNT2", "White_Knight.png", 7, 6, 1); white.add(wknt2);
+		bknt1 = new Knight("BKNT1", "Black_Knight.png", 0, 1, -1); black.add(bknt1);
+		bknt2 = new Knight("BKNT2", "Black_Knight.png", 0, 6, -1); black.add(bknt2);
+		wbsp1 = new Bishop("WBSP1", "White_Bishop.png", 7, 2, 1); white.add(wbsp1);
+		wbsp2 = new Bishop("WBSP2", "White_Bishop.png", 7, 5, 1); white.add(wbsp2);
+		bbsp1 = new Bishop("BBSP1", "Black_Bishop.png", 0, 2, -1); black.add(bbsp1);
+		bbsp2 = new Bishop("BBSP2", "Black_Bishop.png", 0, 5, -1); black.add(bbsp2);
+		wqn1 = new Queen("WQN1", "White_Queen.png", 7, 3, 1); white.add(wqn1);
+		bqn1 = new Queen("BQN1", "Black_Queen.png", 0, 3, -1); black.add(bqn1);
+		wkg1 = new King("WKG1", "White_King.png", 7, 4, 1); white.add(wkg1);
+		bkg1 = new King("BKG1", "Black_King.png", 0, 4, -1); black.add(bkg1);
 		wpn1 = new Pawn[8];
 		bpn1 = new Pawn[8];
 
@@ -174,8 +179,8 @@ public class Main extends JFrame implements MouseListener {
 		attacker = new ArrayList<Cell>();
 
 		for (int i = 0; i < 8; i++) {
-			wpn1[i] = new Pawn("WPN" + i, "White_Pawn.png", 6, i, 1);
-			bpn1[i] = new Pawn("BPN" + i, "Black_Pawn.png", 1, i, -1);
+			wpn1[i] = new Pawn("WPN" + i, "White_Pawn.png", 6, i, 1); white.add(wpn1[i]);
+			bpn1[i] = new Pawn("BPN" + i, "Black_Pawn.png", 1, i, -1); black.add(bpn1[i]);
 		}
 
 		for (int i = 0; i < 8; i++)
@@ -284,6 +289,8 @@ public class Main extends JFrame implements MouseListener {
 	
 
 	public void Initial() {
+		white.clear();
+		black.clear();
 		message.setText("White turn");
 		timer.reset();
 		timer.start();
@@ -296,22 +303,22 @@ public class Main extends JFrame implements MouseListener {
 		Cell cell;
 		wqn = 1;
 		bqn = 1;
-		wrk1 = new Rook("WRK1", "White_Rook.png", 7, 0, 1);
-		wrk2 = new Rook("WRK2", "White_Rook.png", 7, 7, 1);
-		brk1 = new Rook("BRK1", "Black_Rook.png", 0, 0, -1);
-		brk2 = new Rook("BRK2", "Black_Rook.png", 0, 7, -1);
-		wknt1 = new Knight("WKNT1", "White_Knight.png", 7, 1, 1);
-		wknt2 = new Knight("WKNT2", "White_Knight.png", 7, 6, 1);
-		bknt1 = new Knight("BKNT1", "Black_Knight.png", 0, 1, -1);
-		bknt2 = new Knight("BKNT2", "Black_Knight.png", 0, 6, -1);
-		wbsp1 = new Bishop("WBSP1", "White_Bishop.png", 7, 2, 1);
-		wbsp2 = new Bishop("WBSP2", "White_Bishop.png", 7, 5, 1);
-		bbsp1 = new Bishop("BBSP1", "Black_Bishop.png", 0, 2, -1);
-		bbsp2 = new Bishop("BBSP2", "Black_Bishop.png", 0, 5, -1);
-		wqn1 = new Queen("WQN1", "White_Queen.png", 7, 3, 1);
-		bqn1 = new Queen("BQN1", "Black_Queen.png", 0, 3, -1);
-		wkg1 = new King("WKG1", "White_King.png", 7, 4, 1);
-		bkg1 = new King("BKG1", "Black_King.png", 0, 4, -1);
+		wrk1 = new Rook("WRK1", "White_Rook.png", 7, 0, 1); white.add(wrk1);
+		wrk2 = new Rook("WRK2", "White_Rook.png", 7, 7, 1); white.add(wrk2);
+		brk1 = new Rook("BRK1", "Black_Rook.png", 0, 0, -1); black.add(brk1);
+		brk2 = new Rook("BRK2", "Black_Rook.png", 0, 7, -1); black.add(brk2);
+		wknt1 = new Knight("WKNT1", "White_Knight.png", 7, 1, 1); white.add(wknt1);
+		wknt2 = new Knight("WKNT2", "White_Knight.png", 7, 6, 1); white.add(wknt2);
+		bknt1 = new Knight("BKNT1", "Black_Knight.png", 0, 1, -1); black.add(bknt1);
+		bknt2 = new Knight("BKNT2", "Black_Knight.png", 0, 6, -1); black.add(bknt2);
+		wbsp1 = new Bishop("WBSP1", "White_Bishop.png", 7, 2, 1); white.add(wbsp1);
+		wbsp2 = new Bishop("WBSP2", "White_Bishop.png", 7, 5, 1); white.add(wbsp2);
+		bbsp1 = new Bishop("BBSP1", "Black_Bishop.png", 0, 2, -1); black.add(bbsp1);
+		bbsp2 = new Bishop("BBSP2", "Black_Bishop.png", 0, 5, -1); black.add(bbsp2);
+		wqn1 = new Queen("WQN1", "White_Queen.png", 7, 3, 1); white.add(wqn1);
+		bqn1 = new Queen("BQN1", "Black_Queen.png", 0, 3, -1); black.add(bqn1);
+		wkg1 = new King("WKG1", "White_King.png", 7, 4, 1); white.add(wkg1);
+		bkg1 = new King("BKG1", "Black_King.png", 0, 4, -1); black.add(bkg1);
 		wpn1 = new Pawn[8];
 		bpn1 = new Pawn[8];
 
@@ -320,10 +327,10 @@ public class Main extends JFrame implements MouseListener {
 		attacker = new ArrayList<Cell>();
 
 		for (int i = 0; i < 8; i++) {
-			wpn1[i] = new Pawn("WPN" + i, "White_Pawn.png", 6, i, 1);
-			bpn1[i] = new Pawn("BPN" + i, "Black_Pawn.png", 1, i, -1);
+			wpn1[i] = new Pawn("WPN" + i, "White_Pawn.png", 6, i, 1); white.add(wpn1[i]);
+			bpn1[i] = new Pawn("BPN" + i, "Black_Pawn.png", 1, i, -1); black.add(bpn1[i]);
 		}
-
+		
 		for (int i = 0; i < 8; i++)
 			for (int j = 0; j < 8; j++) {
 				if (i == 0 && j == 0)
@@ -373,6 +380,13 @@ public class Main extends JFrame implements MouseListener {
 	}
 
 	public void move(Cell a, Cell b) {
+		if(b.getPiece() != null) {
+			if(player == 1) {
+				black.remove(b.getPiece());
+			}else {
+				white.remove(b.getPiece());
+			}
+		}
 		b.removePiece();
 		b.setPiece(a.getPiece());
 		a.removePiece();
@@ -414,16 +428,40 @@ public class Main extends JFrame implements MouseListener {
 	}
 
 	public void transform(Cell c) {
+		Piece p;
 		if (c.getPiece().getColor() == 1) {
+			white.remove(c.getPiece());
 			c.removePiece();
-			c.setPiece(new Queen("WQN" + (1 + wqn), "White_Queen.png", c.gX(), c.gY(), 1));
+			p = new Queen("WQN" + (1 + wqn), "White_Queen.png", c.gX(), c.gY(), 1);
+			c.setPiece(p);
 			wqn += 1;
+			white.add(p);
 		} else {
+			black.remove(c.getPiece());
 			c.removePiece();
-			c.setPiece(new Queen("BQN" + (1 + bqn), "Black_Queen.png", c.gX(), c.gY(), -1));
+			p = new Queen("BQN" + (1 + bqn), "Black_Queen.png", c.gX(), c.gY(), -1);
+			c.setPiece(p);
 			bqn += 1;
+			black.add(p);
 		}
 
+	}
+	
+	public boolean existPos(int color) {
+		if(color == 1) {
+			for(Piece p : white){
+				if(!(filterDestination(p,p.posMove(pos)).isEmpty())) {
+					System.out.println(p.getId());
+					return true;
+				}
+			}
+		}else{
+			for(Piece p : black){
+				if(!(filterDestination(p,p.posMove(pos)).isEmpty()))
+					return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean checkmate(int color, ArrayList<Cell> attack) {
@@ -433,18 +471,18 @@ public class Main extends JFrame implements MouseListener {
 		Piece p;
 		ArrayList<Cell> checkList = filterDestination(retrieveKing(color), retrieveKing(color).posMove(pos));
 		if (checkList.isEmpty())
-			System.out.println("+1");
 			king = true;
-			System.out.println(king);
 		if (attack.size() == 1) {
+			System.out.println("1.1");
 			if (attack.get(0).getPiece().isKingInDanger(pos)) {
-				System.out.println("-1.1");
-				piece = false;
+				if(existPos(color))
+					piece = false;
 			}
 		} else {
 			for (Cell a : attack) {
 				checkCell = a;
 				if (checkCell.getPiece() != null) {
+					System.out.println("1.2");
 					p = checkCell.getPiece();
 					checkCell.removePiece();
 					if (color == 1)
@@ -453,23 +491,23 @@ public class Main extends JFrame implements MouseListener {
 						checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
 					if (checkCell.getPiece().isKingInDanger(pos)) {
 						checkCell.removePiece();
-						System.out.println("-1.2");
-						piece = false;
-						break;
+						checkCell.setPiece(p);
+						if(existPos(color)) {
+							piece = false;
+							break;
+						}
 					}
 					checkCell.removePiece();
 					checkCell.setPiece(p);
 					p = null;
 				} else if(checkCell.getPiece() == null){
+					System.out.println("1.3");
 					if (color == 1)
 						checkCell.setPiece(new Pawn("n", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
 					else
 						checkCell.setPiece(new Pawn("n", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
 					if (checkCell.getPiece().isKingInDanger(pos)) {
 						checkCell.removePiece();
-						System.out.println(checkCell.gX());
-						System.out.println(checkCell.gY());
-						System.out.println("-1.3");
 						piece = false;
 						break;
 					} else {
@@ -714,8 +752,10 @@ public class Main extends JFrame implements MouseListener {
 			timer.reset();
 			timer.start();
 		if (isCheckmate == true) {
-			if (checkmate(p * -1, attacker))
+			if (!(existPos(p * -1))) {
 				gameOver();
+				return 1;
+			}
 		}
 		return p * -1;
 	}
