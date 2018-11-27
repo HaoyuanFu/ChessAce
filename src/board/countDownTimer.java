@@ -29,14 +29,6 @@ public class countDownTimer {
 		countdownTimer.start();
 	}
 	
-	public void resume() {
-	    countdownTimer.start(); // Start the timer
-	  }
-	
-	public void pause() {
-	    countdownTimer.stop(); // Stop the timer
-	}
-	
 	public void stop() {
 		countdownTimer.stop();
 	}

@@ -274,10 +274,10 @@ public class Main extends JFrame implements MouseListener {
 	
 	public void pauseGame() {
 		if (states == false){
-			timer.pause();
+			timer.stop();
 			states = true;
 		}else {
-			timer.resume();
+			timer.start();
 			states = false;
 		}
 	}
@@ -593,6 +593,8 @@ public class Main extends JFrame implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
+		timer.start();
+		states = false;
 		current = (Cell) arg0.getSource();
 		// haven't select any filled cell yet, check if it is the player's turn and
 		// record the selection of the cell.
