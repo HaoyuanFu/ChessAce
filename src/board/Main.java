@@ -284,6 +284,7 @@ public class Main extends JFrame implements MouseListener {
 	
 
 	public void Initial() {
+		message.setText("White turn");
 		timer.reset();
 		timer.start();
 		chessBoard.removeAll();
@@ -453,7 +454,7 @@ public class Main extends JFrame implements MouseListener {
 					if (checkCell.getPiece().isKingInDanger(pos)) {
 						checkCell.removePiece();
 						System.out.println("-1.2");
-						piece = true;
+						piece = false;
 						break;
 					}
 					checkCell.removePiece();
@@ -581,17 +582,6 @@ public class Main extends JFrame implements MouseListener {
 		}
 		this.revalidate();
 		this.repaint();
-	}
-
-	public void display() {
-		for (Cell[] x : pos) {
-			for (Cell y : x) {
-				if (y.getPiece() != null)
-					System.out.format("%7s", y.getPiece().getId() + " ");
-				else
-					System.out.format("%7s", "EM ");
-			}
-		}
 	}
 
 	@Override
