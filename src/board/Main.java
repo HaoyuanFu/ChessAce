@@ -426,17 +426,20 @@ public class Main extends JFrame implements MouseListener {
 	}
 
 	public boolean checkmate(int color, ArrayList<Cell> attack) {
-		int result = 0;
-		int stats = 0;
+		boolean king = false;
+		boolean piece = true;
 		Cell checkCell;
 		Piece p;
-
 		ArrayList<Cell> checkList = filterDestination(retrieveKing(color), retrieveKing(color).posMove(pos));
 		if (checkList.isEmpty())
-			result++;
+			System.out.println("+1");
+			king = true;
+			System.out.println(king);
 		if (attack.size() == 1) {
-			if (attack.get(0).getPiece().isKingInDanger(pos))
-				stats++;
+			if (attack.get(0).getPiece().isKingInDanger(pos)) {
+				System.out.println("-1.1");
+				piece = false;
+			}
 		} else {
 			for (Cell a : attack) {
 				checkCell = a;
@@ -444,25 +447,29 @@ public class Main extends JFrame implements MouseListener {
 					p = checkCell.getPiece();
 					checkCell.removePiece();
 					if (color == 1)
-						checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
+						checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
 					else
-						checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
+						checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
 					if (checkCell.getPiece().isKingInDanger(pos)) {
 						checkCell.removePiece();
-						stats++;
+						System.out.println("-1.2");
+						piece = true;
 						break;
 					}
 					checkCell.removePiece();
 					checkCell.setPiece(p);
 					p = null;
-				} else {
+				} else if(checkCell.getPiece() == null){
 					if (color == 1)
-						checkCell.setPiece(new Pawn("", "White_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
+						checkCell.setPiece(new Pawn("n", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), -1));
 					else
-						checkCell.setPiece(new Pawn("", "Black_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
+						checkCell.setPiece(new Pawn("n", "White_Pawn.png", checkCell.gX(), checkCell.gY(), 1));
 					if (checkCell.getPiece().isKingInDanger(pos)) {
 						checkCell.removePiece();
-						stats++;
+						System.out.println(checkCell.gX());
+						System.out.println(checkCell.gY());
+						System.out.println("-1.3");
+						piece = false;
 						break;
 					} else {
 						checkCell.removePiece();
@@ -470,9 +477,7 @@ public class Main extends JFrame implements MouseListener {
 				}
 			}
 		}
-		if (stats == 0)
-			result++;
-		if (result == 2)
+		if (king && piece)
 			return true;
 		else
 			return false;
@@ -534,7 +539,6 @@ public class Main extends JFrame implements MouseListener {
 			Iterator<Cell> moveIterator = a.iterator();
 			while (moveIterator.hasNext()) {
 				moveCell = moveIterator.next();
-				// System.out.println(moveCell.gX() + "::" + moveCell.gY());
 				p.setX(moveCell.gX());
 				p.setY(moveCell.gY());
 				if (moveCell.getPiece() != null) {
@@ -587,7 +591,6 @@ public class Main extends JFrame implements MouseListener {
 				else
 					System.out.format("%7s", "EM ");
 			}
-			System.out.println();
 		}
 	}
 
@@ -628,7 +631,6 @@ public class Main extends JFrame implements MouseListener {
 				if (filteredList.contains(current)) {
 					// if the selected piece is king
 					if (previous.getPiece() instanceof King) {
-						// System.out.println("aha");
 						/*
 						 * check castling status
 						 */
@@ -693,11 +695,12 @@ public class Main extends JFrame implements MouseListener {
 					// check checkmate status on the enemy king, if true, set isCheckMate to true.
 					// Check if it is checkmated, if true, call gameover();
 					if (retrieveKing(player * -1).isKingInDanger(pos, attacker)) {
+						System.out.println("A");
 						retrieveKing(player * -1).setCheckmate();
 						pos[retrieveKing(player * -1).getX()][retrieveKing(player * -1).getY()].check();
 						isCheckmate = true;
-						// if(checkmate(player * -1))
-						// gameOver();
+						//if(checkmate(player * -1, System.out.println("+1");))
+							//gameOver();
 					}
 					// switch side
 					player = switchSide(player);

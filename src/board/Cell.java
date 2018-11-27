@@ -70,9 +70,6 @@ public class Cell extends JPanel {
 	}
 	
 	public void deselect() {
-		System.out.println("here");
-		System.out.println(this.gX());
-		System.out.println(this.gY());
 		this.setBorder(null);
 		this.isSelected = false;
 	}
