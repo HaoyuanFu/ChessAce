@@ -73,12 +73,6 @@ public abstract class Piece implements Cloneable {
 		return this.color;
 	}
 
-	// Function to return the a "shallow" copy of the object. The copy has exact
-	// same variable value but different reference
-	public Piece getcopy() throws CloneNotSupportedException {
-		return (Piece) this.clone();
-	}
-
 	public boolean isKingInDanger(Cell[][] pos) {
 		// Checking for attact form the Pawn of opposite color
 		if (x + 1 >= 0 && x + 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x + 1][y + 1].getPiece() instanceof Pawn
@@ -246,61 +240,32 @@ public abstract class Piece implements Cloneable {
 				&& pos[x - 2][y + 1].getPiece().getColor() != this.getColor())
 			return true;
 		// Check for attack from King of opposite color
-		/*if (x + 1 >= 0 && x + 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x + 1][y + 1].getPiece() instanceof King
+		if (x + 1 >= 0 && x + 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x + 1][y + 1].getPiece() instanceof King
 				&& pos[x + 1][y + 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x + 1, y + 1, pos))
 				return true;
 		if (x - 1 >= 0 && x - 1 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x - 1][y - 1].getPiece() instanceof King
 				&& pos[x - 1][y - 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x - 1, y - 1, pos))
 				return true;
 		if (x + 1 >= 0 && x + 1 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x + 1][y - 1].getPiece() instanceof King
 				&& pos[x + 1][y - 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x + 1, y - 1, pos))
 				return true;
 		if (x - 1 >= 0 && x - 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x - 1][y + 1].getPiece() instanceof King
 				&& pos[x - 1][y + 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x - 1, y + 1, pos))
 				return true;
 		if (y + 1 >= 0 && y + 1 < 8 && pos[x][y + 1].getPiece() instanceof King
 				&& pos[x][y + 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x, y + 1, pos))
 				return true;
 		if (x + 1 >= 0 && x + 1 < 8 && pos[x + 1][y].getPiece() instanceof King
 				&& pos[x + 1][y].getPiece().getColor() != this.getColor())
-			if (checkSecond(x + 1, y, pos))
 				return true;
 		if (x - 1 >= 0 && x - 1 < 8 && pos[x - 1][y].getPiece() instanceof King
 				&& pos[x - 1][y].getPiece().getColor() != this.getColor())
-			if (checkSecond(x - 1, y, pos))
 				return true;
 		if (y - 1 >= 0 && y - 1 < 8 && pos[x][y - 1].getPiece() instanceof King
 				&& pos[x][y - 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x, y - 1, pos))
-				return true;*/
+				return true;
 		return false;
 	}
 
-	/*private boolean checkSecond(int x0, int y0, Cell[][] pos) {
-		Piece p;
-		p = pos[x][y].getPiece();
-		pos[x][y].removePiece();
-		pos[x][y].setPiece(pos[x0][y0].getPiece());
-		pos[x0][y0].removePiece();
-		if (pos[x][y].getPiece().isKingInDanger(pos)) {
-			System.out.println("danger");
-			pos[x0][y0].setPiece(pos[x][y].getPiece());
-			pos[x][y].removePiece();
-			if (p != null) {
-				pos[x][y].setPiece(p);
-			}
-			return false;
-		}
-		pos[x0][y0].setPiece(pos[x][y].getPiece());
-		pos[x][y].removePiece();
-		if (p != null) {
-			pos[x][y].setPiece(p);
-		}
-		return true;
-	}*/
+	
 }
