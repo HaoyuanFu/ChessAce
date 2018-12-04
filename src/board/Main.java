@@ -36,10 +36,14 @@ import piece.Queen;
 import piece.Rook;
 import javax.swing.JSlider;
 
+/** Main class
+ * @version 1.0 (current version number of program)
+ * @since 0.0
+ * @author Xingjian
+ *
+ */
 public class Main extends JFrame implements MouseListener {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private Cell[][] pos;
@@ -74,6 +78,12 @@ public class Main extends JFrame implements MouseListener {
 
 	private boolean states = false;
 
+	/**
+	 * Constructor of Main Instance, initializing all GUI components, including
+	 * toolbar, chessboard, countdownTimer. Also, load the data of all pieces, and
+	 * set them into correct position. Record pieces with same color in a data
+	 * structure for future use.
+	 */
 	public Main() throws IOException {
 		JToolBar tools = new JToolBar();
 		Main m0 = this;
@@ -186,7 +196,6 @@ public class Main extends JFrame implements MouseListener {
 
 		pos = new Cell[8][8];
 
-
 		for (int i = 0; i < 8; i++) {
 			wpn1[i] = new Pawn("WPN" + i, "White_Pawn.png", 6, i, 1);
 			white.add(wpn1[i]);
@@ -280,15 +289,15 @@ public class Main extends JFrame implements MouseListener {
 
 	}
 
-	public JPanel getGui() {
+	private JPanel getGui() {
 		return gui;
 	}
 
-	public JPanel getWelcome() {
+	private JPanel getWelcome() {
 		return welcomePage;
 	}
 
-	public void pauseGame() {
+	private void pauseGame() {
 		if (states == false) {
 			timer.stop();
 			states = true;
@@ -298,7 +307,8 @@ public class Main extends JFrame implements MouseListener {
 		}
 	}
 
-	public void Initial() {
+	// re-load the initial data for chess game.
+	private void Initial() {
 		white.clear();
 		black.clear();
 		message.setText("White turn");
@@ -404,15 +414,17 @@ public class Main extends JFrame implements MouseListener {
 		chessBoard.revalidate();
 		chessBoard.repaint();
 	}
-	
-	public void highlight(ArrayList<Cell> list) {
+
+	// highligh a list of cell in the purpose of possibleMove
+	private void highlight(ArrayList<Cell> list) {
 		Iterator<Cell> moveIterator = list.iterator();
 		while (moveIterator.hasNext()) {
 			moveIterator.next().setPos();
 		}
 	}
 
-	public void unhighlight(ArrayList<Cell> list) {
+	// unhighlight a list of cell in the purpose of possibleMove
+	private void unhighlight(ArrayList<Cell> list) {
 		Iterator<Cell> moveIterator = list.iterator();
 		while (moveIterator.hasNext()) {
 			moveIterator.next().removePos();
@@ -421,6 +433,14 @@ public class Main extends JFrame implements MouseListener {
 		this.repaint();
 	}
 
+	/**
+	 * move all contents from a to b. Clear all contents of a, and if b has a piece
+	 * before, remove it from the cell, and the data structure storing pieces with
+	 * the same color.
+	 * 
+	 * @param a from-Cell
+	 * @param b to-Cell
+	 */
 	public void move(Cell a, Cell b) {
 		if (b.getPiece() != null) {
 			if (player == 1) {
@@ -439,11 +459,18 @@ public class Main extends JFrame implements MouseListener {
 		current = empty;
 	}
 
-	public void castling(Cell king, Cell kTo, Cell rook, Cell rTo) {
+	// double move statement to move king and rook at the same time
+	private void castling(Cell king, Cell kTo, Cell rook, Cell rTo) {
 		move(king, kTo);
 		move(rook, rTo);
 	}
 
+	/**
+	 * check if p to c can perform a valid castling action
+	 * 
+	 * @param p from-cell
+	 * @param c to-cell
+	 */
 	public int isCastling(Cell p, Cell c) {
 		if (p.getPiece() instanceof King && !(p.getPiece().isMoved())) {
 			if (p.gY() - c.gY() == 2) {
@@ -460,6 +487,11 @@ public class Main extends JFrame implements MouseListener {
 		return -1;
 	}
 
+	/**
+	 * @param color color of King we want to retrieve
+	 * @return color = 1 => retrieve the white king instance; color = -1 => retrieve
+	 *         the black king instance.
+	 */
 	public King retrieveKing(int color) {
 		if (color == 1) {
 			return wkg1;
@@ -469,6 +501,12 @@ public class Main extends JFrame implements MouseListener {
 			return null;
 	}
 
+	/**
+	 * remove all contents on Cell c, and set a new Queen instance of Cell c based
+	 * on the previous piece's color.
+	 * 
+	 * @param c Cell
+	 */
 	public void transform(Cell c) {
 		Piece p;
 		if (c.getPiece().getColor() == 1) {
@@ -489,6 +527,15 @@ public class Main extends JFrame implements MouseListener {
 
 	}
 
+	/**
+	 * By analyzing the posMove list of Piece p, remove all the possibility that
+	 * will cause a checkmate on the friendly king. (isKingInDanger in Piece.java
+	 * used.)
+	 * 
+	 * @param p Piece
+	 * @param a corresponding PosMove list
+	 * @return list of Cell that can actually move to depends on the list a.
+	 */
 	public ArrayList<Cell> filterDestination(Piece p, ArrayList<Cell> a) {
 		ArrayList<Cell> newList = new ArrayList<Cell>();
 		Cell moveCell;
@@ -558,6 +605,12 @@ public class Main extends JFrame implements MouseListener {
 		return newList;
 	}
 
+	/**
+	 * Evaluating the current situation and selected piece. Decide what kind of
+	 * operation the user wants to do. Validate and decide to perform or not.
+	 * 
+	 * @param arg0 a mouseEvent
+	 */
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		timer.start();
@@ -678,7 +731,9 @@ public class Main extends JFrame implements MouseListener {
 		}
 	}
 
-	public int switchSide(int p) {
+	// reset the timer and change the active player.
+	// Also, if detect a check situation, verify if the game is over or not.
+	private int switchSide(int p) {
 		if (p * -1 == 1) {
 			message.setText("White turn");
 			timer.reset();
@@ -695,7 +750,14 @@ public class Main extends JFrame implements MouseListener {
 		}
 		return p * -1;
 	}
-	
+
+	/**
+	 * Iterate through the data structure storing the pieces with the same color,
+	 * check if there exists any feasible movement that will remove the check state
+	 * and will not invoke another check state.
+	 * 
+	 * @return true if such movement exists; false otherwise
+	 */
 	public boolean existPos(int color) {
 		if (color == 1) {
 			for (Piece p : white) {
@@ -711,7 +773,10 @@ public class Main extends JFrame implements MouseListener {
 		}
 		return false;
 	}
-	
+
+	/**
+	 * gameOver re-load the game
+	 */
 	public void gameOver() {
 		filteredList.clear();
 		timer.stop();
@@ -725,6 +790,9 @@ public class Main extends JFrame implements MouseListener {
 		Initial();
 	}
 
+	/**
+	 * change the active player, designed specifically for countdownTimer.
+	 */
 	public void playerChange() {
 		this.player = this.player * -1;
 	}

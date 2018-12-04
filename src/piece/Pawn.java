@@ -5,13 +5,25 @@ import java.util.ArrayList;
 import board.Cell;
 
 /**
- * This is the Pawn Class inherited from the piece
- *
- */
+ * This is the Pawn Class inherited from the abstract Piece class
+ *	
+ * @author Harry Fu
+ * @version     1.0                 (current version number of program)
+ * @since       0.0          
+ * 
+ */ 
 public class Pawn extends Piece{
 	private boolean promoPossible;
 
-	//Constructors
+	/**
+	 * Constructor of King Instance, initializing its position, color and corresponding PNG picture. Set promoPossible to false.
+	 *
+	 * @param id used for identification
+	 * @param p PNG picture path
+	 * @param x x-coordinate
+	 * @param y y-coordinate
+	 * @param c 1: white, -1: black
+	 */
 	public Pawn(String Id, String path, int x, int y, int color) {
 		setId(Id);
 		setPath(path);
@@ -20,16 +32,31 @@ public class Pawn extends Piece{
 		setY(y);
 		this.promoPossible = false;
 	}
-
+	
+	/** 
+	 * make Pawn be able to promote
+	 */
 	public void setPromo(){
 		this.promoPossible = true;
 	}
 	
+	/** 
+	 * @return if Pawn is able to promote
+	 */
 	public boolean getPromo() {
 		return this.promoPossible;
 	}
-
-	//Move Function Overridden
+	
+	/**
+	 * Check the possible movement of this piece. Iterate through possible path according to the game rules, and break the iteration
+	 * when blocked by other pieces or hit the edge of the board. If iteration hits a enemy piece, include the corresponding cell for
+	 * elimination
+	 * <p>
+	 * Pawn moves in forward directions with length 1. First Movement can move forward by 2. Elimination is forward diagonal direction by 1.
+	 * </p>
+	 * @param pos board state about positions of pieces.
+	 * @return An ArrayList structure contains all cells that the piece can move to.
+	 */
 	@Override
 	public ArrayList<Cell> posMove(Cell[][] pos){
 		//Pawn only moves one step except the first step, for the first step it may move one or two steps
