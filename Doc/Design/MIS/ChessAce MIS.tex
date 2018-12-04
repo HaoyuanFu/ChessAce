@@ -127,11 +127,11 @@ getY & ~ & int & ~\\
 
 \subsubsection* {State Variables}
 
-$x$: int\\
-$y$: int\\
-$isChecked$: boolean\\
-$isSelected$: boolean\\
-$isPos$: boolean\\
+$x: \mathbb{N}$\\
+$y: \mathbb{N}$\\
+$isChecked: \mathbb{B}$\\
+$isSelected: \mathbb{B}$\\
+$isPos: \mathbb{B}$\\
 $piece$: Piece\\
 $content$: JLabel\\
 
@@ -328,14 +328,14 @@ isKingInDanger & sequence of sequence of cell & boolean &  ~\\
 
 \subsubsection* {State Variables}
 
-$neverMoved$: bool\\
-$color$: int \\
+$neverMoved: \mathbb{B}$\\
+$color: \mathbb{N} $\\
 $Id$: String \\
 $path$: String\\
 $possiblemoves$: Sequence of Cell \\
 $posMove$ : abstract function\\
-$x$: int\\
-$y$: int\\
+$x: \mathbb{N}$\\
+$y: \mathbb{N}$\\
 
 \subsubsection* {State Invariant}
 
@@ -679,7 +679,7 @@ posMove & sequence of sequence of Cell & sequence of Cell & ~\\
 
 \subsubsection* {State Variables}
 
-$promoPossible$: bool
+$promoPossible: \mathbb{B}$
 
 \subsubsection* {State Invariant}
 
@@ -1057,7 +1057,7 @@ isKingInDanger & sequence of sequence of Cell & bool & ~\\
 
 \subsubsection* {State Variables}
 
-$notCheckmated$: bool
+$notCheckmated: \mathbb{B}$
 
 \subsubsection* {State Invariant}
 
@@ -1121,7 +1121,7 @@ Main = ?
 \hline
 \textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
 \hline
-Initial & ~ & ~ & ~\\
+Main & ~ & Main & ~\\
 \hline
 move & Cell, Cell & ~ & ~\\
 \hline
@@ -1136,6 +1136,10 @@ filterDestination & Piece, sequence of Cell & ~ & ~\\
 existPos$^{*}$ & int$^{*}$ & boolean & ~\\
 \hline
 mouseClicked & int, int & ~ & WrongPlayerException, DuplicateCellException\\
+\hline
+gameOver$^{*}$ &~& ~ & ~\\
+\hline
+playerChange$^{*}$ &~ & ~ & ~\\
 \hline
 
 \end{tabular}\\
@@ -1158,7 +1162,7 @@ $player$: int
 
 \subsubsection* {Access Routine Semantics}
 
-Initial():
+Main():
 \begin{itemize}
 \item transition: set up the chess board based on the basic rule. \\
 \\
@@ -1216,6 +1220,7 @@ $c.getPiece().getColor() = 1 \Rightarrow c.setPiece(Queen_{White})\  \wedge \  c
 \item output: If p is an instance of King, keep the move in posMove list that will not cause a stalemate. If p is not an instance of King, keep the move in posMove list that will not cause friendly king to be in stalemate.\\
 \\
 $p \in King \Rightarrow (i : Cell | i \in p.posMove()\  \wedge\  \neg (move(p.Cell, i)\\ \Rightarrow p.isKingInDanger()): i)\ \\ \wedge\ \\ p \not\in King \Rightarrow (i : Cell | i \in p.posMove()\  \wedge\  \neg (move(p.Cell, i) \\ \Rightarrow retrieveKing(p.color).isKingInDanger()): i)$
+\item exception: none
 \end{itemize}
 
 
@@ -1238,13 +1243,112 @@ Depends on the position and type of the piece, identify movement and transform p
 \subitem Rook: set to moved after movement.
 \subitem Other: normal movement 
 \subitem all normal movement just call move()
-check the stalemate status on the hostile king and remove self stalement status.
+review the check status on the hostile king and remove self check status.
+If no movement possible $\Rightarrow$ GameOver
 switch side.
 \item exception: $(pre = \phi \wedge pos[a][b] \ne \phi \wedge pos[a][b].color \ne player) \Rightarrow WrongPlayerException $
 \item exception: $(pre.x = a \wedge pre.y = b) \Rightarrow DuplicateCellException$
 \end{itemize}
+\color{red}
+\noindent gameOver():
+\begin{itemize}
+\item transition: prompt message that the current player has won the game, and re-initiate the game.
+\item exception: none
+\end{itemize}
 
+\noindent playerChange():
+\begin{itemize}
+\item transition: $player = player * -1$
+\item exception: none
+\end{itemize}
 \newpage
+\section* {countDownTimer Module}
+
+\subsection* {countDownTimer Module}
+
+countDownTimer
+
+\subsection* {Uses}
+
+Main
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+countDownTimer = ?
+
+\subsubsection* {Exported Constants}
+
+N/A
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | p{5cm} |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+countDownTimer & JLabel, Main & countDownTimer & ~\\
+\hline
+start & ~ & ~ & ~\\
+\hline
+stop & ~ & ~ & ~\\
+\hline
+reset & ~ & ~ & ~\\
+\hline
+actionPerformed & ActionEvent & ~\\
+\hline
+
+\end{tabular}\\
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+$countdownTimer: Timer$\\
+$label: JLabel$\\
+$timeRemain: \mathbb{N}$\\
+$m: Main$
+
+
+\subsubsection* {State Invariant}
+
+\subsubsection* {Assumptions}
+countDownTime will only be constructed during the construction of Main instance.
+\subsubsection* {Access Routine Semantics}
+
+\noindent countDownTimer(p, m0):
+\begin{itemize}
+\item transition: set countdownTimer, and integrate it with a listener that listens to specific event.
+\subitem $label$ = p, $m$ = m0, $timeRemain$ = m0.timeRemain
+\item output: $self$ 
+\item exception: none
+\end{itemize}
+
+\noindent start():
+\begin{itemize}
+\item transition: start $countdownTimer$
+\item exception: none
+\end{itemize}
+
+\noindent stop():
+\begin{itemize}
+\item transition: stop $countdownTimer$
+\item exception: none
+\end{itemize}
+
+\noindent reset():
+\begin{itemize}
+\item transition: reset $countdownTimer$ to the initial time setting stored in $m$(Main)
+\item exception: none
+\end{itemize}
+
+\noindent actionPerformed():
+\begin{itemize}
+\item transition: After every second, check if there is still time left. If so, formulate the time in min:sec, and display it on the GUI. Discrement $timeRemain$ by 1.\\
+If not, send notification of GameOver state, and initial GameOver routine in Main module.
+\item exception: none
+\end{itemize}
 
 
 \end {document}
