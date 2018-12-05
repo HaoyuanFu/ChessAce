@@ -1,0 +1,1354 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{hhline}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{float}
+\usepackage{ulem}
+\usepackage[usenames, dvipsnames]{color}
+
+\oddsidemargin 0mm
+\evensidemargin 0mm
+\textwidth 160mm
+\textheight 200mm
+\renewcommand\baselinestretch{1.0}
+
+
+
+\pagestyle {plain}
+\pagenumbering{arabic}
+
+\newcounter{stepnum}
+
+\title{ChessAce Module Interface Specification}
+\author{Team 18, Team MIF
+		\\ Jerry Ke, kex1
+		\\ Harry fu, fuh6
+		\\ Morgan Cui, cuim2
+}
+
+\begin {document}
+
+\maketitle
+
+\newpage
+
+\begin{table}[H]
+\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
+\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
+\midrule
+2018-11-9 & 0.0 & MIS for implemented Modules\\
+\bottomrule
+\end{tabularx}
+\caption{\bf Revision History}
+\end{table}
+
+\begin{table}[H]
+
+	\begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
+\toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
+\midrule
+$\phi$ &Null value\\
+\hline
+$||$ &Concatenate\\
+\hline
+$\bigcup$ &Union\\
+\bottomrule
+\end{tabularx}
+		\caption{\bf Table of Symbol Definitions}
+		\label{table2}
+\end{table}	
+
+\newpage
+
+\section* {Cell Module}
+
+\subsection*{Module}
+
+Cell
+
+\subsection* {Uses}
+
+Piece, JPanel
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+Cell = ?
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+Cell & int, int, Piece & Cell & ~\\
+\hline
+setPiece & Piece & ~ & ~\\
+\hline
+removePiece & ~ & ~ & ~\\
+\hline
+getPiece & ~ & Piece & ~\\
+\hline 
+select & ~ & ~ & ~\\
+\hline 
+isSelected & ~ & boolean & ~\\
+\hline 
+deselect & ~ & ~ & ~\\
+\hline 
+check & ~ & ~ & ~\\
+\hline 
+isCheck & ~ & boolean & ~\\
+\hline 
+removeCheck & ~ & ~ & ~\\
+\hline
+setPos & ~ & ~ & ~\\
+\hline
+isPos & ~ & boolean & ~\\
+\hline
+removePos & ~ & ~ & ~ \\
+\hline
+getX & ~ & int & ~\\
+\hline
+getY & ~ & int & ~\\
+\hline
+\end{tabular}
+\newpage 
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+$x: \mathbb{N}$\\
+$y: \mathbb{N}$\\
+$isChecked: \mathbb{B}$\\
+$isSelected: \mathbb{B}$\\
+$isPos: \mathbb{B}$\\
+$piece$: Piece\\
+$content$: JLabel\\
+
+\subsubsection* {State Invariant}
+
+0 $\leq x \leq$ 7\\
+0 $\leq y \leq$ 7 
+
+\subsubsection* {Assumptions}
+The necessary constructor of Cell is called for each abstract Cell object before any
+access routine is called for Piece.  The constructor cannot be called on
+an existing object.
+
+\subsubsection* {Access Routine Semantics}
+
+Cell(s0, s1, p):
+\begin{itemize}
+\item transition: $x,y,piece := s0,s1,p$
+\item output: $out := \mathit{self}$
+\item exception: $ \neg (0 \leq s0 \leq 7) \wedge  \neg (0 \leq s0 \leq 7) \Rightarrow InvalidCellException$
+\end{itemize}
+
+\noindent setPiece(p):
+\begin{itemize}
+\item transition: $piece = p$
+\item exception: none
+\end{itemize}
+
+\noindent removePiece():
+\begin{itemize}
+\item transition: $piece := \phi$
+\item exception: none
+\end{itemize}
+
+\noindent getPiece():
+\begin{itemize}
+\item output: $out := piece$
+\item exception: none
+\end{itemize}
+
+\noindent select():
+\begin{itemize}
+\item transition: set the JPanel $board$ to red, and $isSelected$ to true.
+\item exception: none
+\end{itemize}
+
+\noindent isSelect():
+\begin{itemize}
+\item output: return the isSelected state value. 
+\item exception: none
+\end{itemize}
+
+\noindent deselect():
+\begin{itemize}
+\item transition: set the JPanel $board$ to none, and $isSelected$ to false.
+\item exception: none
+\end{itemize}
+
+\noindent check():
+\begin{itemize}
+\item transition: set the JPanel $background$ to red, and $isCheck$ to true.
+\item exception: none
+\end{itemize}
+
+\noindent isCheck():
+\begin{itemize}
+\item output: return the isCheck state value.
+\item exception: none
+\end{itemize} 
+
+\noindent removeCheck():
+\begin{itemize}
+\item transition: set the JPanel $background$ to white/brown depends its (x,y) coordination, and $isCheck$ to false. 
+\item exception: none
+\end{itemize}
+
+\noindent setPos():
+\begin{itemize}
+\item transition: set the JPanel $board$ to blue, and $isPos$ to true.
+\item exception: none
+\end{itemize}
+
+\noindent isPos():
+\begin{itemize}
+\item output: return the $isPos$ state value
+\item exception: none
+\end{itemize}
+
+\noindent removePos():
+\begin{itemize}
+\item transition: set the JPanel $board$ to null, and $isPos$ to false.
+\item exception: none
+\end{itemize}
+
+\noindent getX():
+\begin{itemize}
+\item output: $out := x$
+\item exception: none
+\end{itemize}
+
+\noindent getY():
+\begin{itemize}
+\item output: $out := y$
+\item exception: none
+\end{itemize}
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section* {Piece Module}
+
+\subsection*{Module}
+
+Piece
+
+\subsection* {Uses}
+
+Cell
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+Piece = ?
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+setMove & ~ & ~ & ~\\
+\hline
+isMoved & ~ & boolean & ~\\
+\hline
+setX & int & ~ & ~\\
+\hline
+setY & int & ~ & ~\\
+\hline
+getX & ~ & int & ~\\
+\hline
+getY & ~ & int & ~\\
+\hline
+setPath & String & ~ & ~\\
+\hline
+getPath & ~  & String & ~\\
+\hline
+setId & String & ~ & ~\\
+\hline
+getId & ~ & String & ~\\
+\hline
+setColor & int & ~ & ~\\
+\hline
+getColor & ~ & int & ~\\
+\hline
+isKingInDanger & sequence of sequence of cell & boolean &  ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+$neverMoved: \mathbb{B}$\\
+$color: \mathbb{N} $\\
+$Id$: String \\
+$path$: String\\
+$possiblemoves$: Sequence of Cell \\
+$posMove$ : abstract function\\
+$x: \mathbb{N}$\\
+$y: \mathbb{N}$\\
+
+\subsubsection* {State Invariant}
+
+0 $\leq x \leq$ 7\\
+0 $\leq y \leq$ 7 
+
+\subsubsection* {Assumptions}
+The necessary constructor of Cell is called for each abstract Cell object before any
+posMove() is called for any subclass of Piece. 
+
+\subsubsection* {Access Routine Semantics}
+
+setMove():
+\begin{itemize}
+\item transition: $neverMoved := false$
+\item exception: none
+\end{itemize}
+
+\noindent isMoved():
+\begin{itemize}
+\item output: $out := neverMoved$
+\item exception: none
+\end{itemize}
+
+\noindent setX(s):
+\begin{itemize}
+\item transition: $x := s$
+\item exception: none
+\end{itemize}
+
+\noindent setY(s):
+\begin{itemize}
+\item transition: $y := s$
+\item exception: none
+\end{itemize}
+
+\noindent getX():
+\begin{itemize}
+\item output: $out := x$
+\item exception: none
+\end{itemize}
+
+\noindent getY():
+\begin{itemize}
+\item output: $out := y$
+\item exception: none
+\end{itemize}
+
+\noindent setPath(p):
+\begin{itemize}
+\item transition: $path := p$ 
+\item exception: none
+\end{itemize}
+
+\noindent getPath():
+\begin{itemize}
+\item output: $out := path$
+\item exception: none
+\end{itemize}
+
+\noindent setId(d):
+\begin{itemize}
+\item transition: $Id := d$ 
+\item exception: none
+\end{itemize}
+
+\noindent getId():
+\begin{itemize}
+\item output: $out := Id$
+\item exception: none
+\end{itemize}
+
+\noindent setColor(c):
+\begin{itemize}
+\item transition: $color := c$ 
+\item exception: none
+\end{itemize}
+
+\noindent getColor():
+\begin{itemize}
+\item output: $out := color$
+\item exception: none\\
+\end{itemize}
+
+\newpage
+
+\noindent \textcolor{red}{isKingInDanger(pos): This method has been moved from sub-class to Piece module}
+\begin{itemize}
+\item output: check if cell is in the attack range of other hostile piece's attack range based on different piece types.\\
+\\
+$out :=$\\
+$\exists(r : Rook \ | \ r \in Rook(x,y).posMove(pos) \wedge r.color \ne color) $ \\
+$\vee$\\
+$\exists(n : Knight\ | \ n \in Knight(x,y).posMove(pos)\wedge n.color \ne color) $ \\
+$\vee$\\
+$\exists(k : King \ | \ k \in King(x,y).posMove(pos)\wedge k.color \ne color) $ \\
+$\vee$\\
+$\exists(b : Bishop\ | \ b \in Bishop(x,y).posMove(pos)\wedge b.color \ne color) $ \\
+$\vee$\\
+$\exists(q : Queen \ | \ q \in Queen(x,y).posMove(pos)\wedge q.color \ne color) $ \\
+$\vee$\\
+$\exists(p : Pawn\ | \ p \in Pawn(x,y).posMove(pos)\wedge p.color \ne color) $ \\
+\item exception: none
+\end{itemize}
+
+\newpage
+
+\section* {Bishop Module}
+
+\subsection*{Template Module}
+
+Bishop
+
+\subsection* {Uses}
+
+Piece, Cell
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+Bishop = ?
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+Bishop &String, String, int, int, int & Bishop & InvalidCellException\\
+\hline
+posMove & sequence of sequence of Cell & sequence of Cell & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+none
+
+\subsubsection* {State Invariant}
+
+none
+
+\subsubsection* {Assumptions}
+
+none
+
+\subsubsection* {Access Routine Semantics}
+
+Bishop($d, p, x0, y0, c$):
+\begin{itemize}
+\item transition: $Id, path, x, y, color := d, p, x0, y0, c$
+\item output: $out := \mathit{self}$
+\item exception: $ \neg (0 \leq x0 \leq 7) \wedge  \neg (0 \leq y0 \leq 7) \Rightarrow InvalidCellException$
+\end{itemize}
+
+\noindent posMove(pos):
+\begin{itemize}
+\item output: Check for all cells of diagonal direction, if there has no other piece, add this cell to the posmove, if there has the other piece, stop adding new cell for this direction and return posmove.\\
+\\
+$out :=$\\
+$(i : \mathbb{N}, j : \mathbb{N}\ |\  x + 1 \leq i \leq 7 \ \wedge \  0 \leq j \leq y - 1 \wedge $ \\
+$ (|x-i| = |y-j|) \wedge (pos[i][j].getPiece() = \phi \vee pos[i][j].getColor() \ne this.getColor) \wedge (pos[i][j].getColor() = this.getColor() \Rightarrow$ \textbf{break}$) : pos[i][j])$\\
+$\bigcup$ \\
+$(i : \mathbb{N}, j : \mathbb{N}\ |\ 0 \leq i \leq x - 1 \wedge y + 1 \leq j \leq 7 \wedge $ \\ 
+$(|x-i| = |y-j|) \wedge (pos[i][j].getPiece() = \phi \vee pos[i][j].getColor() \ne this.getColor) \wedge (pos[i][j].getColor() = this.getColor() \Rightarrow$ \textbf{break}$) : pos[i][j])$\\
+$\bigcup$ \\
+$i : \mathbb{N}, j : \mathbb{N}\ |\ 0 \leq i \leq x - 1 \wedge 0 \leq j \leq y - 1 \wedge \  $ \\ 
+$(|x-i| = |y-j|) \wedge (pos[i][j].getPiece() = \phi \vee pos[i][j].getColor() \ne this.getColor) \wedge (pos[i][j].getColor() = this.getColor() \Rightarrow$ \textbf{break}$) : pos[i][j])$\\
+$\bigcup$ \\
+$i : \mathbb{N}, j : \mathbb{N}\ |\ x + 1 \leq i \leq 7\ \wedge\  y + 1 \leq j \leq 7 \ \wedge \  $ \\ 
+$(|x-i| = |y-j|) \wedge (pos[i][j].getPiece() = \phi \vee pos[i][j].getColor() \ne this.getColor) \wedge (pos[i][j].getColor() = this.getColor() \Rightarrow$ \textbf{break}$) : pos[i][j])$
+\item exception: none
+\end{itemize}
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section* {Knight Module}
+
+\subsection*{Template Module}
+
+Knight
+
+\subsection* {Uses}
+
+Piece, Cell
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+Knight = ?
+
+\subsubsection* {Exported Constants}
+
+X, Y := \{2, 1 , -1, -2, -2, -1, 1, 2\}, \{1, 2, 2, 1, -1, -2, -2, -1\}
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+Knight &String, String, int, int, int & Knight & InvalidCellException\\
+\hline
+posMove & sequence of sequence of Cell & sequence of Cell & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+none
+
+\subsubsection* {State Invariant}
+
+none
+
+\subsubsection* {Assumptions}
+
+none
+
+\subsubsection* {Access Routine Semantics}
+
+Knight($d, p, x0, y0, c$):
+\begin{itemize}
+\item transition: $Id, path, x, y, color:= d, p, x0, y0, c$
+\item output: $out := \mathit{self}$
+\item exception: $ \neg (0 \leq x0 \leq 7) \wedge  \neg (0 \leq y0 \leq 7) \Rightarrow InvalidCellException$
+\end{itemize}
+
+\noindent posMove(pos):
+\begin{itemize}
+\item output: Check for any of the closest squares that are not on the same rank, file or diagonal, if there has no other piece, add this cell to the posmove, if there has another piece, do not add this cell to the posmove. After done the checking, return the posmove.\\
+\\
+$out :=(i : \mathbb{N} \ | \ 0 \leq i \leq 7 \ \wedge \ (0 \leq X[i]\ +\ x \leq 7)\  \wedge \ (0 \leq Y[i]\ +\ y \leq 7)\ \wedge \\
+\ ((pos[X[i]\ +\ x][Y[i]\ + y].getPiece() = \phi)\ \vee \ (pos[X[i]\ +\ x][Y[i]\ + y].getColor() \ne this.getColor()))\ \wedge \ (pos[X[i]\ +\ x][Y[i]\ + y].getColor() = this.getColor() \Rightarrow$ \textbf{break}$) : pos[X[i]\ +\ x][Y[i]\ + y])$\\
+\item exception: none
+\end{itemize}
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section* {Pawn Module}
+
+\subsection*{Template Module}
+
+Pawn
+
+\subsection* {Uses}
+
+Piece, Cell
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+Pawn = ?
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+Pawn &String, String, int, int, int & Pawn & InvalidCellException\\
+\hline
+setPromo & ~ & ~ & ~\\
+\hline
+getPromo & ~ & boolean & ~ \\
+\hline
+posMove & sequence of sequence of Cell & sequence of Cell & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+$promoPossible: \mathbb{B}$
+
+\subsubsection* {State Invariant}
+
+none
+
+\subsubsection* {Assumptions}
+
+none
+
+\subsubsection* {Access Routine Semantics}
+
+Pawn($d, p, x0, y0, c$):
+\begin{itemize}
+\item transition: $Id, path, x, y, color, promoPossible := d, p, x0, y0, c, false$
+\item output: $out := \mathit{self}$
+\item exception: $ \neg (0 \leq x0 \leq 7) \wedge  \neg (0 \leq y0 \leq 7) \Rightarrow InvalidCellException$
+\end{itemize}
+
+\noindent setPromo():
+\begin{itemize}
+\item transition: promoPossible = true
+\item exception: none
+\end{itemize}
+
+\noindent getPromo():
+\begin{itemize}
+\item output: return the promoPossible state value.
+\item exception: none
+\end{itemize}
+
+
+\noindent posMove(pos):
+\begin{itemize}
+\item transition:Set promoPossible to true if the pawn reaches the other end of the board.\\
+$(this.getColor() = 1 \Rightarrow (this.x = 0) \Rightarrow (promoPossible := true)) \wedge $ \\
+$(this.getColor() = 0 \Rightarrow (this.x = 7) \Rightarrow (promoPossible := true)) $ \\
+\\
+
+\item output: Pawn only moves one step except the first step, for the first step it may move one or two steps, check if it is the first step, if true add two cells to pos move, if false add one cell to the posmove.\\
+Pawn can only move in a diagnoal when it is attacking a piece of opposite color. Check if there exists enermy piece on the diagonal cell, if true call elemination, if false, do not add this cell to the posmove. \\
+\\
+out :=  
+$(this.getColor() = 1 \Rightarrow$ \\ 
+$\{pos[x-1][y].getPiece() = \phi): pos[x+1][y],$ \\  
+\\
+$(pos[x-1][y].getPiece() = \phi \  \wedge \  x = 6 \ \wedge \ pos[4][y].getPiece()=\phi): pos[4][y],$ \\
+\\
+$(y>0)\  \wedge \ (pos[x-1][y-1].getPiece() \ne \phi)\ \wedge \ (pos[x-1][y-1].getPiece().getColor() \ne this.getColor()) : pos[x-1][y-1]$,\\
+\\
+$(y<7)\  \wedge \ (pos[x-1][y+1].getPiece() \ne \phi)\ \wedge \ (pos[x-1][y+1].getPiece().getColor() \ne this.getColor()) : pos[x-1][y+1]: pos[x-1][y+1]\}$\\
+\\
+$\wedge$\\
+\\
+$(this.getColor() = 0 \Rightarrow$ \\ 
+$\{pos[x+1][y].getPiece() = \phi): pos[x-1][y],$ \\  
+\\
+$(pos[x+1][y].getPiece() = \phi \  \wedge \  x = 1 \ \wedge \ pos[3][y].getPiece()=\phi): pos[3][y],$ \\
+\\
+$(y>0)\  \wedge \ (pos[x+1][y-1].getPiece() \ne \phi)\ \wedge \ (pos[x+1][y-1].getPiece().getColor() \ne this.getColor()) : pos[x+1][y-1]$,\\
+\\
+$(y<7)\  \wedge \ (pos[x+1][y+1].getPiece() \ne \phi)\ \wedge \ (pos[x+1][y+1].getPiece().getColor() \ne this.getColor()) : pos[x+1][y+1]: pos[x+1][y+1]\}$\\
+\item exception: none
+\end{itemize}
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section* {Rook Module}
+
+\subsection*{Template Module}
+
+Rook 
+
+\subsection* {Uses}
+
+Piece, Cell
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+Rook = ?
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+Rook &String, String, int, int, int & Rook &InvalidCellException\\
+\hline
+posMove & sequence of sequence of Cell & sequence of Cell & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+none
+
+\subsubsection* {State Invariant}
+
+none
+
+\subsubsection* {Assumptions}
+
+none
+
+\subsubsection* {Access Routine Semantics}
+
+Rook($d, p, x0, y0, c$):
+\begin{itemize}
+\item transition: $Id, path, x, y, color, neverMoved := d, p, x0, y0, c, true$
+\item output: $out := \mathit{self}$
+\item exception: $ \neg (0 \leq x0 \leq 7) \wedge  \neg (0 \leq y0 \leq 7) \Rightarrow InvalidCellException$
+\end{itemize}
+
+\noindent posMove(pos):
+\begin{itemize}
+\item output:  Basic Movement, rook can be move or attack cells one unit beside him in any directions. Check cells of all directions, if there has no other piece, add this cell to the posmove, if there exists other piece, stop adding new posmove from this direction. After checking all cells, return the posmove.\\
+\\
+$out :=$
+$(i : \mathbb{N} \ | \ x + 1 \leq i \leq 7 \  \wedge$ \\
+$ (pos[i][y].getPiece() = \phi \vee pos[i][y].getColor() \ne this.getColor) \wedge (pos[i][y].getColor() = this.getColor() \Rightarrow$ \textbf{break}$) : pos[i][y])$\\
+$\bigcup$ \\
+$(i : \mathbb{N} \ | \ 0 \leq i \leq x - 1 \ \wedge $ \\ 
+$(pos[i][y].getPiece() = \phi \vee pos[i][y].getColor() \ne this.getColor) \wedge (pos[i][y].getColor() = this.getColor() \Rightarrow$ \textbf{break}$) : pos[i][y])$\\
+$\bigcup$ \\
+$(i : \mathbb{N} \ | \ 0 \leq j \leq y - 1 \ \wedge $ \\ 
+$(pos[x][j].getPiece() = \phi \vee pos[x][j].getColor() \ne this.getColor) \wedge (pos[x][j].getColor() = this.getColor() \Rightarrow$ \textbf{break}$) : pos[x][j])$\\
+$\bigcup$ \\
+$(i : \mathbb{N} \ | \ y + 1 \leq j \leq 7 \ \wedge $ \\ 
+$(pos[x][j].getPiece() = \phi \vee pos[x][j].getColor() \ne this.getColor) \wedge (pos[x][j].getColor() = this.getColor() \Rightarrow$ \textbf{break}$) : pos[x][j])$
+\item exception: none
+\end{itemize}
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section* {Queen Module}
+
+\subsection*{Template Module}
+
+Queen 
+
+\subsection* {Uses}
+
+Piece, Cell
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+Queen = ?
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+Queen &String, String, int, int, int & Queen & InvalidCellException\\
+\hline
+posMove & sequence of sequence of Cell & sequence of Cell & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+none
+
+\subsubsection* {State Invariant}
+
+none
+
+\subsubsection* {Assumptions}
+
+none
+
+\subsubsection* {Access Routine Semantics}
+
+Queen($d, p, x0, y0, c$):
+\begin{itemize}
+\item transition: $Id, path, x, y, color := d, p, x0, y0, c$
+\item output: $out := \mathit{self}$
+\item exception: $ \neg (0 \leq x0 \leq 7) \wedge  \neg (0 \leq y0 \leq 7) \Rightarrow InvalidCellException$
+\end{itemize}
+
+\noindent posMove(pos):
+\begin{itemize}
+\item output: Queen can move horizontally, vertically and diagnoally for any cell only other piece block its way. Check for these direction, if there has no other piece exist, add this cell to the posmove, if there has other piece exist, stop adding new cell from this direction. After checking all cells, return the posmove.\\
+\\
+$out :=$\\
+Rook.posMove(pos) $\bigcup$ Bishop.posMove(pos)
+\end{itemize}
+
+\newpage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section* {King Module}
+
+\subsection*{Template Module}
+
+King
+
+\subsection* {Uses}
+
+Piece, Cell
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+King = ?
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | l |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+King &String, String, int, int, int & King & InvalidCellException\\
+\hline
+posMove & sequence of sequence of Cell & sequence of Cell & ~\\
+\hline
+isKingInDanger & sequence of sequence of Cell & bool & ~\\
+\hline
+\end{tabular}
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+$notCheckmated: \mathbb{B}$
+
+\subsubsection* {State Invariant}
+
+none
+
+\subsubsection* {Assumptions}
+
+none
+
+\subsubsection* {Access Routine Semantics}
+
+King($d, p, x0, y0, c$):
+\begin{itemize}
+\item transition: $Id, path, x, y, color, neverMoved, notCheckmated := d, p, x0, y0, c, true, true$
+\item output: $out := \mathit{self}$
+\item exception: $ \neg (0 \leq x0 \leq 7) \wedge  \neg (0 \leq y0 \leq 7) \Rightarrow InvalidCellException$
+\end{itemize}
+
+\noindent posMove(pos):
+\begin{itemize}
+\item output: Check the 8 Cells around King is valid for moving, and also check the two cells for castling are valid or not.\\
+\\
+$out :=$\\
+$(i : \mathbb{N} \ | \ (-1 \leq i \leq 1) \wedge (-1 \leq j \leq 1)\ \wedge \ (0 \leq i + x \leq 7) \ \wedge \ (0 \leq j+y \leq 7) \ \wedge \ (pos[x+i][y+j].getPiece() = \phi \vee pos[x+i][y+j].getPiece().getColor() \ne this.getColor()) : pos[x+i][y+j]) $ \\
+\\
+$\bigcup$\\
+\\
+$(neverMoved \wedge notCheckmated) \Rightarrow ($\\
+$(i : \mathbb{N} \ | \ i \in \{1,2\} \  \wedge \ pos[this.x][this.y + i].getPiece() \ne \phi : pos[this.x][this.y + 2])$\\
+\\
+$\bigcup$\\
+\\
+$(j : \mathbb{N} \ | \ i \in \{1,2,3\} \  \wedge \ pos[this.x][this.y - j].getPiece() \ne \phi : pos[this.x][this.y - 2]))$\\
+\item exception: none
+\end{itemize}
+
+\newpage
+
+
+
+\section* {Main Module}
+
+\subsection* {Main Module}
+
+Main
+
+\subsection* {Uses}
+
+Piece, Cell, Rook, Pawn, Knight, King, Queen, Bishop
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+Main = ?
+
+\subsubsection* {Exported Constants}
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | p{5cm} |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+Main & ~ & Main & ~\\
+\hline
+move & Cell, Cell & ~ & ~\\
+\hline
+isCastling & Cell, Cell & int & ~\\
+\hline
+retrieveKing & int & King & ~\\
+\hline
+transform & Cell & ~ & ~\\
+\hline
+filterDestination & Piece, sequence of Cell & ~ & ~\\
+\hline
+existPos$^{*}$ & int$^{*}$ & boolean & ~\\
+\hline
+mouseClicked & int, int & ~ & WrongPlayerException, DuplicateCellException\\
+\hline
+gameOver$^{*}$ &~& ~ & ~\\
+\hline
+playerChange$^{*}$ &~ & ~ & ~\\
+\hline
+
+\end{tabular}\\
+
+$^{*}$ means modified
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+$pos$: sequence of sequence of Cell\\
+$isCheckmate$: bool\\
+$Black$: Sequence of Piece\\
+$White$: Sequence of Piece\\
+$player$: int
+
+\subsubsection* {State Invariant}
+
+\subsubsection* {Assumptions}
+
+\subsubsection* {Access Routine Semantics}
+
+Main():
+\begin{itemize}
+\item transition: set up the chess board based on the basic rule. \\
+\\
+$Black, White := \{Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook\}_{black}, $\\
+$\{Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook\}_{white}$\\
+$\forall(i : \mathbb{N}\ | 0 \leq i \leq 7 \ : board[1][i] = Pawn_{black} \ \wedge \ board[6][i] = Pawn_{white} \wedge board[0][i] = Black[i] \ \wedge \ board[7][i] = White[i]$
+\item output: $out := \mathit{self}$
+\item exception: none
+\end{itemize}
+
+\noindent move($a, b$):
+\begin{itemize}
+\item transition: $b.piece := a.piece \Rightarrow b.piece.x , b.piece.y := b.x, b.y$
+\item exception: none
+\end{itemize}
+
+\noindent Castling(k, kt,  r, rt) {
+\begin{itemize}
+\item transition: $move(k, kt) \wedge move(r, rt)$
+\item exception: none
+\end{itemize}
+
+\noindent isCastling($p, c$):
+\begin{itemize}
+\item out: Check if p is an instance of King and never moved before. If so, depends on the direction it is moving to, it shall check whether the correspondsing rook has been moved before or not. Depnds on the direction it is moving to, it shall return different numerical value after all verification passes.\\
+\\
+$(p \in King \wedge \neg(p.getPiece().isMoved())) \Rightarrow$\\
+$((p.y-c.y = 2\ \wedge\  pos[c.x][c.y-2].getPiece() \in Rook\ \wedge \  \neg((pos[c.getX()][c.getY()-2].getPiece().isMoved()))) \Rightarrow 0$ \\
+$\wedge \\ $
+$(p.y-c.y = -2\ \wedge\  pos[c.x][c.y+1].getPiece() \in Rook\ \wedge \  \neg((pos[c.getX()][c.getY()+1].getPiece().isMoved()))) \Rightarrow 1$ \\
+$\wedge$ \\ 
+$((p.y - c.y) \not\in \{2,-2\}) \Rightarrow -1$ \\
+$\wedge$ \\ 
+$\neg (p \in King \wedge \neg(p.getPiece().isMoved())) \Rightarrow -1) $\\ 
+\item exception:  none
+\end{itemize}
+
+\noindent retrieveKing($c$):
+\begin{itemize}
+\item out: $((c = 1) \Rightarrow King_{white}) \wedge ((c = -1) \Rightarrow King_{Black}) \wedge c \not\in \{1,-1\} \Rightarrow \phi$
+\item exception: none
+\end{itemize}
+
+\noindent transform($c$):
+\begin{itemize}
+\item transition: Check if the pawn's next move will reach the other end of the board. If so, transform the pawn to queen with the same color after the movement. \\
+\\
+$c.getPiece().getColor() = 1 \Rightarrow c.setPiece(Queen_{White})\  \wedge \  c.getPiece().getColor() = -1 \Rightarrow c.setPiece(Queen_{Black})$
+\item exception: $exc := (c \not\in \{1,-1\} \Rightarrow \mathrm{NullTransnformException})$
+\end{itemize}
+
+
+\noindent filterDestination(p, a):
+\begin{itemize}
+\item output: If p is an instance of King, keep the move in posMove list that will not cause a stalemate. If p is not an instance of King, keep the move in posMove list that will not cause friendly king to be in stalemate.\\
+\\
+$p \in King \Rightarrow (i : Cell | i \in p.posMove()\  \wedge\  \neg (move(p.Cell, i)\\ \Rightarrow p.isKingInDanger()): i)\ \\ \wedge\ \\ p \not\in King \Rightarrow (i : Cell | i \in p.posMove()\  \wedge\  \neg (move(p.Cell, i) \\ \Rightarrow retrieveKing(p.color).isKingInDanger()): i)$
+\item exception: none
+\end{itemize}
+
+
+\noindent existPos(c):
+\begin{itemize}
+\item output: Depends on the input color $c$, then iterate through each piece on the side of $c$, and immediately return true if any piece has a feasible move path.\\
+\\
+$out := \\
+c = 1 \Rightarrow \exists(p: Piece\ |\ p \in $white$:  \neg (filterDestination(p. p.posMove(pos)) = \phi)) \\ \land \\  c = -1 \Rightarrow \exists(p: Piece\ |\ p \in $black$: \neg (filterDestination(p. p.posMove(pos)) = \phi))$
+\item exception: none
+\end{itemize}
+
+\noindent mouseClicked(a, b):
+\begin{itemize}
+\item transition:  check if the cur is empty or contains hostile piece respect to the pre cell.\\ 
+If so,check if the current cell is a valid move respect to the pre cell piece.\\
+Depends on the position and type of the piece, identify movement and transform possibility.
+\subitem King: castling and normal movement, and set to move after movement.
+\subitem Pawn: auto transform when reach the other end and normal movement.
+\subitem Rook: set to moved after movement.
+\subitem Other: normal movement 
+\subitem all normal movement just call move()
+review the check status on the hostile king and remove self check status.
+If no movement possible $\Rightarrow$ GameOver
+switch side.
+\item exception: $(pre = \phi \wedge pos[a][b] \ne \phi \wedge pos[a][b].color \ne player) \Rightarrow WrongPlayerException $
+\item exception: $(pre.x = a \wedge pre.y = b) \Rightarrow DuplicateCellException$
+\end{itemize}
+\color{red}
+\noindent gameOver():
+\begin{itemize}
+\item transition: prompt message that the current player has won the game, and re-initiate the game.
+\item exception: none
+\end{itemize}
+
+\noindent playerChange():
+\begin{itemize}
+\item transition: $player = player * -1$
+\item exception: none
+\end{itemize}
+\newpage
+\section* {countDownTimer Module}
+
+\subsection* {countDownTimer Module}
+
+countDownTimer
+
+\subsection* {Uses}
+
+Main
+
+\subsection* {Syntax}
+
+\subsubsection* {Exported Types}
+
+countDownTimer = ?
+
+\subsubsection* {Exported Constants}
+
+N/A
+
+\subsubsection* {Exported Access Programs}
+
+\begin{tabular}{| l | l | l | p{5cm} |}
+\hline
+\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
+\hline
+countDownTimer & JLabel, Main & countDownTimer & ~\\
+\hline
+start & ~ & ~ & ~\\
+\hline
+stop & ~ & ~ & ~\\
+\hline
+reset & ~ & ~ & ~\\
+\hline
+actionPerformed & ActionEvent & ~\\
+\hline
+
+\end{tabular}\\
+
+\subsection* {Semantics}
+
+\subsubsection* {State Variables}
+
+$countdownTimer: Timer$\\
+$label: JLabel$\\
+$timeRemain: \mathbb{N}$\\
+$m: Main$
+
+
+\subsubsection* {State Invariant}
+
+\subsubsection* {Assumptions}
+countDownTime will only be constructed during the construction of Main instance.
+\subsubsection* {Access Routine Semantics}
+
+\noindent countDownTimer(p, m0):
+\begin{itemize}
+\item transition: set countdownTimer, and integrate it with a listener that listens to specific event.
+\subitem $label$ = p, $m$ = m0, $timeRemain$ = m0.timeRemain
+\item output: $self$ 
+\item exception: none
+\end{itemize}
+
+\noindent start():
+\begin{itemize}
+\item transition: start $countdownTimer$
+\item exception: none
+\end{itemize}
+
+\noindent stop():
+\begin{itemize}
+\item transition: stop $countdownTimer$
+\item exception: none
+\end{itemize}
+
+\noindent reset():
+\begin{itemize}
+\item transition: reset $countdownTimer$ to the initial time setting stored in $m$(Main)
+\item exception: none
+\end{itemize}
+
+\noindent actionPerformed():
+\begin{itemize}
+\item transition: After every second, check if there is still time left. If so, formulate the time in min:sec, and display it on the GUI. Discrement $timeRemain$ by 1.\\
+If not, send notification of GameOver state, and initial GameOver routine in Main module.
+\item exception: none
+\end{itemize}
+
+
+\end {document}
