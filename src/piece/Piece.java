@@ -4,6 +4,14 @@ import java.util.ArrayList;
 
 import board.Cell;
 
+/**
+ * This is the abstract Piece Class
+ * 
+ * @author Xingjian Ke
+ * @version 1.0 (current version number of program)
+ * @since 0.0
+ * 
+ */
 public abstract class Piece implements Cloneable {
 
 	// Member Variables
@@ -18,80 +26,128 @@ public abstract class Piece implements Cloneable {
 	protected int x;
 	protected int y;
 
+	/**
+	 * set this piece to moved
+	 */
 	public void setMove() {
 		this.neverMoved = false;
 	}
 
+	/**
+	 * check if this piece made any movement in this game.
+	 *
+	 * @return true if this piece moved before; false otherwise.
+	 */
 	public boolean isMoved() {
 		return !neverMoved;
 	}
 
+	/**
+	 * set this piece's x-coordinate.
+	 *
+	 * @param x x-coordinate that piece is moving to.
+	 */
 	public void setX(int x) {
 		if (0 <= x && x <= 7)
 			this.x = x;
 	}
 
+	/**
+	 * set this piece's y-coordinate.
+	 *
+	 * @param y y-coordinate that piece is moving to.
+	 */
 	public void setY(int y) {
 		if (0 <= y && y <= 7)
 			this.y = y;
 	}
 
+	/**
+	 * get this piece's x-coordinate.
+	 */
 	public int getX() {
 		return this.x;
 	}
 
+	/**
+	 * get this piece's y-coordinate.
+	 */
 	public int getY() {
 		return this.y;
 	}
 
-	// Path Setter
+	/**
+	 * set this piece's PNG path
+	 * 
+	 * @param path PNG path
+	 */
 	public void setPath(String path) {
 		this.path = path;
 	}
 
-	// Path Setter
+	/**
+	 * set this piece's identification
+	 * 
+	 * @param id ID
+	 */
 	public void setId(String id) {
 		this.Id = id;
 	}
 
+	/**
+	 * get this piece's identification info
+	 */
 	public String getId() {
 		return this.Id;
 	}
 
-	// Color Setter
+	/**
+	 * set this piece's color
+	 * 
+	 * @param c white: 1; black: -1
+	 */
 	public void setColor(int c) {
 		this.color = c;
 	}
 
-	// Path getter
+	/**
+	 * get this piece's PNG path
+	 */
 	public String getPath() {
 		return path;
 	}
 
-	// Color Getter
+	/**
+	 * get this piece's color
+	 */
 	public int getColor() {
 		return this.color;
 	}
 
-	// Function to return the a "shallow" copy of the object. The copy has exact
-	// same variable value but different reference
-	public Piece getcopy() throws CloneNotSupportedException {
-		return (Piece) this.clone();
-	}
-
+	/**
+	 * Check if the piece is under attack by other pieces. Exhaustive Calculation
+	 * used.
+	 * 
+	 * @param pos board state about positions of pieces.
+	 * @return An boolean value indicates if it is in danger.
+	 */
 	public boolean isKingInDanger(Cell[][] pos) {
 		// Checking for attact form the Pawn of opposite color
 		if (x + 1 >= 0 && x + 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x + 1][y + 1].getPiece() instanceof Pawn
-				&& pos[x + 1][y + 1].getPiece().getColor() != this.getColor()&&!(pos[x][y].getPiece().getId().equals("n")))
+				&& pos[x + 1][y + 1].getPiece().getColor() != this.getColor()
+				&& !(pos[x][y].getPiece().getId().equals("n")))
 			return true;
 		if (x + 1 >= 0 && x + 1 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x + 1][y - 1].getPiece() instanceof Pawn
-				&& pos[x + 1][y - 1].getPiece().getColor() != this.getColor()&&!(pos[x][y].getPiece().getId().equals("n")))
+				&& pos[x + 1][y - 1].getPiece().getColor() != this.getColor()
+				&& !(pos[x][y].getPiece().getId().equals("n")))
 			return true;
 		if (x - 1 >= 0 && x - 1 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x - 1][y - 1].getPiece() instanceof Pawn
-				&& pos[x - 1][y - 1].getPiece().getColor() != this.getColor()&&!(pos[x][y].getPiece().getId().equals("n")))
+				&& pos[x - 1][y - 1].getPiece().getColor() != this.getColor()
+				&& !(pos[x][y].getPiece().getId().equals("n")))
 			return true;
 		if (x - 1 >= 0 && x - 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x - 1][y + 1].getPiece() instanceof Pawn
-				&& pos[x - 1][y + 1].getPiece().getColor() != this.getColor()&&!(pos[x][y].getPiece().getId().equals("n")))
+				&& pos[x - 1][y + 1].getPiece().getColor() != this.getColor()
+				&& !(pos[x][y].getPiece().getId().equals("n")))
 			return true;
 		// Checking for attact form left, right, up and down, if there is a queen or
 		// rook with different color and without any other piece infront of it, return
@@ -246,61 +302,31 @@ public abstract class Piece implements Cloneable {
 				&& pos[x - 2][y + 1].getPiece().getColor() != this.getColor())
 			return true;
 		// Check for attack from King of opposite color
-		/*if (x + 1 >= 0 && x + 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x + 1][y + 1].getPiece() instanceof King
+		if (x + 1 >= 0 && x + 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x + 1][y + 1].getPiece() instanceof King
 				&& pos[x + 1][y + 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x + 1, y + 1, pos))
-				return true;
+			return true;
 		if (x - 1 >= 0 && x - 1 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x - 1][y - 1].getPiece() instanceof King
 				&& pos[x - 1][y - 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x - 1, y - 1, pos))
-				return true;
+			return true;
 		if (x + 1 >= 0 && x + 1 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x + 1][y - 1].getPiece() instanceof King
 				&& pos[x + 1][y - 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x + 1, y - 1, pos))
-				return true;
+			return true;
 		if (x - 1 >= 0 && x - 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x - 1][y + 1].getPiece() instanceof King
 				&& pos[x - 1][y + 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x - 1, y + 1, pos))
-				return true;
+			return true;
 		if (y + 1 >= 0 && y + 1 < 8 && pos[x][y + 1].getPiece() instanceof King
 				&& pos[x][y + 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x, y + 1, pos))
-				return true;
+			return true;
 		if (x + 1 >= 0 && x + 1 < 8 && pos[x + 1][y].getPiece() instanceof King
 				&& pos[x + 1][y].getPiece().getColor() != this.getColor())
-			if (checkSecond(x + 1, y, pos))
-				return true;
+			return true;
 		if (x - 1 >= 0 && x - 1 < 8 && pos[x - 1][y].getPiece() instanceof King
 				&& pos[x - 1][y].getPiece().getColor() != this.getColor())
-			if (checkSecond(x - 1, y, pos))
-				return true;
+			return true;
 		if (y - 1 >= 0 && y - 1 < 8 && pos[x][y - 1].getPiece() instanceof King
 				&& pos[x][y - 1].getPiece().getColor() != this.getColor())
-			if (checkSecond(x, y - 1, pos))
-				return true;*/
+			return true;
 		return false;
 	}
 
-	/*private boolean checkSecond(int x0, int y0, Cell[][] pos) {
-		Piece p;
-		p = pos[x][y].getPiece();
-		pos[x][y].removePiece();
-		pos[x][y].setPiece(pos[x0][y0].getPiece());
-		pos[x0][y0].removePiece();
-		if (pos[x][y].getPiece().isKingInDanger(pos)) {
-			System.out.println("danger");
-			pos[x0][y0].setPiece(pos[x][y].getPiece());
-			pos[x][y].removePiece();
-			if (p != null) {
-				pos[x][y].setPiece(p);
-			}
-			return false;
-		}
-		pos[x0][y0].setPiece(pos[x][y].getPiece());
-		pos[x][y].removePiece();
-		if (p != null) {
-			pos[x][y].setPiece(p);
-		}
-		return true;
-	}*/
 }

@@ -4,9 +4,27 @@ import java.util.ArrayList;
 
 import board.Cell;
 
+/**
+ * This is the King Class inherited from the abstract Piece class
+ * 
+ * @author Xingjian Ke
+ * @version 1.0 (current version number of program)
+ * @since 0.0
+ * 
+ */
 public class King extends Piece {
 	private boolean notCheckmated;
 
+	/**
+	 * Constructor of King Instance, initializing its position, color and
+	 * corresponding PNG picture. Set neverMoved and notChecked to true.
+	 * 
+	 * @param id used for identification
+	 * @param p  PNG picture path
+	 * @param x  x-coordinate
+	 * @param y  y-coordinate
+	 * @param c  1: white, -1: black
+	 */
 	public King(String Id, String p, int x, int y, int c) {
 		setId(Id);
 		setPath(p);
@@ -17,28 +35,59 @@ public class King extends Piece {
 		this.notCheckmated = true;
 	}
 
+	/**
+	 * check if King made any movement in this game.
+	 *
+	 * @return true if king moved before; false otherwise.
+	 */
 	public boolean isMoved() {
 		return !neverMoved;
 	}
 
+	/**
+	 * check if King is being checked.
+	 *
+	 * @return true if king is checked; false otherwise.
+	 */
 	public boolean isCheckmated() {
 		return !notCheckmated;
 	}
 
+	/**
+	 * set King's property to moved
+	 */
 	public void setMoved() {
 		this.neverMoved = false;
 	}
 
+	/**
+	 * set King's property to checked
+	 */
 	public void setCheckmate() {
 		this.notCheckmated = false;
 	}
 
+	/**
+	 * set King's property to not checked
+	 */
 	public void removeCheckmate() {
 		this.notCheckmated = true;
 	}
 
 	// Basic Movement, king can be move or attack cells one unit beside him in any
 	// directions.
+	/**
+	 * Check the possible movement of this piece. Iterate through possible path
+	 * according to the game rules, and break the iteration when blocked by other
+	 * pieces or hit the edge of the board. If iteration hits a enemy piece, include
+	 * the corresponding cell for elimination
+	 * <p>
+	 * King moves in all diagonal directions with length 1.
+	 * </p>
+	 * 
+	 * @param pos board state about positions of pieces.
+	 * @return An ArrayList structure contains all cells that the piece can move to.
+	 */
 	@Override
 	public ArrayList<Cell> posMove(Cell[][] pos) {
 		possiblemoves.clear();
@@ -71,18 +120,22 @@ public class King extends Piece {
 			boolean temp0 = true;
 			boolean temp1 = true;
 			for (int i = 1; i <= 2; i++) {
-				if(pos[this.x][this.y + 3].getPiece() != null) {
-				if (pos[this.x][this.y + i].getPiece() != null || !(pos[this.x][this.y + 3].getPiece() instanceof Rook) || pos[this.x][this.y + 3].getPiece().isMoved())
-					temp0 = false;
-				}else{
+				if (pos[this.x][this.y + 3].getPiece() != null) {
+					if (pos[this.x][this.y + i].getPiece() != null
+							|| !(pos[this.x][this.y + 3].getPiece() instanceof Rook)
+							|| pos[this.x][this.y + 3].getPiece().isMoved())
+						temp0 = false;
+				} else {
 					temp0 = false;
 				}
 			}
 			for (int j = 1; j <= 3; j++) {
-				if(pos[this.x][this.y - 4].getPiece() != null) {
-					if (pos[this.x][this.y - j].getPiece() != null || !(pos[this.x][this.y - 4].getPiece() instanceof Rook) || pos[this.x][this.y - 4].getPiece().isMoved())
+				if (pos[this.x][this.y - 4].getPiece() != null) {
+					if (pos[this.x][this.y - j].getPiece() != null
+							|| !(pos[this.x][this.y - 4].getPiece() instanceof Rook)
+							|| pos[this.x][this.y - 4].getPiece().isMoved())
 						temp1 = false;
-				}else
+				} else
 					temp1 = false;
 			}
 			if (temp0)
@@ -92,288 +145,6 @@ public class King extends Piece {
 		}
 
 		return possiblemoves;
-	}
-
-	public boolean isKingInDanger(Cell[][] pos, ArrayList<Cell> temp) {
-		// Checking for attact form the Pawn of opposite color
-		temp.clear();
-		if (x + 1 >= 0 && x + 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x + 1][y + 1].getPiece() instanceof Pawn
-				&& pos[x + 1][y + 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x + 1][y + 1]);
-			return true;
-		}
-		if (x + 1 >= 0 && x + 1 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x + 1][y - 1].getPiece() instanceof Pawn
-				&& pos[x + 1][y - 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x + 1][y - 1]);
-			return true;
-		}
-		if (x - 1 >= 0 && x - 1 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x - 1][y - 1].getPiece() instanceof Pawn
-				&& pos[x - 1][y - 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x - 1][y - 1]);
-			return true;
-		}
-		if (x - 1 >= 0 && x - 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x - 1][y + 1].getPiece() instanceof Pawn
-				&& pos[x - 1][y + 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x - 1][y + 1]);
-			return true;
-		}
-		// Checking for attact form left, right, up and down, if there is a queen or
-		// rook with different color and without any other piece infront of it, return
-		// true, otherwise return false
-
-		for (int i = x + 1; i < 8; i++) {
-			if (pos[i][y].getPiece() == null) {
-				temp.add(pos[i][y]);
-				continue;
-			} else if (pos[i][y].getPiece().getColor() == this.getColor()) {
-				temp.clear();
-				break;
-			} else {
-				if ((pos[i][y].getPiece() instanceof Rook) || (pos[i][y].getPiece() instanceof Queen)) {
-					temp.add(pos[i][y]);
-					return true;
-				} else {
-					temp.clear();
-					break;
-				}
-			}
-		}
-
-		for (int i = y + 1; i < 8; i++) {
-			if (pos[x][i].getPiece() == null) {
-				temp.add(pos[x][i]);
-				continue;
-			} else if (pos[x][i].getPiece().getColor() == this.getColor()) {
-				temp.clear();
-				break;
-			} else {
-				if ((pos[x][i].getPiece() instanceof Rook) || (pos[x][i].getPiece() instanceof Queen)) {
-					temp.add(pos[x][i]);
-					return true;
-				} else {
-					temp.clear();
-					break;
-				}
-			}
-		}
-		for (int i = x - 1; i >= 0; i--) {
-			if (pos[i][y].getPiece() == null) {
-				temp.add(pos[i][y]);
-				continue;
-			} else if (pos[i][y].getPiece().getColor() == this.getColor()) {
-				temp.clear();
-				break;
-			} else {
-				if ((pos[i][y].getPiece() instanceof Rook) || (pos[i][y].getPiece() instanceof Queen)) {
-					temp.add(pos[i][y]);
-					return true;
-				} else {
-					temp.clear();
-					break;
-				}
-			}
-		}
-		for (int i = y - 1; i >= 0; i--) {
-			if (pos[x][i].getPiece() == null) {
-				temp.add(pos[x][i]);
-				continue;
-			} else if (pos[x][i].getPiece().getColor() == this.getColor()) {
-				temp.clear();
-				break;
-			} else {
-				if ((pos[x][i].getPiece() instanceof Rook) || (pos[x][i].getPiece() instanceof Queen)) {
-					temp.add(pos[x][i]);
-					return true;
-				} else {
-					temp.clear();
-					break;
-				}
-			}
-		}
-
-		// Checking for attack from diagnoal direction with bishop or queen, if there is
-		// any piece with same color or not bishop or queen, return false, otherwise
-		// return true
-		int posy = y;
-		for (int posx = x + 1; posx < 8; posx++) {
-			if (posy < 7) {
-				posy++;
-			} else {
-				temp.clear();
-				break;
-			}
-			if (pos[posx][posy].getPiece() == null) {
-				temp.add(pos[posx][posy]);
-				continue;
-			} else if (pos[posx][posy].getPiece().getColor() == this.getColor()) {
-				temp.clear();
-				break;
-			} else if (pos[posx][posy].getPiece() instanceof Bishop || pos[posx][posy].getPiece() instanceof Queen) {
-				temp.add(pos[posx][posy]);
-				return true;
-			} else {
-				temp.clear();
-				break;
-			}
-		}
-
-		posy = y;
-		for (int posx = x - 1; posx >= 0; posx--) {
-			if (posy < 7)
-				posy++;
-			else {
-				temp.clear();
-				break;
-			}
-			if (pos[posx][posy].getPiece() == null) {
-				temp.add(pos[posx][posy]);
-				continue;
-			} else if (pos[posx][posy].getPiece().getColor() == this.getColor()) {
-				temp.clear();
-				break;
-			} else if (pos[posx][posy].getPiece() instanceof Bishop || pos[posx][posy].getPiece() instanceof Queen) {
-				temp.add(pos[posx][posy]);
-				return true;
-			} else {
-				temp.clear();
-				break;
-			}
-		}
-
-		posy = y;
-		for (int posx = x + 1; posx < 8; posx++) {
-			if (posy > 0)
-				posy--;
-			else {
-				temp.clear();
-				break;
-			}
-			if (pos[posx][posy].getPiece() == null) {
-				temp.add(pos[posx][posy]);
-				continue;
-			} else if (pos[posx][posy].getPiece().getColor() == this.getColor()) {
-				temp.clear();
-				break;
-			} else if (pos[posx][posy].getPiece() instanceof Bishop || pos[posx][posy].getPiece() instanceof Queen) {
-				temp.add(pos[posx][posy]);
-				return true;
-			} else {
-				temp.clear();
-				break;
-			}
-
-		}
-
-		posy = y;
-		for (int posx = x - 1; posx >= 0; posx--) {
-			if (posy > 0)
-				posy--;
-			else {
-				temp.clear();
-				break;
-			}
-			if (pos[posx][posy].getPiece() == null) {
-				temp.add(pos[posx][posy]);
-				continue;
-			} else if (pos[posx][posy].getPiece().getColor() == this.getColor()) {
-				temp.clear();
-				break;
-			} else {
-				if (pos[posx][posy].getPiece() instanceof Bishop || pos[posx][posy].getPiece() instanceof Queen) {
-					temp.add(pos[posx][posy]);
-					return true;
-				} else {
-					temp.clear();
-					break;
-				}
-			}
-		}
-
-		// Check for attack from knight of opposite color
-		if (x + 1 >= 0 && x + 1 < 8 && y + 2 >= 0 && y + 2 < 8 && pos[x + 1][y + 2].getPiece() instanceof Knight
-				&& pos[x + 1][y + 2].getPiece().getColor() != this.getColor())
-
-		{
-			temp.add(pos[x + 1][y + 2]);
-			return true;
-		}
-		if (x - 1 >= 0 && x - 1 < 8 && y + 2 >= 0 && y + 2 < 8 && pos[x - 1][y + 2].getPiece() instanceof Knight
-				&& pos[x - 1][y + 2].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x - 1][y + 2]);
-			return true;
-		}
-		if (x + 1 >= 0 && x + 1 < 8 && y - 2 >= 0 && y - 2 < 8 && pos[x + 1][y - 2].getPiece() instanceof Knight
-				&& pos[x + 1][y - 2].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x + 1][y - 2]);
-			return true;
-		}
-		if (x - 1 >= 0 && x - 1 < 8 && y - 2 >= 0 && y - 2 < 8 && pos[x - 1][y - 2].getPiece() instanceof Knight
-				&& pos[x - 1][y - 2].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x - 1][y - 2]);
-			return true;
-		}
-		if (x + 2 >= 0 && x + 2 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x + 2][y + 1].getPiece() instanceof Knight
-				&& pos[x + 2][y + 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x + 2][y + 1]);
-			return true;
-		}
-		if (x + 2 >= 0 && x + 2 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x + 2][y - 1].getPiece() instanceof Knight
-				&& pos[x + 2][y - 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x + 2][y - 1]);
-			return true;
-		}
-		if (x - 2 >= 0 && x - 2 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x - 2][y - 1].getPiece() instanceof Knight
-				&& pos[x - 2][y - 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x - 2][y - 1]);
-			return true;
-		}
-		if (x - 2 >= 0 && x - 2 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x - 2][y + 1].getPiece() instanceof Knight
-				&& pos[x - 2][y + 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x - 2][y + 1]);
-			return true;
-		}
-		// Check for attact from King of opposite color
-		if (x + 1 >= 0 && x + 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x + 1][y + 1].getPiece() instanceof King
-				&& pos[x + 1][y + 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x + 1][y + 1]);
-			return true;
-		}
-		if (x - 1 >= 0 && x - 1 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x - 1][y - 1].getPiece() instanceof King
-				&& pos[x - 1][y - 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x - 1][y - 1]);
-			return true;
-		}
-		if (x + 1 >= 0 && x + 1 < 8 && y - 1 >= 0 && y - 1 < 8 && pos[x + 1][y - 1].getPiece() instanceof King
-				&& pos[x + 1][y - 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x + 1][y - 1]);
-			return true;
-		}
-		if (x - 1 >= 0 && x - 1 < 8 && y + 1 >= 0 && y + 1 < 8 && pos[x - 1][y + 1].getPiece() instanceof King
-				&& pos[x - 1][y + 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x - 1][y + 1]);
-			return true;
-		}
-		if (y + 1 >= 0 && y + 1 < 8 && pos[x][y + 1].getPiece() instanceof King
-				&& pos[x][y + 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x][y + 1]);
-			return true;
-		}
-		if (x + 1 >= 0 && x + 1 < 8 && pos[x + 1][y].getPiece() instanceof King
-				&& pos[x + 1][y].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x + 1][y]);
-			return true;
-		}
-		if (x - 1 >= 0 && x - 1 < 8 && pos[x - 1][y].getPiece() instanceof King
-				&& pos[x - 1][y].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x - 1][y]);
-			return true;
-		}
-		if (y - 1 >= 0 && y - 1 < 8 && pos[x][y - 1].getPiece() instanceof King
-				&& pos[x - 2][y + 1].getPiece().getColor() != this.getColor()) {
-			temp.add(pos[x - 2][y + 1]);
-			return true;
-		}
-		return false;
 	}
 
 }

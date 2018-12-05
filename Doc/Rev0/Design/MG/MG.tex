@@ -8,6 +8,10 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage{ulem}
+\usepackage[usenames, dvipsnames]{color}
+
+
 \hypersetup{
     colorlinks,
     citecolor=black,
@@ -52,11 +56,12 @@
 
 \begin{table}[bp]
 \caption{\bf Revision History}
+\color{red}
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
 Nov 9th, 2018 & 1.0 & Starting create the Module Guide \\
-NULL & 1.1 & NULL\\
+Nov 30th, 2018 & 2.0 & Reversion 1\\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -77,7 +82,7 @@ software.  A module is a work assignment for a programmer or programming
 team~\citep{ParnasEtAl1984}.  We advocate a decomposition
 based on the principle of information hiding~\citep{Parnas1972a}.  This
 principle supports design for change, because the ``secrets'' that each module
-hides represent likely future changes.  Design for change is valuable in SC,
+hides represents likely future changes.  Design for change is valuable in SC,
 where modifications are frequent, especially during initial development as the
 solution space is explored.  ~\citep{Bokahari2018}
 
@@ -111,7 +116,7 @@ potential readers of this document are as follows:
   system in various ways, such as consistency among modules, feasibility of the
   decomposition, and flexibility of the design.~\citep{Bokahari2018}
 
-After the creation of the MG, the Module Interface Specification(MIS) is created. The MIS explains the semantics and syntax of exported functions (input, output and exceptions) for each module, essentially providing further detail on each module that we specified in the MG.~\citep{calce_fenster_tatasciore_2016}
+After the creation of the MG, the Module Interface Specification(MIS) is created. The MIS explains the semantics and syntax of exported functions (input, output and exceptions) for each module, essentially providing further detail on each module that is specified in the MG.~\citep{calce_fenster_tatasciore_2016}
 \end{itemize}
 
 The rest of the document is organized as follows. Section
@@ -188,7 +193,11 @@ below, which are leaves in the hierarchy tree, are the modules that will
 actually be implemented.
 
 \begin{description}
-\item [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module
+
+\item
+\textcolor{red}{\sout{Hardware-Hiding Module}}
+% [\refstepcounter{mnum} \mthemnum \label{mHH}:] Hardware-Hiding Module}}
+
 \item [\refstepcounter{mnum} \mthemnum \label{mPAR}:] Parameter Module
 \item [\refstepcounter{mnum} \mthemnum \label{mT}:] Time Module
 \item [\refstepcounter{mnum} \mthemnum \label{mP}:] Player Module
@@ -207,7 +216,8 @@ actually be implemented.
 \textbf{Level 1} & \textbf{Level 2} & \textbf{Level 3} \\
 \midrule
 
-{Hardware-Hiding Module} \\
+
+\textcolor{red}{\sout{{Hardware-Hiding Module}}} \\
 \midrule
 
 \multirow{5}{0.3\textwidth}{Behaviour-Hiding Module}\\
@@ -246,28 +256,29 @@ The system was designed to satisfy the requirements. The Main class connects all
 \section{Module Decomposition} \label{SecMD}
 
 Modules are decomposed according to the principle of ``information hiding''
-proposed by \citet{ParnasEtAl1984}. The \emph{Secrets} field in a module
+proposed by \citet{ParnasEtAl1984}. The Secrets field in a module
 decomposition is a brief statement of the design decision hidden by the
-module. The \emph{Services} field specifies \emph{what} the module will do
-without documenting \emph{how} to do it. For each module, a suggestion for the
-implementing software is given under the \emph{Implemented By} title. If the
-entry is \emph{OS}, this means that the module is provided by the operating
+module. The Services field specifies what the module will do
+without documenting how to do it. For each module, a suggestion for the
+implementing software is given under the Implemented By title. If the
+entry is OS, this means that the module is provided by the operating
 system or by standard programming language libraries.  Also indicate if the
 module will be implemented specifically for the software.
 
-Only the leaf modules in the hierarchy have to be implemented. If a dash (\emph{--}) is shown, this means that the module is not a leaf and will not have to be implemented. Whether or not this module is implemented depends on the programming language selected.
+Only the leaf modules in the hierarchy have to be implemented. If a dash (\emph{--}) is shown, this means that the module is not a leaf and will not have to be implemented. Whether or not this module is implemented depends on the programming language selected.\\
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Hardware Hiding Modules (\mref{mHH})}
+\textcolor{red}{\sout{Hardware Hiding Modules}}
+
 \begin{description}
-\item[Secrets:]The data structure and algorithm used to implement the virtual
-  hardware.
-\item[Services:]Serves as a virtual hardware used by the rest of the
+\item \textcolor{red}{\sout{[Secrets:]The data structure and algorithm used to implement the virtual hardware.}}
+\item \textcolor{red}{\sout{[Services:]Serves as a virtual hardware used by the rest of the
   system. This module provides the interface between the hardware and the
-  software. So, the system can use it to display outputs or to accept inputs.
-\item[Implemented By:] OS
+  software. So, the system can use it to display outputs or to accept inputs.}}
+\item\textcolor{red}{\sout{[Implemented By:] OS}}
 \end{description}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Behaviour-Hiding Module}
 \begin{description}
@@ -354,7 +365,7 @@ Only the leaf modules in the hierarchy have to be implemented. If a dash (\emph{
 \begin{description}
 \item[Secrets:] The design decision based on mathematical theorems, physical
   facts, or programming considerations. The secrets of this module are
-  \emph{not} described in the SRS.
+  not described in the SRS.
 \item[Services:] Includes data structure and algorithms used in the system that
   do not provide direct interaction with the user. 
   % Changes in these modules are more likely to be motivated by a desire to
@@ -393,45 +404,44 @@ requirements and between the modules and the anticipated changes.
 \toprule
 \textbf{Req.} & \textbf{Modules}\\
 \midrule
-FR1 & \mref{mHH}, \mref{mPI}, \mref{mPAR}\\
-FR2 & \mref{mHH}, \mref{mPI}, \mref{mC}\\
+FR1 & \mref{mPAR}, \mref{mPI}\\
+FR2 & \mref{mPI}, \mref{mC}\\
 FR3 & \mref{mPI}, \mref{mC}\\
 FR4 & \mref{mT}, \mref{mP}, \mref{mGUI}\\
 FR5 & \mref{mP}\\
 FR6 & \mref{mOUT}, \mref{mC}\\
 FR7 & \mref{mC}, \mref{mB}\\
 FR8 & \mref{mP}, \mref{mPAR}\\
-FR9 & \mref{mHH}\\
-FR10 & \mref{mHH}\\
+FR9 & \\
+FR10 & \mref{mGUI},\mref{mP}\\
 FR11 & \mref{mP}, \mref{mPAR}\\
 FR12 & \mref{mC}, \mref{mB}\\
 FR13 & \mref{mPAR}\\
 FR14 & \mref{mPI}, \mref{mB}\\
 FR15 & \mref{mGUI}, \mref{mOUT}\\
 FR16 & \mref{mT}, \mref{mGUI}\\
-FR17 & \mref{mHH}, \mref{mPI}\\
-FR18 & \mref{mGUI}, \mref{mHH}\\
-FR19 & \mref{mHH}, \mref{mPI}\\
+FR17 & \mref{mPI}\\
+
 
 NF3.1 & \mref{mB}, \mref{mGUI}\\
 NF3.2 & \mref{mP}, \mref{mGUI}\\
-NF3.3.1 & \mref{mHH}\\
-NF3.3.2 & \mref{mHH}\\
-NF3.3.3 & \mref{mHH}\\
-NF3.3.4 & \mref{mHH}\\
-NF3.4.1 & \mref{mHH}\\
-NF3.4.2 & \mref{mHH}\\
-NF3.4.3 & \mref{mHH}\\
+NF3.3.1 & \mref{mGUI}\\
+NF3.3.2 & automated\\
+NF3.3.3 & \mref{mB}\\
+NF3.3.4 & automated\\
+NF3.4.1 & automated\\ 
+NF3.4.2 & automated\\
+NF3.4.3 & automated\\
 NF3.5.1 & \mref{mB}, \mref{mC}\\
-NF3.5.2 & \mref{mHH}\\
-NF3.6 & NULL\\
-NF3.7 & NULL\\
-NF3.8 & NULL\\
-NF3.9 & NULL\\
+NF3.5.2 & automated\\
+NF3.6 & automated\\
+NF3.7 & automated\\
+NF3.8 & automated\\
+NF3.9 & automated\\
 
 \bottomrule
 \end{tabular}
-\caption{Trace Between Requirements and Modules}
+\textcolor{red}{\caption{Trace Between Requirements and Modules}}
 \label{TblRT}
 \end{table}
 
@@ -442,8 +452,8 @@ NF3.9 & NULL\\
 \textbf{AC} & \textbf{Modules}\\
 \midrule
 
-\acref{acHardware} & \mref{mHH}\\
-\acref{acInput} & \mref{mHH}\\
+\acref{acHardware} & NULL\\
+\acref{acInput} & \mref{mB}\\
 \acref{acParams} & \mref{mPAR}\\
 \acref{acOutput} & \mref{mOUT}\\
 \acref{acTime} & \mref{mT}\\
@@ -453,16 +463,16 @@ NF3.9 & NULL\\
 
 \bottomrule
 \end{tabular}
-\caption{Trace Between Anticipated Changes and Modules}
+\textcolor{red}{\caption{Trace Between Anticipated Changes and Modules}}
 \label{TblACT}
 \end{table}
 
 \section{Use Hierarchy Between Modules} \label{SecUse}
 
 In this section, the uses hierarchy between modules is
-provided. \citet{Parnas1978} said of two programs A and B that A {\em uses} B if
+provided. \citet{Parnas1978} said of two programs A and B that A uses B if
 correct execution of B may be necessary for A to complete the task described in
-its specification. That is, A {\em uses} B if there exist situations in which
+its specification. That is, A uses B if there exist situations in which
 the correct functioning of A depends upon the availability of a correct
 implementation of B.  Figure \ref{FigUH} illustrates the use relation between
 the modules. It can be seen that the graph is a directed acyclic graph
@@ -473,7 +483,7 @@ because they use modules from the lower levels.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{UsesHierarchy.png}
-\caption{Use hierarchy among modules}
+\textcolor{red}{\caption{Use hierarchy among modules}}
 \label{FigUH}
 \end{figure}
 

@@ -9,18 +9,24 @@ import java.util.ArrayList;
 import board.Cell;
 
 /**
- *  \brief Rook Class, Piece that can only move in a straight line.
- */
+ * This is the Rook Class inherited from the abstract Piece class
+ *	
+ * @author Xingjian Ke
+ * @version     1.0                 (current version number of program)
+ * @since       0.0          
+ * 
+ */ 
 public class Rook extends Piece {
 	
 	/**
-	 *  \brief Construct a new Rook instance using id, xy coordinates and color indicator
-	 *  \details extended from piece class
-	 *  \param Id string variable representing Id
-	 *  \param p picture path
-	 *  \param x x-coordinate
-	 *  \param y y-coordinate
-	 *  \param c color indicator
+	 *  Construct a new Rook instance using id, xy coordinates and color indicator, extended from piece class
+	 *  set neverMoved to true
+	 *  
+	 *  @param Id string variable representing Id
+	 *  @param p picture path
+	 *  @param x x-coordinate
+	 *  @param y y-coordinate
+	 *  @param c color indicator
 	 */
 	public Rook(String Id, String p, int x, int y, int c) {
 		setId(Id);
@@ -32,10 +38,13 @@ public class Rook extends Piece {
 	}
 
 	/**
-	 *  \brief Basic Movement Check, Rook can be move or attack cells in a vertical or horizontal line.
-	 *  \details if the path is blocked by a friendly piece, break and exclude the blocked cell. If the path is blocked by a hostile piece, break and
+	 *  Basic Movement Check, Rook can be move or attack cells in a vertical or horizontal line.
+	 *  <p>
+	 *  if the path is blocked by a friendly piece, break and exclude the blocked cell. If the path is blocked by a hostile piece, break and
 	 *  include the blocked cell. Else, keep iterating and include :P. Check castling possibility as well.
-	 *  \param pos chessboard constructed by a 2D Cell Array.
+	 *  </p>
+	 *  @param pos chessboard constructed by a 2D Cell Array.
+	 *  @return An ArrayList structure contains all cells that the piece can move to.
 	 */
 	@Override
 	public ArrayList<Cell> posMove(Cell[][] pos) {
@@ -92,18 +101,6 @@ public class Rook extends Piece {
 				break;
 			temp = temp + 1;
 			}
-	
-			
-		//Castling: 
-		//Rule 1: Kind & Associating Rook shall not move before
-		//Rule 2: Castle out of check is not allowed
-		//Rule 3: Nothing shall be in between the Corresponding King and Rook
-		/*if(neverMoved) {
-			if(this.y == 0 )
-				possiblemoves.add(pos[this.x][3]);
-			if(this.y == 8)
-				possiblemoves.add(pos[this.x][5]);
-		}*/
 		
 		return possiblemoves;
 	}
