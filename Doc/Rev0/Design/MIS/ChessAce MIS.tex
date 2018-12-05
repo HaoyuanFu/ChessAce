@@ -1,19 +1,14 @@
 \documentclass[12pt]{article}
 
-\usepackage{graphicx}
-\usepackage{paralist}
-\usepackage{amsfonts}
-\usepackage{amsmath}
-\usepackage{hhline}
-\usepackage{booktabs}
-\usepackage{multirow}
-\usepackage{multicol}
+\usepackage{float}
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{hyperref}
-\usepackage{float}
-\usepackage{ulem}
-\usepackage[usenames, dvipsnames]{color}
+\usepackage{hhline}
+\usepackage{extsizes}
+\usepackage{graphicx}
+\usepackage{paralist}
+\usepackage{amsfonts}
 
 \oddsidemargin 0mm
 \evensidemargin 0mm
@@ -45,7 +40,7 @@
 \begin{tabularx}{\textwidth}{p{3cm}p{2cm}X}
 \toprule {\bf Date} & {\bf Version} & {\bf Notes}\\
 \midrule
-2018-11-9 & 0.0 & MIS for implemented Modules\\
+2018-11-9 & 1.0 & MIS for implemented Modules\\
 \bottomrule
 \end{tabularx}
 \caption{\bf Revision History}
@@ -77,7 +72,7 @@ Cell
 
 \subsection* {Uses}
 
-Piece, JPanel
+Piece
 
 \subsection* {Syntax}
 
@@ -98,42 +93,20 @@ setPiece & Piece & ~ & ~\\
 removePiece & ~ & ~ & ~\\
 \hline
 getPiece & ~ & Piece & ~\\
-\hline 
-select & ~ & ~ & ~\\
-\hline 
-isSelected & ~ & boolean & ~\\
-\hline 
-deselect & ~ & ~ & ~\\
-\hline 
-check & ~ & ~ & ~\\
-\hline 
-isCheck & ~ & boolean & ~\\
-\hline 
-removeCheck & ~ & ~ & ~\\
-\hline
-setPos & ~ & ~ & ~\\
-\hline
-isPos & ~ & boolean & ~\\
-\hline
-removePos & ~ & ~ & ~ \\
 \hline
 getX & ~ & int & ~\\
 \hline
 getY & ~ & int & ~\\
 \hline
 \end{tabular}
-\newpage 
+
 \subsection* {Semantics}
 
 \subsubsection* {State Variables}
 
-$x: \mathbb{N}$\\
-$y: \mathbb{N}$\\
-$isChecked: \mathbb{B}$\\
-$isSelected: \mathbb{B}$\\
-$isPos: \mathbb{B}$\\
-$piece$: Piece\\
-$content$: JLabel\\
+$x$: int
+$y$: int
+$piece$: Piece
 
 \subsubsection* {State Invariant}
 
@@ -169,60 +142,6 @@ Cell(s0, s1, p):
 \noindent getPiece():
 \begin{itemize}
 \item output: $out := piece$
-\item exception: none
-\end{itemize}
-
-\noindent select():
-\begin{itemize}
-\item transition: set the JPanel $board$ to red, and $isSelected$ to true.
-\item exception: none
-\end{itemize}
-
-\noindent isSelect():
-\begin{itemize}
-\item output: return the isSelected state value. 
-\item exception: none
-\end{itemize}
-
-\noindent deselect():
-\begin{itemize}
-\item transition: set the JPanel $board$ to none, and $isSelected$ to false.
-\item exception: none
-\end{itemize}
-
-\noindent check():
-\begin{itemize}
-\item transition: set the JPanel $background$ to red, and $isCheck$ to true.
-\item exception: none
-\end{itemize}
-
-\noindent isCheck():
-\begin{itemize}
-\item output: return the isCheck state value.
-\item exception: none
-\end{itemize} 
-
-\noindent removeCheck():
-\begin{itemize}
-\item transition: set the JPanel $background$ to white/brown depends its (x,y) coordination, and $isCheck$ to false. 
-\item exception: none
-\end{itemize}
-
-\noindent setPos():
-\begin{itemize}
-\item transition: set the JPanel $board$ to blue, and $isPos$ to true.
-\item exception: none
-\end{itemize}
-
-\noindent isPos():
-\begin{itemize}
-\item output: return the $isPos$ state value
-\item exception: none
-\end{itemize}
-
-\noindent removePos():
-\begin{itemize}
-\item transition: set the JPanel $board$ to null, and $isPos$ to false.
 \item exception: none
 \end{itemize}
 
@@ -320,22 +239,20 @@ setColor & int & ~ & ~\\
 \hline
 getColor & ~ & int & ~\\
 \hline
-isKingInDanger & sequence of sequence of cell & boolean &  ~\\
-\hline
 \end{tabular}
 
 \subsection* {Semantics}
 
 \subsubsection* {State Variables}
 
-$neverMoved: \mathbb{B}$\\
-$color: \mathbb{N} $\\
+$neverMoved$: bool\\
+$color$: int \\
 $Id$: String \\
 $path$: String\\
 $possiblemoves$: Sequence of Cell \\
-$posMove$ : abstract function\\
-$x: \mathbb{N}$\\
-$y: \mathbb{N}$\\
+$posMove$ : abstract function
+$x$: int\\
+$y$: int\\
 
 \subsubsection* {State Invariant}
 
@@ -417,27 +334,6 @@ setMove():
 \noindent getColor():
 \begin{itemize}
 \item output: $out := color$
-\item exception: none\\
-\end{itemize}
-
-\newpage
-
-\noindent \textcolor{red}{isKingInDanger(pos): This method has been moved from sub-class to Piece module}
-\begin{itemize}
-\item output: check if cell is in the attack range of other hostile piece's attack range based on different piece types.\\
-\\
-$out :=$\\
-$\exists(r : Rook \ | \ r \in Rook(x,y).posMove(pos) \wedge r.color \ne color) $ \\
-$\vee$\\
-$\exists(n : Knight\ | \ n \in Knight(x,y).posMove(pos)\wedge n.color \ne color) $ \\
-$\vee$\\
-$\exists(k : King \ | \ k \in King(x,y).posMove(pos)\wedge k.color \ne color) $ \\
-$\vee$\\
-$\exists(b : Bishop\ | \ b \in Bishop(x,y).posMove(pos)\wedge b.color \ne color) $ \\
-$\vee$\\
-$\exists(q : Queen \ | \ q \in Queen(x,y).posMove(pos)\wedge q.color \ne color) $ \\
-$\vee$\\
-$\exists(p : Pawn\ | \ p \in Pawn(x,y).posMove(pos)\wedge p.color \ne color) $ \\
 \item exception: none
 \end{itemize}
 
@@ -667,10 +563,6 @@ Pawn = ?
 \hline
 Pawn &String, String, int, int, int & Pawn & InvalidCellException\\
 \hline
-setPromo & ~ & ~ & ~\\
-\hline
-getPromo & ~ & boolean & ~ \\
-\hline
 posMove & sequence of sequence of Cell & sequence of Cell & ~\\
 \hline
 \end{tabular}
@@ -679,7 +571,7 @@ posMove & sequence of sequence of Cell & sequence of Cell & ~\\
 
 \subsubsection* {State Variables}
 
-$promoPossible: \mathbb{B}$
+$promoPossible$: bool
 
 \subsubsection* {State Invariant}
 
@@ -697,19 +589,6 @@ Pawn($d, p, x0, y0, c$):
 \item output: $out := \mathit{self}$
 \item exception: $ \neg (0 \leq x0 \leq 7) \wedge  \neg (0 \leq y0 \leq 7) \Rightarrow InvalidCellException$
 \end{itemize}
-
-\noindent setPromo():
-\begin{itemize}
-\item transition: promoPossible = true
-\item exception: none
-\end{itemize}
-
-\noindent getPromo():
-\begin{itemize}
-\item output: return the promoPossible state value.
-\item exception: none
-\end{itemize}
-
 
 \noindent posMove(pos):
 \begin{itemize}
@@ -1057,7 +936,7 @@ isKingInDanger & sequence of sequence of Cell & bool & ~\\
 
 \subsubsection* {State Variables}
 
-$notCheckmated: \mathbb{B}$
+$notCheckmated$: bool
 
 \subsubsection* {State Invariant}
 
@@ -1094,6 +973,25 @@ $(j : \mathbb{N} \ | \ i \in \{1,2,3\} \  \wedge \ pos[this.x][this.y - j].getPi
 \item exception: none
 \end{itemize}
 
+\noindent isKingInDanger(pos):
+\begin{itemize}
+\item output: check if cell is in the attack range of other hostile piece's attack range based on different piece types.\\
+\\
+$out :=$\\
+$\exists(r : Rook \ | \ r \in Rook(x,y).posMove(pos) \wedge r.color \ne color) $ \\
+$\vee$\\
+$\exists(n : Knight\ | \ n \in Knight(x,y).posMove(pos)\wedge n.color \ne color) $ \\
+$\vee$\\
+$\exists(k : King \ | \ k \in King(x,y).posMove(pos)\wedge k.color \ne color) $ \\
+$\vee$\\
+$\exists(b : Bishop\ | \ b \in Bishop(x,y).posMove(pos)\wedge b.color \ne color) $ \\
+$\vee$\\
+$\exists(q : Queen \ | \ q \in Queen(x,y).posMove(pos)\wedge q.color \ne color) $ \\
+$\vee$\\
+$\exists(p : Pawn\ | \ p \in Pawn(x,y).posMove(pos)\wedge p.color \ne color) $ \\
+\item exception: none
+\end{itemize}
+
 \newpage
 
 
@@ -1121,7 +1019,7 @@ Main = ?
 \hline
 \textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
 \hline
-Main & ~ & Main & ~\\
+Initial & ~ & ~ & ~\\
 \hline
 move & Cell, Cell & ~ & ~\\
 \hline
@@ -1131,20 +1029,15 @@ retrieveKing & int & King & ~\\
 \hline
 transform & Cell & ~ & ~\\
 \hline
+checkmate & int, Cell & boolean & ~\\
+\hline
 filterDestination & Piece, sequence of Cell & ~ & ~\\
 \hline
-existPos$^{*}$ & int$^{*}$ & boolean & ~\\
-\hline
-mouseClicked & int, int & ~ & WrongPlayerException, DuplicateCellException\\
-\hline
-gameOver$^{*}$ &~& ~ & ~\\
-\hline
-playerChange$^{*}$ &~ & ~ & ~\\
+operation & int, int & ~ & WrongPlayerException, DuplicateCellException\\
 \hline
 
-\end{tabular}\\
 
-$^{*}$ means modified
+\end{tabular}
 
 \subsection* {Semantics}
 
@@ -1152,8 +1045,8 @@ $^{*}$ means modified
 
 $pos$: sequence of sequence of Cell\\
 $isCheckmate$: bool\\
-$Black$: Sequence of Piece\\
-$White$: Sequence of Piece\\
+$pre$: Cell\\
+$cur$: Cell\\
 $player$: int
 
 \subsubsection* {State Invariant}
@@ -1162,7 +1055,7 @@ $player$: int
 
 \subsubsection* {Access Routine Semantics}
 
-Main():
+Initial():
 \begin{itemize}
 \item transition: set up the chess board based on the basic rule. \\
 \\
@@ -1214,26 +1107,23 @@ $c.getPiece().getColor() = 1 \Rightarrow c.setPiece(Queen_{White})\  \wedge \  c
 \item exception: $exc := (c \not\in \{1,-1\} \Rightarrow \mathrm{NullTransnformException})$
 \end{itemize}
 
+\noindent checkmate(c, A):
+\begin{itemize}
+\item output: Check if all move in King's posMove list are valid, and check if any friendly piece can eliminate the piece that cause the stalemate.\\
+\\
+$out := \forall(i, k : Cell, King | i \in retrieveKing(c).posMove() : move(retrieveKing(c).Cell, i)\\ \Rightarrow i.King.isKingInDanger(pos))\\ \wedge \\ \neg (\exists(p : Piece | p.getColor() = retrieveKing(c).getColor(): A \in p.posMove()))$
+\item exception: none
+\end{itemize}
+
 
 \noindent filterDestination(p, a):
 \begin{itemize}
 \item output: If p is an instance of King, keep the move in posMove list that will not cause a stalemate. If p is not an instance of King, keep the move in posMove list that will not cause friendly king to be in stalemate.\\
 \\
 $p \in King \Rightarrow (i : Cell | i \in p.posMove()\  \wedge\  \neg (move(p.Cell, i)\\ \Rightarrow p.isKingInDanger()): i)\ \\ \wedge\ \\ p \not\in King \Rightarrow (i : Cell | i \in p.posMove()\  \wedge\  \neg (move(p.Cell, i) \\ \Rightarrow retrieveKing(p.color).isKingInDanger()): i)$
-\item exception: none
 \end{itemize}
 
-
-\noindent existPos(c):
-\begin{itemize}
-\item output: Depends on the input color $c$, then iterate through each piece on the side of $c$, and immediately return true if any piece has a feasible move path.\\
-\\
-$out := \\
-c = 1 \Rightarrow \exists(p: Piece\ |\ p \in $white$:  \neg (filterDestination(p. p.posMove(pos)) = \phi)) \\ \land \\  c = -1 \Rightarrow \exists(p: Piece\ |\ p \in $black$: \neg (filterDestination(p. p.posMove(pos)) = \phi))$
-\item exception: none
-\end{itemize}
-
-\noindent mouseClicked(a, b):
+\noindent opeartion(a, b):
 \begin{itemize}
 \item transition:  check if the cur is empty or contains hostile piece respect to the pre cell.\\ 
 If so,check if the current cell is a valid move respect to the pre cell piece.\\
@@ -1243,112 +1133,13 @@ Depends on the position and type of the piece, identify movement and transform p
 \subitem Rook: set to moved after movement.
 \subitem Other: normal movement 
 \subitem all normal movement just call move()
-review the check status on the hostile king and remove self check status.
-If no movement possible $\Rightarrow$ GameOver
+check the stalemate status on the hostile king and remove self stalement status.
 switch side.
 \item exception: $(pre = \phi \wedge pos[a][b] \ne \phi \wedge pos[a][b].color \ne player) \Rightarrow WrongPlayerException $
 \item exception: $(pre.x = a \wedge pre.y = b) \Rightarrow DuplicateCellException$
 \end{itemize}
-\color{red}
-\noindent gameOver():
-\begin{itemize}
-\item transition: prompt message that the current player has won the game, and re-initiate the game.
-\item exception: none
-\end{itemize}
 
-\noindent playerChange():
-\begin{itemize}
-\item transition: $player = player * -1$
-\item exception: none
-\end{itemize}
 \newpage
-\section* {countDownTimer Module}
-
-\subsection* {countDownTimer Module}
-
-countDownTimer
-
-\subsection* {Uses}
-
-Main
-
-\subsection* {Syntax}
-
-\subsubsection* {Exported Types}
-
-countDownTimer = ?
-
-\subsubsection* {Exported Constants}
-
-N/A
-
-\subsubsection* {Exported Access Programs}
-
-\begin{tabular}{| l | l | l | p{5cm} |}
-\hline
-\textbf{Routine name} & \textbf{In} & \textbf{Out} & \textbf{Exceptions}\\
-\hline
-countDownTimer & JLabel, Main & countDownTimer & ~\\
-\hline
-start & ~ & ~ & ~\\
-\hline
-stop & ~ & ~ & ~\\
-\hline
-reset & ~ & ~ & ~\\
-\hline
-actionPerformed & ActionEvent & ~\\
-\hline
-
-\end{tabular}\\
-
-\subsection* {Semantics}
-
-\subsubsection* {State Variables}
-
-$countdownTimer: Timer$\\
-$label: JLabel$\\
-$timeRemain: \mathbb{N}$\\
-$m: Main$
-
-
-\subsubsection* {State Invariant}
-
-\subsubsection* {Assumptions}
-countDownTime will only be constructed during the construction of Main instance.
-\subsubsection* {Access Routine Semantics}
-
-\noindent countDownTimer(p, m0):
-\begin{itemize}
-\item transition: set countdownTimer, and integrate it with a listener that listens to specific event.
-\subitem $label$ = p, $m$ = m0, $timeRemain$ = m0.timeRemain
-\item output: $self$ 
-\item exception: none
-\end{itemize}
-
-\noindent start():
-\begin{itemize}
-\item transition: start $countdownTimer$
-\item exception: none
-\end{itemize}
-
-\noindent stop():
-\begin{itemize}
-\item transition: stop $countdownTimer$
-\item exception: none
-\end{itemize}
-
-\noindent reset():
-\begin{itemize}
-\item transition: reset $countdownTimer$ to the initial time setting stored in $m$(Main)
-\item exception: none
-\end{itemize}
-
-\noindent actionPerformed():
-\begin{itemize}
-\item transition: After every second, check if there is still time left. If so, formulate the time in min:sec, and display it on the GUI. Discrement $timeRemain$ by 1.\\
-If not, send notification of GameOver state, and initial GameOver routine in Main module.
-\item exception: none
-\end{itemize}
 
 
 \end {document}

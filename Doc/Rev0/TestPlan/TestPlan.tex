@@ -6,8 +6,6 @@
 \usepackage{hyperref}
 \usepackage{hhline}
 \usepackage{extsizes}
-\usepackage{ulem}
-\usepackage[usenames, dvipsnames]{color}
 
 \hypersetup{
     colorlinks,
@@ -106,23 +104,15 @@ The software will allow users to play Chess game against oneself or other human 
 Team MIF is responsible for testing this software. The members of Team MIF are Morgan Cui, Harry Fu, Xingjian Ke
 
 \subsection{Automated Testing Approach}
-\textcolor{red}{
-\sout{Test automation of ChessAce will be perform unit test via Junit tool comes}
-\sout{with Eclipse IDE. Junit test files will be implemented based on}
-\sout{consideration of boundary cases for different pieces, including cases about movement,}
-\sout{elimination, transfomation, stalemate, and other special operations. Above}
-\sout{boundary cases will be tested on a designed board state to imitate some}
-\sout{extreme cases. Such tests will be automatically executed before every commit}
-\sout{to ensure the correctness of implementation.}}\\
-\textcolor{red}{Each piece, its sub-classes and main module in this program associates with a relatively huge datapool, an 8*8 matrix board strcture, so constructing an automated test will require to repeated large-scale data but using GUI, and console output to do integration testing could do a same checking performance with a higher time efficiency.  So after the reversion 0 team MIF just decided to use only integration test based on GUI and console output to verify that it can avoid requirement omission, violation, inconsistency and other unexpected operation.}
+Test automation of ChessAce will be perform unit test via Junit tool comes with Eclipse IDE. Junit test files will be implemented based on consideration of boundary cases for different pieces, including cases about movement, elimination, transfomation, stalemate, and other special operations. Above boundary cases will be tested on a designed board state to imitate some extreme cases. Such tests will be automatically executed before every commit to ensure the correctness of implementation.
 
 \subsection{Testing Tools}
-\textcolor{red}{
-\sout{The test tool for this software will be Junit. It will be used to automate the} 
-\sout{unit testing. Also, EclEmma, which is a built-in function for Eclipse Photon,} 
-\sout{will be used for code coverage check.}}\\
-\textcolor{red}{The testing tools for this software are GUI and java console}
-
+The test tool for this software will be Junit. It will be used to automate the unit testing. Also, EclEmma, which is a built-in function for Eclipse Photon, will be used for code coverage check.
+\begin{figure}[h]
+  \includegraphics[width=\linewidth]{screen.png}
+  \caption{Sample of EclEmma}
+  \label{fig:Ecl}
+\end{figure}~\cite{EclEmma}
 
 \subsection{Testing Schedule}
 
@@ -173,26 +163,23 @@ Type: Functional, Dynamic, Manual
 					
 Initial State: Chess game is currently in progress
 					
-Input: User clicks on a piece and \textcolor{red}{click this piece again and then click on another piece. }
+Input: User clicks on a piece and then click on another pieces 
 					
 Output: The previous piece would be unselected and the current piece would be selected. 
 					
 How test will be performed: The program will be run given the specific inputs. Following that we will check to make sure that the response was correct. Whether if one piece is unselected and the ohter is selected.
 
-\color{red}{
-\item{\sout{FT-MSC-4\\}}
+\item{FT-MSC-4\\}
 
-\sout{Type: Functional, Dynamic, Manual}
+Type: Functional, Dynamic, Manual
 					
-\sout{Initial State: Chess game is currently in progress}
+Initial State: Chess game is currently in progress
 					
-\sout{Input: User clicks on the undo button}
+Input: User clicks on the undo button
 					
-\sout{Output: The chess board go back to the state which one movement before}
+Output: The chess board go back to the state which one movement before
 					
-\sout{How test will be performed: The program will be run given the specific}
-\sout{inputs. Following that we will check to make sure that the response}
-\sout{was correct. Whether if the board went back or not.}}
+How test will be performed: The program will be run given the specific inputs. Following that we will check to make sure that the response was correct. Whether if the board went back or not.
 
 \end{enumerate}
 
@@ -211,28 +198,18 @@ Input/Condition: There is no possible move for all pieces in one side
 Output/Result: The program should return checkmate 
 					
 How test will be performed: The chess game will in progress and the links tested to make sure that the program could show checkmate 
-		
-\textcolor{red}	{		
-\sout{FT-ALG-2\\}
-}
-\textcolor{red}{
-\sout{Type: Functional, Dynamic, Manual}		
-\sout{Initial State: Chess game is currently in progress}			
-\sout{Input: User clicks undo button twice in one turn}				
-\sout{Output: The system will not allow user to do undo request twice per turn}					
-\sout{How test will be performed: The program will be run given the specific }
-\sout{inputs. Following that we will check to make sure that the response }
-\sout{was correct. }}
-
-\color{red}{
+					
 \item{FT-ALG-2\\}
 
-Type: Functional, Dynamic, Manual\\
-Initial State: Chess game is currently in progress\\
-Input: User operates pieces twice on one side\\
-Output: The system will not allow user to consecutive operation on one side\\
-How test will be performed: The program will be run given the specific inputs. Following that we will check to make sure that the response was correct. }\\
-
+Type: Functional, Dynamic, Manual
+					
+Initial State: Chess game is currently in progress
+					
+Input: User clicks undo button twice in one turn
+					
+Output: The system will not allow user to do undo request twice per turn
+					
+How test will be performed: The program will be run given the specific inputs. Following that we will check to make sure that the response was correct. 
 
 \end{enumerate}
 
@@ -264,40 +241,17 @@ Output: The current player will be showed on the screen and will be changed afte
 					
 How test will be performed: The chess game will in progress and the links tested to make sure the main screen shows current player and is changed each turn
 
-\color{red}{
-\sout{FT-GUI-3\\}
-
-\sout{Type: Functional, Dynamic, Manual}
-					
-\sout{Initial State: Chess game is currently in progress}
-					
-\sout{Input: User select to forfeiting the game}
-					
-\sout{Output: The program will show a confirm dialog to user}
-					
-\sout{How test will be performed: The chess game will in progress and the}
-\sout{links tested to make sure the main screen shows a confirm dialog before }
-\sout{forfeiting}
-}
-
-\color{red}{
 \item{FT-GUI-3\\}
 
-Type: Functional, Dynamic, Manual\\
-Initial State: Chess game is currently in progress\\
-Input: User select to \textcolor{red}{resigning} the game\\
-Output: The program will show a confirm dialog to user\\
-How test will be performed: The chess game will in progress and the links tested to make sure the main screen shows a confirm dialog before \textcolor{red}{resigning}
-}
-
-\color{red}{
-\item{FT-GUI-4\\}
-
-Type: Functional, Dynamic, Manual\\
-Initial State: The program is executed\\
-Input: User selects which side to play\\
-Output: The program will show the current state at the right top corner of the chess board\\
-How test will be performed: The chess game will be excecuted first and after users chose a side, the links tested to make sure the main screen shows a current state}\\
+Type: Functional, Dynamic, Manual
+					
+Initial State: Chess game is currently in progress
+					
+Input: User select to forfeiting the game
+					
+Output: The program will show a confirm dialog to user
+					
+How test will be performed: The chess game will in progress and the links tested to make sure the main screen shows a confirm dialog before forfeiting
 
 \end{enumerate}
 
@@ -329,21 +283,17 @@ Output: The white player could move first
 					
 How test will be performed: The chess game will in progress and the links tested to make sure the white player could move piece first
 
-\color{red}{
-\item{\sout{FT-DS-3\\}}
+\item{FT-DS-3\\}
 
-\sout{Type: Functional, Dynamic, Manual}
+Type: Functional, Dynamic, Manual
 					
-\sout{Initial State:  Chess game is currently in progress}
+Initial State:  Chess game is currently in progress
 					
-\sout{Input: User clicked start game and finished move pieces}
+Input: User clicked start game and finished move pieces
 					
-\sout{Output: The program can save the latest record of the game}
+Output: The program can save the latest record of the game
 					
-\sout{How test will be performed: The chess game will in progress and the links} 
-\sout{tested to make sure the program could save the latest record}}
-
-
+How test will be performed: The chess game will in progress and the links tested to make sure the program could save the latest record
 
 \end{enumerate}
 
@@ -400,7 +350,7 @@ Input/Condition: users in test group are asked to rate the existing implementati
 
 Output/Result: the average rating from the test group on each category from test SS-3 is equal to or higher than the average rating from the test group on the corresponding category in this test, SS-4.
 
-How Test Will Be Performed: each user in the test group who has a basic idea of chess play will be provided with a questionnaire that provides a list of criteria and a scale for each where 1 represents Very Poor, 2 represents Below Expectations, 3 represents Satisfactory, 4 represents. Above Expectations, and 5 represents Excellent. Test group will be asked to rate the program on the provided criteria using the given scale. The average rating for each criterion will be calculated. The average must be above 3 on each criterion.
+How Test Will Be Performed: each user in the test group who has a basic idea of chess play will be provided with a questionnaire that provides a list of criteria and a scale for each where 1 represents Very Poor, 
 
 \subsubsection{Performance}
 
@@ -452,30 +402,19 @@ Output/Result: the selected chess piece must move to the user selected valid squ
 
 How Test Will Be Performed: each user in the test group who has a basic idea of chess play users will be asked to perform the task or the task will be iterated multiple times. When the user playing the game, the selected chess piece should display properly to valid square. This will ensure the chess game can be executed successfully. 
 
-\color{red}{
-\item{NF-9\\}
-
-Type: Functional, Dynamic, Manual
-
-Initial State: users in test group have already downloaded the program to their computer and display a chess game board on the screen using this program.\\
-Input/Condition: users in test group are asked to move pieces by mouse-click input.\\
-Output/Result: the selected chess piece must move to the user selected valid square, and the mouse-click input must be equivalent to the visual display.
-
-How Test Will Be Performed: each user in the test group will be asked to perform the task and the task will be iterated multiple times. When the user using the program, the selected chess piece should display properly compared to the mouse-click input. This will ensure the chess game can be executed successfully. }
-
 \end{enumerate}
 
 \subsection{Traceability Between Test Cases and Requirements}
 
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{trace1.png}
-  \caption{\textcolor{red}{Traceability Matrix 1}}
+  \caption{Traceability Matrix 1}
   \label{fig:tra1}
 \end{figure}
 
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{trace2.png}
-  \caption{\textcolor{red}{Traceability Matrix 2}}
+  \caption{Traceability Matrix 2}
   \label{fig:tra2}
 \end{figure}
 
@@ -528,53 +467,14 @@ This test is designed for comparing ChessAce to existing implementation, of the 
 \item POC test cases are about two basic movements not included in the existing implementation.
 \end{enumerate}		
 \newpage
+\section{Unit Testing Plan}
 
-\textcolor{red}{
-\section{Unit Testing Plan}}
-\textcolor{red}{
-\sout{The Junit Framework will be used to perform unit testing for this project.}
-\sout{EclEmma will help identify the code coverage of the test.}\\
-N/A
-}
-\textcolor{red}{
+The Junit Framework will be used to perform unit testing for this project. EclEmma will help identify the code coverage of the test.		
+
 \subsection{Unit testing of internal functions}
-N/A\\
-\sout{Unit test of internal functions will test any methods that return values or}
-\sout{modify values. For any method not directly relates to the state of the chess}
-\sout{board, unit test can be acomplished by providing a sample object, such as }
-\sout{piece and board cell, and verify the output with expected results after the }
-\sout{method call. Unit test will include tests that contain propar}
-\sout{inputs and inputs that generate exceptions. This project will not import any stubs} 
-\sout{or drivers specifically for testing purposes. All necessary components will }
-\sout{already be included in the class implementation. Unit test will use EclEmma }
-\sout{to help identify the code coverage during the process. Our goal is to maximize }
-\sout{function and branch converage to 100\%, and hit 80\% of statement coverage.}
-}
-\textcolor{red}{
-\subsection{Unit testing of output files}
-N/A\\
-\sout{Since the implementation of ChessAce project results in a game with GUI,} 
-\sout{any visual output is strictly relate to some internal function call. The only }
-\sout{testing purpose here is to determine if the mouse-click will return a }
-\sout{unexpected coordination output. On the other hand, unit test of output files }
-\sout{should check if mouse-click operation returns the expected result same with }
-\sout{operating with corresponding console commands. Also, mouse clicks outside }
-\sout{the board area should also be checked to see if such click event returns invalid }
-\sout{output.}
-}
-\newpage
-\textcolor{red}{
-\section{Integration Testing Plan}
-}
-\textcolor{red}{
-Team MIF decided to use the integration test to test this program, the reason is explained in section 2.3 Automated Testing Approach. For the integration test, the GUI operations and JAVA console are used to perform testing for this project.
-}
-
-\textcolor{red}{
-\subsection{Integration Testing of game frame}
-Integration test will test the whole functionality of this program such as the movement, possible movement, elimination, castling, promotion and other basic features of each piece, the performance of GUI components such as start button, resign button, countdown timer and other components. A feature table will be used to list all the features we are going to implement and we are going to use standard input(mouse click) manipulate game. Our goal is to maximize the functionality coverage and to see if the GUI perform the expected output. 
-}
-
+Unit test of internal functions will test any methods that return values or modify values. For any method not directly relates to the state of the chess board, unit test can be acomplished by providing a sample object, such as piece and board cell, and verify the output with expected results after the method call. Unit test will include tests that contain propar inputs and inputs that generate exceptions. This project will not import any stubs or drivers specifically for testing purposes. All necessary components will already be included in the class implementation. Unit test will use EclEmma to help identify the code coverage during the process. Our goal is to maximize function and branch converage to 100\%, and hit 80\% of statement coverage.
+\subsection{Unit testing of output files}		
+Since the implementation of ChessAce project results in a game with GUI, any visual output is strictly relate to some internal function call. The only testing purpose here is to determine if the mouse-click will return a unexpected coordination output. On the other hand, unit test of output files should check if mouse-click operation returns the expected result same with operating with corresponding console commands. Also, mouse clicks outside the board area should also be checked to see if such click event returns invalid output.
 
 \newpage
 
