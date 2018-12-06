@@ -10,6 +10,8 @@ import javax.swing.Timer;
 
 /**
  * timer class, Implementation for timer's GUI function.
+ * Reference: 1. ChessOOP Time function; 
+ *			  2. countdown timer; https://www.cs.uic.edu/pub/CS342/LecturesS16/CountDown.java
  * 
  * @author Harry Fu
  * @version 1.0 (current version number of program)

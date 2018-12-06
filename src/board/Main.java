@@ -39,7 +39,7 @@ import javax.swing.JSlider;
 /** Main class
  * @version 1.0 (current version number of program)
  * @since 0.0
- * @author Xingjian
+ * @author Xingjian, Harry
  *
  */
 public class Main extends JFrame implements MouseListener {

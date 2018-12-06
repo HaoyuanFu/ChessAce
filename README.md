@@ -9,4 +9,4 @@ This project is a reimplementation of ChessOOP, https://github.com/ashish1294/Ch
 
 The folders and files for this project are as follows:
 Doc - Documentation of the project
-Code - Implementation 
+src - Implementation 
